@@ -21,7 +21,6 @@ features = ["dox"]
 
 [build-dependencies]
 anyhow.workspace = true
-cc.workspace = true
 cmake.workspace = true
 fs-err = "3.2.2"
 tetsu-download.workspace = true

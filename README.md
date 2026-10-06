@@ -132,7 +132,7 @@ cargo install cargo-xwin
 cargo xwin build --target x86_64-pc-windows-msvc
 ```
 
-The `libcef_dll_wrapper` static library is built with `clang-cl`, exactly like a native Windows build. A set `CEF_PATH` must hold the Windows distribution (`cargo run -p export-cef-dir -- --target x86_64-pc-windows-msvc <dir>` writes one); without `CEF_PATH` the build downloads it into its `OUT_DIR`.
+Nothing is compiled from C++ for Windows: the bindings link `libcef.lib` alone, natively or cross-compiled. A set `CEF_PATH` must hold the Windows distribution (`cargo run -p export-cef-dir -- --target x86_64-pc-windows-msvc <dir>` writes one); without `CEF_PATH` the build downloads it into its `OUT_DIR`.
 
 ## Contributing
 
