@@ -1,4 +1,4 @@
-use cef::*;
+use tetsu::*;
 
 pub const fn logical_value_to_device(value: i32, scale_factor: f32) -> i32 {
     (value as f32 * scale_factor) as i32

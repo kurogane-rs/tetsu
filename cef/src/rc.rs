@@ -12,7 +12,7 @@ use std::{
     sync::atomic::{fence, AtomicUsize, Ordering},
 };
 
-use cef_dll_sys::cef_base_ref_counted_t;
+use tetsu_sys::cef_base_ref_counted_t;
 
 /// Reference counted trait for types has [`cef_base_ref_counted_t`].
 pub trait Rc {

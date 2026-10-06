@@ -1751,7 +1751,7 @@ impl ParseTree<'_> {
             use crate::rc::{
                 ConvertParam, ConvertReturnValue, Rc, RcImpl, RefGuard, WrapParamRef,
             };
-            use cef_dll_sys::*;
+            use tetsu_sys::*;
         }
         .to_string();
         writeln!(f, "{header}")?;
@@ -2454,7 +2454,7 @@ methods implemented by the [`Impl{rust_name}`] trait.
 
 # Example
 ```rust
-# use cef::*;
+# use tetsu::*;
 
 {wrap_type_macro}! {{
     struct My{rust_name} {{

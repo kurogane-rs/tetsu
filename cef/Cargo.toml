@@ -1,5 +1,5 @@
 [package]
-name = "cef"
+name = "tetsu"
 description = "Use cef in Rust"
 
 version.workspace = true
@@ -15,8 +15,8 @@ name = "bundle-cef-app"
 
 [features]
 default = ["sandbox", "build-util", "resources"]
-dox = ["cef-dll-sys/dox"]
-sandbox = ["cef-dll-sys/sandbox"]
+dox = ["tetsu-sys/dox"]
+sandbox = ["tetsu-sys/sandbox"]
 resources = []
 
 # Unified texture import system for CEF hardware acceleration
@@ -51,7 +51,7 @@ linux-x11 = []
 features = ["dox"]
 
 [dependencies]
-cef-dll-sys.workspace = true
+tetsu-sys.workspace = true
 
 # accelerated_osr
 ash = { workspace = true, optional = true }

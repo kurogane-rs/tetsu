@@ -1,5 +1,5 @@
-use cef::*;
 use std::sync::{Arc, Mutex, OnceLock, Weak};
+use tetsu::*;
 
 fn get_data_uri(data: &[u8], mime_type: &str) -> String {
     let data = CefString::from(&base64_encode(Some(data)));

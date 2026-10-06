@@ -1,9 +1,9 @@
 use super::{main_message_loop::*, main_message_loop_std::*};
-use cef::*;
 use std::{
     sync::{Arc, Mutex, OnceLock, Weak},
     time::Duration,
 };
+use tetsu::*;
 #[cfg(target_os = "windows")]
 use windows_sys::Win32::Foundation::HWND;
 

@@ -1,8 +1,8 @@
-use cef::{
+use std::cell::RefCell;
+use tetsu::{
     self, BrowserProcessHandler, ImplBrowserProcessHandler, WrapBrowserProcessHandler, rc::Rc, *,
 };
-use cef::{ImplRequestContextHandler, RequestContextHandler, WrapRequestContextHandler};
-use std::cell::RefCell;
+use tetsu::{ImplRequestContextHandler, RequestContextHandler, WrapRequestContextHandler};
 
 #[derive(Clone)]
 pub struct OsrApp {}
@@ -21,8 +21,8 @@ wrap_app! {
     impl App {
         fn on_before_command_line_processing(
             &self,
-            _process_type: Option<&cef::CefStringUtf16>,
-            command_line: Option<&mut cef::CommandLine>,
+            _process_type: Option<&tetsu::CefStringUtf16>,
+            command_line: Option<&mut tetsu::CommandLine>,
         ) {
             let Some(command_line) = command_line else {
                 return;
@@ -39,7 +39,7 @@ wrap_app! {
             );
         }
 
-        fn browser_process_handler(&self) -> Option<cef::BrowserProcessHandler> {
+        fn browser_process_handler(&self) -> Option<tetsu::BrowserProcessHandler> {
             Some(BrowserProcessHandlerBuilder::build(
                 OsrBrowserProcessHandler::new(),
             ))
@@ -48,7 +48,7 @@ wrap_app! {
 }
 
 impl AppBuilder {
-    pub(crate) fn build(app: OsrApp) -> cef::App {
+    pub(crate) fn build(app: OsrApp) -> tetsu::App {
         Self::new(app)
     }
 }
@@ -179,7 +179,7 @@ wrap_render_handler! {
             let Some(info) = info else { return };
 
             let src_texture = {
-                use cef::osr_texture_import::shared_texture_handle::SharedTextureHandle;
+                use tetsu::osr_texture_import::shared_texture_handle::SharedTextureHandle;
 
                 if type_ != PaintElementType::default() {
                     return;
@@ -415,7 +415,7 @@ wrap_client! {
     }
 
     impl Client {
-        fn render_handler(&self) -> Option<cef::RenderHandler> {
+        fn render_handler(&self) -> Option<tetsu::RenderHandler> {
             Some(self.render_handler.clone())
         }
     }

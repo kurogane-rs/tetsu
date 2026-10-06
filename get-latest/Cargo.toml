@@ -9,7 +9,7 @@ authors.workspace = true
 repository.workspace = true
 
 [dependencies]
-download-cef.workspace = true
+tetsu-download.workspace = true
 
 clap.workspace = true
 git-cliff.workspace = true

@@ -2,7 +2,7 @@ use crate::{
     common::{client_app::*, client_app_other::*},
     renderer::client_app_renderer::*,
 };
-use cef::{args::Args, *};
+use tetsu::{args::Args, *};
 
 pub fn run_main(
     args: Args,
@@ -11,7 +11,7 @@ pub fn run_main(
 ) -> Result<(), i32> {
     #[cfg(feature = "sandbox")]
     let _sandbox = {
-        let mut sandbox = cef::sandbox::Sandbox::new();
+        let mut sandbox = tetsu::sandbox::Sandbox::new();
         sandbox.initialize(args.as_main_args());
         sandbox
     };

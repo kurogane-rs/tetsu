@@ -1,10 +1,10 @@
 #[cfg(not(feature = "dox"))]
 fn main() -> anyhow::Result<()> {
-    use download_cef::OsAndArch;
     use std::{
         env, fs,
         path::{Path, PathBuf},
     };
+    use tetsu_download::OsAndArch;
 
     println!("cargo::rerun-if-changed=build.rs");
 
@@ -15,10 +15,10 @@ fn main() -> anyhow::Result<()> {
     println!("cargo::rerun-if-env-changed=NIX_CEF_BINARY");
     println!("cargo::rerun-if-env-changed=CEF_PATH");
     let package_version = env::var("CARGO_PKG_VERSION")?;
-    let cef_version = download_cef::default_version(&package_version);
+    let cef_version = tetsu_download::default_version(&package_version);
 
     let check_archive = |path: &Path| -> anyhow::Result<()> {
-        download_cef::check_archive_json(&package_version, &path.to_string_lossy())?;
+        tetsu_download::check_archive_json(&package_version, &path.to_string_lossy())?;
         Ok(())
     };
 
@@ -27,18 +27,18 @@ fn main() -> anyhow::Result<()> {
 
         if !fs::exists(&cef_dir)? {
             if env::var("NIX_CEF_BINARY").is_ok() {
-                download_cef::install_nix_cef(&cef_version, &cef_dir, false)?;
+                tetsu_download::install_nix_cef(&cef_version, &cef_dir, false)?;
             } else {
-                use download_cef::CefIndex;
+                use tetsu_download::CefIndex;
 
-                let download_url = download_cef::default_download_url();
+                let download_url = tetsu_download::default_download_url();
                 let index = CefIndex::download_from(&download_url)?;
                 let platform = index.platform(&target)?;
                 let version = platform.version(&cef_version)?;
 
                 let archive = version.download_archive_from(&download_url, location, false)?;
                 let extracted_dir =
-                    download_cef::extract_target_archive(&target, &archive, location, false)?;
+                    tetsu_download::extract_target_archive(&target, &archive, location, false)?;
                 let extracted_dir_canonical = fs::canonicalize(&extracted_dir)?;
                 let cef_dir_canonical = fs::canonicalize(&cef_dir)?;
                 if extracted_dir_canonical != cef_dir_canonical {

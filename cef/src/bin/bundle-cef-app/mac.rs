@@ -1,7 +1,7 @@
-use cef::build_util::mac::*;
 use clap::Parser;
 use semver::Version;
 use std::{env, path::PathBuf};
+use tetsu::build_util::mac::*;
 
 #[derive(Parser, Debug)]
 #[command(about, long_about = None)]

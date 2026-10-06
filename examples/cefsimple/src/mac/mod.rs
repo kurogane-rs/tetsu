@@ -1,5 +1,4 @@
 use crate::shared::simple_handler::*;
-use cef::application_mac::{CefAppProtocol, CrAppControlProtocol, CrAppProtocol};
 use objc2::{
     ClassType, DefinedClass, MainThreadMarker, MainThreadOnly, define_class, extern_methods,
     msg_send,
@@ -13,6 +12,7 @@ use objc2_app_kit::{
 };
 use objc2_foundation::{NSBundle, NSObjectNSThreadPerformAdditions, ns_string};
 use std::{cell::Cell, ptr};
+use tetsu::application_mac::{CefAppProtocol, CrAppControlProtocol, CrAppProtocol};
 
 define_class! {
     #[unsafe(super(NSObject))]

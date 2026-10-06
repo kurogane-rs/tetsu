@@ -4,7 +4,6 @@
 extern crate thiserror;
 
 use clap::Parser;
-use download_cef::{CefIndex, Channel, LINUX_TARGETS, MACOS_TARGETS, WINDOWS_TARGETS};
 use git_cliff::args::*;
 use regex::Regex;
 use semver::{BuildMetadata, Version};
@@ -15,12 +14,13 @@ use std::{
     process::{Command, ExitStatus},
     sync::OnceLock,
 };
+use tetsu_download::{CefIndex, Channel, LINUX_TARGETS, MACOS_TARGETS, WINDOWS_TARGETS};
 use toml_edit::{value, DocumentMut};
 
 #[derive(Debug, Error)]
 enum Error {
     #[error("Download error: {0}")]
-    Download(#[from] download_cef::Error),
+    Download(#[from] tetsu_download::Error),
     #[error("Invalid regex pattern: {0}")]
     InvalidRegexPattern(#[from] regex::Error),
     #[error("Invalid version: {0}")]
@@ -44,7 +44,7 @@ type Result<T> = std::result::Result<T, Error>;
 fn default_download_url() -> &'static str {
     static DEFAULT_DOWNLOAD_URL: OnceLock<String> = OnceLock::new();
     DEFAULT_DOWNLOAD_URL
-        .get_or_init(download_cef::default_download_url)
+        .get_or_init(tetsu_download::default_download_url)
         .as_str()
 }
 
@@ -77,7 +77,7 @@ fn main() -> Result<()> {
                 .and_then(|platform| platform.latest(channel.clone()))
                 .map(|version| pattern.replace(&version.cef_version, "$1"))
         })
-        .collect::<download_cef::Result<Vec<_>>>()?;
+        .collect::<tetsu_download::Result<Vec<_>>>()?;
     let latest_versions = latest_versions
         .into_iter()
         .map(|version| Ok(Version::parse(&version)?))
@@ -91,7 +91,7 @@ fn main() -> Result<()> {
 
     if args.update_version {
         let current_version =
-            Version::parse(&download_cef::default_version(env!("CARGO_PKG_VERSION")))?;
+            Version::parse(&tetsu_download::default_version(env!("CARGO_PKG_VERSION")))?;
         if current_version < latest_version {
             let latest_build = BuildMetadata::new(&latest_version.to_string())?;
             let mut next_version = Version::parse(env!("CARGO_PKG_VERSION"))?;

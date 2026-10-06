@@ -10,7 +10,7 @@ use std::{
 
 /// Return a timeout suitable for the glib loop, -1 to block forever,
 /// 0 to return right away, or a timeout in milliseconds from now.
-fn get_time_interval_milliseconds(cef_time: &cef::Time) -> i32 {
+fn get_time_interval_milliseconds(cef_time: &tetsu::Time) -> i32 {
     let mut time = 0.0;
     time_to_doublet(Some(cef_time), Some(&mut time));
     if time == 0.0 {
@@ -46,7 +46,7 @@ pub struct MainMessageLoopExternalPumpInner {
     main_context: MainContext,
     work_source: Source,
     timer_source: Option<Source>,
-    delayed_work_time: Arc<Mutex<Option<cef::Time>>>,
+    delayed_work_time: Arc<Mutex<Option<tetsu::Time>>>,
     wakeup_pipe_write: io::PipeWriter,
 }
 

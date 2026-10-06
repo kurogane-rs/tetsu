@@ -11,6 +11,6 @@ repository.workspace = true
 [dependencies]
 anyhow.workspace = true
 clap.workspace = true
-download-cef.workspace = true
+tetsu-download.workspace = true
 semver.workspace = true
 serde_json.workspace = true

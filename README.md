@@ -23,7 +23,7 @@ You can still run `export-cef-dir` and set the `CEF_PATH` environment variable i
 
 ### Install Shared CEF Binaries
 
-This step is optional, but it will make all other builds of the `cef` crate much faster (when not using `NIX_CEF_BINARY`). If you don't do this, the `cef-dll-sys` crate `build.rs` script will download and extract the same files under its `OUT_DIR` directory. You should repeat this step each time you upgrade to a new version of the `cef` crate.
+This step is optional, but it will make all other builds of the `tetsu` crate much faster (when not using `NIX_CEF_BINARY`). If you don't do this, the `tetsu-sys` crate `build.rs` script will download and extract the same files under its `OUT_DIR` directory. You should repeat this step each time you upgrade to a new version of the `tetsu` crate.
 
 #### Linux or macOS:
 
@@ -118,7 +118,7 @@ cargo run --bin bundle-cef-app -- cefsimple -o ./target/bundle
 
 ### Cross-compiling to Windows
 
-The `cef-dll-sys` crate can be cross-compiled to `x86_64-pc-windows-msvc` from Linux with [cargo-xwin](https://github.com/rust-cross/cargo-xwin), which downloads the Windows SDK and sets up a `clang-cl` toolchain for both Rust and CMake. Install `clang`, `lld`, `llvm` and `ninja` from your package manager (the MSVC STL headers require Clang 19 or newer; on Ubuntu 24.04 use [apt.llvm.org](https://apt.llvm.org/)), then:
+The `tetsu-sys` crate can be cross-compiled to `x86_64-pc-windows-msvc` from Linux with [cargo-xwin](https://github.com/rust-cross/cargo-xwin), which downloads the Windows SDK and sets up a `clang-cl` toolchain for both Rust and CMake. Install `clang`, `lld`, `llvm` and `ninja` from your package manager (the MSVC STL headers require Clang 19 or newer; on Ubuntu 24.04 use [apt.llvm.org](https://apt.llvm.org/)), then:
 
 ```sh
 rustup target add x86_64-pc-windows-msvc

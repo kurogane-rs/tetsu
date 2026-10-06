@@ -1,11 +1,11 @@
-use cef::{args::Args, *};
+use tetsu::{args::Args, *};
 
 fn main() {
     let args = Args::new();
 
     #[cfg(all(target_os = "macos", feature = "sandbox"))]
     let _sandbox = {
-        let mut sandbox = cef::sandbox::Sandbox::new();
+        let mut sandbox = tetsu::sandbox::Sandbox::new();
         sandbox.initialize(args.as_main_args());
         sandbox
     };

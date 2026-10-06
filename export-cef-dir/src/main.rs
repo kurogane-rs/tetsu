@@ -1,25 +1,25 @@
 #![doc = include_str!("../README.md")]
 
 use clap::Parser;
-use download_cef::{CefFile, CefIndex, OsAndArch, DEFAULT_TARGET};
 use std::{
     env, fs,
     path::{Path, PathBuf},
     sync::OnceLock,
     time::Duration,
 };
+use tetsu_download::{CefFile, CefIndex, OsAndArch, DEFAULT_TARGET};
 
 fn default_version() -> &'static str {
     static DEFAULT_VERSION: OnceLock<String> = OnceLock::new();
     DEFAULT_VERSION
-        .get_or_init(|| download_cef::default_version(env!("CARGO_PKG_VERSION")))
+        .get_or_init(|| tetsu_download::default_version(env!("CARGO_PKG_VERSION")))
         .as_str()
 }
 
 fn default_download_url() -> &'static str {
     static DEFAULT_DOWNLOAD_URL: OnceLock<String> = OnceLock::new();
     DEFAULT_DOWNLOAD_URL
-        .get_or_init(download_cef::default_download_url)
+        .get_or_init(tetsu_download::default_download_url)
         .as_str()
 }
 
@@ -91,7 +91,7 @@ fn main() -> anyhow::Result<()> {
     let (archive, extracted_dir) = match args.archive {
         Some(archive) => {
             let extracted_dir =
-                download_cef::extract_target_archive(target, &archive, &parent, true)?;
+                tetsu_download::extract_target_archive(target, &archive, &parent, true)?;
             let archive = CefFile::try_from(Path::new(&archive))?;
             (archive, extracted_dir)
         }
@@ -99,7 +99,11 @@ fn main() -> anyhow::Result<()> {
             let cef_version = args.version.as_str();
 
             if args.nix {
-                return Ok(download_cef::install_nix_cef(&cef_version, &output, false)?);
+                return Ok(tetsu_download::install_nix_cef(
+                    &cef_version,
+                    &output,
+                    false,
+                )?);
             } else {
                 let index = CefIndex::download_from(url)?;
                 let platform = index.platform(target)?;
@@ -113,7 +117,7 @@ fn main() -> anyhow::Result<()> {
                     3,
                 )?;
                 let extracted_dir =
-                    download_cef::extract_target_archive(target, &archive, &parent, true)?;
+                    tetsu_download::extract_target_archive(target, &archive, &parent, true)?;
 
                 if !args.save_archive {
                     println!("Cleaning up: {}", archive.display());

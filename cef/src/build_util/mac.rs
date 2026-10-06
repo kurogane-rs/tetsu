@@ -74,7 +74,7 @@ pub fn bundle(
         bundle_info.clone(),
         &target_path.join(executable_name),
     )?;
-    let cef_path = cef_dll_sys::get_cef_dir().unwrap();
+    let cef_path = tetsu_sys::get_cef_dir().unwrap();
     let to = main_app_path.join(FRAMEWORKS_PATH).join(FRAMEWORK);
     if to.exists() {
         fs::remove_dir_all(&to).unwrap();

@@ -1,5 +1,5 @@
 [package]
-name = "download-cef"
+name = "tetsu-download"
 description = "Download and extract pre-built CEF (Chromium Embedded Framework) archives."
 version = "3.0.0"
 

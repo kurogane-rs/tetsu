@@ -4,8 +4,8 @@
 extern crate thiserror;
 
 use clap::Parser;
-use download_cef::DEFAULT_TARGET;
 use std::{fs, io::Read, path::Path, sync::OnceLock};
+use tetsu_download::DEFAULT_TARGET;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -35,14 +35,14 @@ mod upgrade;
 fn default_version() -> &'static str {
     static DEFAULT_VERSION: OnceLock<String> = OnceLock::new();
     DEFAULT_VERSION
-        .get_or_init(|| download_cef::default_version(env!("CARGO_PKG_VERSION")))
+        .get_or_init(|| tetsu_download::default_version(env!("CARGO_PKG_VERSION")))
         .as_str()
 }
 
 fn default_download_url() -> &'static str {
     static DEFAULT_DOWNLOAD_URL: OnceLock<String> = OnceLock::new();
     DEFAULT_DOWNLOAD_URL
-        .get_or_init(download_cef::default_download_url)
+        .get_or_init(tetsu_download::default_download_url)
         .as_str()
 }
 

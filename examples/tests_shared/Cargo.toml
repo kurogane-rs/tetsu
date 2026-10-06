@@ -9,10 +9,10 @@ authors.workspace = true
 repository.workspace = true
 
 [features]
-sandbox = ["cef/sandbox"]
+sandbox = ["tetsu/sandbox"]
 
 [dependencies]
-cef.workspace = true
+tetsu.workspace = true
 
 [target.'cfg(target_os = "windows")'.dependencies.windows-sys]
 workspace = true

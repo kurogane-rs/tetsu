@@ -17,7 +17,7 @@ default = [
     "sandbox",
 ]
 sandbox = [
-    "cef/sandbox",
+    "tetsu/sandbox",
 ]
 linux-x11 = [
     "x11-dl",
@@ -28,7 +28,7 @@ helper_name = "cefsimple_helper"
 resources_path = "resources"
 
 [dependencies]
-cef = { workspace = true, features = [
+tetsu = { workspace = true, features = [
     "build-util",
 ] }
 

@@ -30,7 +30,7 @@ pub use bindings::*;
 
 pub use rc::Rc as _;
 
-pub use cef_dll_sys as sys;
+pub use tetsu_sys as sys;
 
 #[cfg(all(
     not(any(target_os = "macos", target_os = "windows", target_os = "linux")),

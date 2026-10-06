@@ -1,6 +1,6 @@
 //! Rust port of the [`cefsimple`](https://github.com/chromiumembedded/cef/tree/master/tests/cefsimple) example.
 
-use cef::*;
+use tetsu::*;
 
 pub mod resources;
 pub mod simple_app;

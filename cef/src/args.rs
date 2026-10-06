@@ -16,7 +16,7 @@ impl Args {
     #[cfg(target_os = "windows")]
     pub fn new() -> Self {
         let main_args = MainArgs {
-            instance: cef_dll_sys::HINSTANCE(
+            instance: tetsu_sys::HINSTANCE(
                 unsafe {
                     windows_sys::Win32::System::LibraryLoader::GetModuleHandleW(std::ptr::null())
                 }

@@ -1,11 +1,11 @@
 use crate::browser::util_win::*;
-use cef::{
-    wrapper::{byte_read_handler::*, resource_manager::*, stream_resource_handler::*},
-    *,
-};
 use std::{
     mem,
     sync::{Arc, Mutex, OnceLock},
+};
+use tetsu::{
+    wrapper::{byte_read_handler::*, resource_manager::*, stream_resource_handler::*},
+    *,
 };
 use windows_sys::Win32::System::LibraryLoader::{
     FindResourceW, LoadResource, LockResource, SizeofResource,

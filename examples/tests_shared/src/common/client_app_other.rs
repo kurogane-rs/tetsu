@@ -1,4 +1,4 @@
-use cef::*;
+use tetsu::*;
 
 wrap_app! {
     pub struct ClientAppOther {

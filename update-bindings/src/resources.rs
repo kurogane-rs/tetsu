@@ -74,7 +74,7 @@ impl ParseTree {
             writeln!(
                 f,
                 r#"
-/// `"{sys_name}"`: Resource ID for use with [`cef_dll_sys::{cef_fn}`].
+/// `"{sys_name}"`: Resource ID for use with [`tetsu_sys::{cef_fn}`].
 pub const {name}: &CStr = c"{sys_name}";"#
             )?;
         }
