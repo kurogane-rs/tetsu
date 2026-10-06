@@ -1,7 +1,8 @@
 #[cfg(not(feature = "dox"))]
 fn main() -> anyhow::Result<()> {
+    use fs_err as fs;
     use std::{
-        env, fs,
+        env,
         path::{Path, PathBuf},
     };
     use tetsu_download::OsAndArch;
@@ -241,7 +242,8 @@ fn configure_clang_cl(
     cef_dir: &std::path::Path,
     out_dir: &std::path::Path,
 ) -> anyhow::Result<()> {
-    use std::{fs, path::PathBuf};
+    use fs_err as fs;
+    use std::path::PathBuf;
 
     // Only the flags from the CXXFLAGS environment (e.g. cargo-xwin's `--target` and `/imsvc`
     // include paths) are needed here; the cmake crate takes care of everything else.
@@ -331,7 +333,7 @@ fn system_includes(
         dir: &std::path::Path,
         includes: &mut std::collections::BTreeSet<String>,
     ) -> Result<(), std::io::Error> {
-        for entry in std::fs::read_dir(dir)? {
+        for entry in fs_err::read_dir(dir)? {
             let path = entry?.path();
             if path.is_dir() {
                 visit(&path, includes)?;
@@ -386,7 +388,7 @@ fn find_case_insensitive(dir: &std::path::Path, name: &str) -> Option<std::path:
 #[cfg(not(feature = "dox"))]
 fn cef_api_version_last(cef_dir: &std::path::Path) -> anyhow::Result<u32> {
     let header = cef_dir.join("include").join("cef_api_versions.h");
-    let contents = std::fs::read_to_string(&header)?;
+    let contents = fs_err::read_to_string(&header)?;
 
     contents
         .lines()
@@ -402,15 +404,15 @@ fn cef_api_version_last(cef_dir: &std::path::Path) -> anyhow::Result<u32> {
 
 #[cfg(not(feature = "dox"))]
 fn copy_directory(src: &std::path::Path, dest: &std::path::Path) -> Result<(), std::io::Error> {
-    std::fs::create_dir_all(dest)?;
-    for entry in std::fs::read_dir(src)? {
+    fs_err::create_dir_all(dest)?;
+    for entry in fs_err::read_dir(src)? {
         let entry = entry?;
         if entry.path().is_file() {
             let dest = dest.join(entry.file_name());
             if dest.is_file() {
-                std::fs::remove_file(&dest)?;
+                fs_err::remove_file(&dest)?;
             }
-            std::fs::copy(entry.path(), dest)?;
+            fs_err::copy(entry.path(), dest)?;
         }
     }
     Ok(())
