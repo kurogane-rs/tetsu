@@ -97,6 +97,12 @@ fn main() -> anyhow::Result<()> {
         resolve_cef_dir(&out_dir)?
     };
 
+    // The runtime goes next to the binaries only when asked for; an application
+    // that names CEF's paths itself (resources_dir_path, locales_dir_path) needs
+    // no copy of up to 1.5 GB per profile
+    println!("cargo::rerun-if-env-changed=TETSU_STAGE_RUNTIME");
+    let stage_runtime = env::var("TETSU_STAGE_RUNTIME").is_ok_and(|value| value == "1");
+
     // TODO: far from ideal, but there's no other way to get the target dir, see <https://github.com/rust-lang/cargo/issues/9661>
     let target_dir = out_dir
         .parent()
@@ -151,16 +157,18 @@ fn main() -> anyhow::Result<()> {
 
     match os_arch.os {
         "linux" => {
-            // On Windows and Linux the cef files usually have to be next to the main binary.
-            // On macOS it's more complicated so we'll leave it to tools like tauri-cli for now.
-            copy_cef_runtime_files(&cef_dir, target_dir)?;
+            // A binary run from target/ finds the runtime next to it on Linux and Windows;
+            // macOS needs an app bundle, left to the application's own bundling
+            if stage_runtime {
+                copy_cef_runtime_files(&cef_dir, target_dir)?;
+            }
 
             println!("cargo::rustc-link-lib=dylib=cef");
         }
         "windows" => {
-            // On Windows and Linux the cef files usually have to be next to the main binary.
-            // On macOS it's more complicated so we'll leave it to tools like tauri-cli for now.
-            copy_cef_runtime_files(&cef_dir, target_dir)?;
+            if stage_runtime {
+                copy_cef_runtime_files(&cef_dir, target_dir)?;
+            }
 
             // Windows SDK import libraries used by the wrapper. These used to be merged into
             // libcef_dll_wrapper.lib through CMAKE_STATIC_LINKER_FLAGS, but llvm-lib (used when
@@ -408,11 +416,22 @@ fn copy_directory(src: &std::path::Path, dest: &std::path::Path) -> Result<(), s
 fn copy_cef_runtime_files(
     cef_dir: &std::path::Path,
     target_dir: &std::path::Path,
-) -> Result<(), std::io::Error> {
-    copy_directory(cef_dir, target_dir)?;
-
+) -> anyhow::Result<()> {
     const LOCALES_DIR: &str = "locales";
-    copy_directory(&cef_dir.join(LOCALES_DIR), &target_dir.join(LOCALES_DIR))?;
+    let locales = cef_dir.join(LOCALES_DIR);
+
+    // Checked before anything is copied; an unpacked official archive keeps the
+    // runtime under Release/ and Resources/
+    anyhow::ensure!(
+        locales.is_dir(),
+        "{} has no {LOCALES_DIR} directory; CEF_PATH must point at a distribution laid out \
+         as `export-cef-dir` writes it, not an unpacked official archive, which keeps these \
+         files under Release/ and Resources/",
+        cef_dir.display(),
+    );
+
+    copy_directory(cef_dir, target_dir)?;
+    copy_directory(&locales, &target_dir.join(LOCALES_DIR))?;
 
     Ok(())
 }

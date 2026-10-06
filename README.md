@@ -118,6 +118,10 @@ cargo run --bin bundle-cef-app -- cefsimple -o ./target/bundle
 ./target/bundle/cefsimple.exe
 ```
 
+### Runtime files next to the binary
+
+On Linux and Windows a binary run from `target/` finds CEF's runtime (the libraries, `.pak` files, `icudtl.dat`, the V8 snapshot and `locales/`) when it sits next to it. Set `TETSU_STAGE_RUNTIME=1` and the `tetsu-sys` build script copies it there. This repository sets it for its own builds (`.cargo/config.toml`), so the examples run with `cargo run`; an application that names CEF's paths itself (`resources_dir_path`, `locales_dir_path`) leaves it unset and skips the copy of up to 1.5 GB per profile.
+
 ### Cross-compiling to Windows
 
 The `tetsu-sys` crate can be cross-compiled to `x86_64-pc-windows-msvc` from Linux with [cargo-xwin](https://github.com/rust-cross/cargo-xwin), which downloads the Windows SDK and sets up a `clang-cl` toolchain for both Rust and CMake. Install `clang`, `lld`, `llvm` and `ninja` from your package manager (the MSVC STL headers require Clang 19 or newer; on Ubuntu 24.04 use [apt.llvm.org](https://apt.llvm.org/)), then:
@@ -128,7 +132,7 @@ cargo install cargo-xwin
 cargo xwin build --target x86_64-pc-windows-msvc
 ```
 
-The `libcef_dll_wrapper` static library is built with `clang-cl` and the CEF runtime files are copied next to the output binaries, exactly like a native Windows build. A set `CEF_PATH` must hold the Windows distribution (`cargo run -p export-cef-dir -- --target x86_64-pc-windows-msvc <dir>` writes one); without `CEF_PATH` the build downloads it into its `OUT_DIR`.
+The `libcef_dll_wrapper` static library is built with `clang-cl`, exactly like a native Windows build. A set `CEF_PATH` must hold the Windows distribution (`cargo run -p export-cef-dir -- --target x86_64-pc-windows-msvc <dir>` writes one); without `CEF_PATH` the build downloads it into its `OUT_DIR`.
 
 ## Contributing
 
