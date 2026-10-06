@@ -55,28 +55,6 @@ fn main() -> anyhow::Result<()> {
         Ok(cef_dir)
     };
 
-    let resolve_from_versioned = |configured_path: &Path| -> anyhow::Result<PathBuf> {
-        let versioned_location = configured_path.join(&cef_version);
-        let resolved = resolve_cef_dir(&versioned_location)?;
-        println!(
-            "Using versioned CEF path from environment: {}",
-            resolved.display()
-        );
-        check_archive(&resolved)?;
-        Ok(resolved)
-    };
-
-    let download_to_versioned = |configured_path: &Path, reason: &str| -> anyhow::Result<PathBuf> {
-        let versioned_location = configured_path.join(&cef_version);
-        println!(
-            "{reason}, downloading archive to: {}",
-            versioned_location.display()
-        );
-        let resolved = resolve_cef_dir(&versioned_location)?;
-        println!("Using downloaded CEF path: {}", resolved.display());
-        Ok(resolved)
-    };
-
     let out_dir = PathBuf::from(env::var("OUT_DIR")?);
 
     let cef_dir = if env::var("FLATPAK").is_ok() {
@@ -86,27 +64,35 @@ fn main() -> anyhow::Result<()> {
         check_archive(&cef_path)?;
         cef_path
     } else if let Ok(cef_path) = env::var("CEF_PATH") {
+        // A set CEF_PATH names the distribution to build against; a wrong one is an
+        // error, never a download into it
         let configured_path = PathBuf::from(cef_path);
-        if fs::exists(&configured_path)? {
-            let versioned_location = configured_path.join(&cef_version);
-            if fs::exists(&versioned_location)? {
-                resolve_from_versioned(&configured_path)?
-            } else {
-                println!(
-                    "Using CEF path from environment: {}",
-                    configured_path.display()
-                );
-                match check_archive(&configured_path) {
-                    Ok(()) => configured_path,
-                    Err(error) => download_to_versioned(
-                        &configured_path,
-                        &format!("CEF_PATH is invalid ({error})"),
-                    )?,
-                }
-            }
-        } else {
-            download_to_versioned(&configured_path, "CEF_PATH does not exist")?
+        let fix = format!(
+            "point CEF_PATH at a CEF {cef_version} distribution \
+             (`cargo run -p export-cef-dir -- <dir>` writes one), \
+             or unset it to download one into the build directory"
+        );
+        if !fs::exists(&configured_path)? {
+            return Err(anyhow::anyhow!(
+                "CEF_PATH ({}) does not exist; {fix}",
+                configured_path.display()
+            ));
         }
+        // The layout an earlier download into CEF_PATH left
+        let versioned = configured_path.join(&cef_version).join(os_arch.to_string());
+        let cef_dir = if fs::exists(&versioned)? {
+            versioned
+        } else {
+            configured_path.clone()
+        };
+        check_archive(&cef_dir).map_err(|error| {
+            anyhow::anyhow!(
+                "CEF_PATH ({}) is not a CEF {cef_version} distribution for {os_arch}: {error}; {fix}",
+                cef_dir.display()
+            )
+        })?;
+        println!("Using CEF path from environment: {}", cef_dir.display());
+        cef_dir
     } else {
         resolve_cef_dir(&out_dir)?
     };
