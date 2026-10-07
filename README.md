@@ -1,6 +1,6 @@
-# cef-rs
+# tetsu
 
-Use CEF in Rust.
+Use CEF in Rust. tetsu is Kurogane's fork of [cef-rs](https://github.com/tauri-apps/cef-rs): crates `tetsu`, `tetsu-sys` and `tetsu-download`.
 
 ## Supported Targets
 

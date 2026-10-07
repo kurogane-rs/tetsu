@@ -1,6 +1,6 @@
 [package]
 name = "tetsu"
-description = "Use cef in Rust"
+description = "Rust bindings to the Chromium Embedded Framework"
 
 version.workspace = true
 edition.workspace = true
@@ -15,8 +15,7 @@ name = "bundle-cef-app"
 
 [features]
 default = ["sandbox", "build-util", "resources"]
-dox = ["tetsu-sys/dox"]
-sandbox = ["tetsu-sys/sandbox"]
+sandbox = []
 resources = []
 
 # Unified texture import system for CEF hardware acceleration
@@ -46,9 +45,6 @@ build-util = [
 
 # Linux X11 support in bundle-cef-app.
 linux-x11 = []
-
-[package.metadata.docs.rs]
-features = ["dox"]
 
 [dependencies]
 tetsu-sys.workspace = true

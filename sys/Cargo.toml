@@ -1,6 +1,6 @@
 [package]
 name = "tetsu-sys"
-description = "cef-rs sys crate"
+description = "Generated bindings to the Chromium Embedded Framework's C API, loading libcef at run time"
 links = "tetsu"
 
 version.workspace = true
@@ -12,14 +12,7 @@ repository.workspace = true
 [lib]
 doctest = false
 
-[features]
-dox = []
-sandbox = []
-
 [dependencies]
 dirs = "6"
 libloading.workspace = true
-
-[package.metadata.docs.rs]
-features = ["dox"]
 
