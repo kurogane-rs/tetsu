@@ -63,12 +63,11 @@ impl Args {
 
     #[cfg(target_os = "windows")]
     pub fn as_cmd_line(&self) -> Option<CommandLine> {
-        command_line_create().map(|cmd_line| {
-            cmd_line.init_from_string(Some(&crate::CefString::from(
-                std::env::args().collect::<Vec<_>>().join(" ").as_str(),
-            )));
-            cmd_line
-        })
+        let cmd_line = command_line_create()?;
+        cmd_line.init_from_string(Some(&crate::CefString::from(
+            std::env::args().collect::<Vec<_>>().join(" ").as_str(),
+        )));
+        Some(cmd_line)
     }
 }
 
