@@ -1,28 +1,22 @@
 # export-cef-dir
 
 Export files from the prebuilt [Chromium Embedded Framework](https://github.com/chromiumembedded/cef)
-archive on any supported platform. The structure of the exported directory matches the way that
-the `tetsu-sys` crate expects to see them.
+archive on any supported platform, laid out as `tetsu_sys::find_cef_dir` and `tetsu_sys::load_libcef`
+expect them.
 
-To use the target directory when building, set the `CEF_PATH` environment variable to the path of the
-exported directory, e.g., `~/.local/share/cef`.
-
-To use the DLLs in this directory at runtime, the library loader path varies by platform:
-
-- Linux
+Without an output directory, the distribution goes into tetsu's shared installation,
+`tetsu/cef/<version>/cef_<os>_<arch>` under the local data directory, where an application
+started without `CEF_PATH` finds it:
 
 ```sh
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$CEF_PATH"
+cargo run -p export-cef-dir
 ```
 
-- macOS
+With one, it goes there instead; point `CEF_PATH` at that directory when starting the application:
 
 ```sh
-export DYLD_FALLBACK_LIBRARY_PATH="$DYLD_FALLBACK_LIBRARY_PATH:$CEF_PATH"
+cargo run -p export-cef-dir -- --force ~/.local/share/cef
+export CEF_PATH=~/.local/share/cef
 ```
 
-- Windows (using PowerShell)
-
-```pwsh
-$env:PATH = "$env:PATH;$env:CEF_PATH"
-```
+libcef needs no library search path; the application loads it from the directory it finds.

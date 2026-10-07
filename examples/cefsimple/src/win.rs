@@ -8,7 +8,7 @@ unsafe extern "C" fn RunWinMain(
     _command_show: i32,
     sandbox_info: *mut u8,
 ) -> i32 {
-    let _library = shared::load_cef();
+    shared::load_cef();
 
     let main_args = MainArgs { instance };
     let args = args::Args::from(main_args);

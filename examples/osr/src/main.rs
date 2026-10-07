@@ -345,24 +345,10 @@ fn main() -> std::process::ExitCode {
     #[cfg(all(target_os = "windows", debug_assertions))]
     pix::load_winpix_gpu_capturer().unwrap();
 
-    #[cfg(target_os = "macos")]
-    let _loader = {
-        let loader = library_loader::LibraryLoader::new(&std::env::current_exe().unwrap(), false);
-        assert!(loader.load());
-        loader
-    };
-
-    // tetsu's own builds copy the runtime next to the binaries (TETSU_STAGE_RUNTIME)
-    #[cfg(not(target_os = "macos"))]
-    {
-        let exe = std::env::current_exe().unwrap();
-        unsafe { sys::load_libcef(&exe.parent().unwrap().join(sys::LIBCEF_FILE)) }
-            .expect("cannot load libcef");
-    }
+    let cef = sys::find_cef_dir().expect("CEF not found");
+    unsafe { sys::load_libcef(&cef.libcef()) }.expect("cannot load libcef");
 
     env_logger::init();
-
-    let _ = api_hash(sys::CEF_API_VERSION_LAST, 0);
 
     let args = Args::new();
     let cmd = args.as_cmd_line().unwrap();

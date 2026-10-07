@@ -6,36 +6,13 @@ pub mod resources;
 pub mod simple_app;
 pub mod simple_handler;
 
-#[cfg(target_os = "macos")]
-pub type Library = library_loader::LibraryLoader;
-
-#[cfg(not(target_os = "macos"))]
-pub struct Library;
-
 #[allow(dead_code)]
-pub fn load_cef() -> Library {
-    #[cfg(target_os = "macos")]
-    let library = {
-        let loader = library_loader::LibraryLoader::new(&std::env::current_exe().unwrap(), false);
-        assert!(loader.load());
-        loader
-    };
-    // tetsu's own builds copy the runtime next to the binaries (TETSU_STAGE_RUNTIME)
-    #[cfg(not(target_os = "macos"))]
-    let library = {
-        let exe = std::env::current_exe().unwrap();
-        let libcef = exe.parent().unwrap().join(sys::LIBCEF_FILE);
-        unsafe { sys::load_libcef(&libcef) }.expect("cannot load libcef");
-        Library
-    };
-
-    // Initialize the CEF API version.
-    let _ = api_hash(sys::CEF_API_VERSION_LAST, 0);
+pub fn load_cef() {
+    let cef = sys::find_cef_dir().expect("CEF not found");
+    unsafe { sys::load_libcef(&cef.libcef()) }.expect("cannot load libcef");
 
     #[cfg(target_os = "macos")]
     crate::mac::setup_simple_application();
-
-    library
 }
 
 #[allow(dead_code)]

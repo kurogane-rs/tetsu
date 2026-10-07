@@ -1,4 +1,0 @@
-# Tetsu's examples and CI run from target/, stage the CEF runtime.
-# Consumers must opt in from their own Cargo config.
-[env]
-TETSU_STAGE_RUNTIME = "1"

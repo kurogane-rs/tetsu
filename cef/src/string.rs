@@ -1318,8 +1318,8 @@ mod test {
     use crate::*;
 
     fn ensure_dll_loaded() {
-        let cef_dir = sys::get_cef_dir().expect("CEF not found");
-        unsafe { sys::load_libcef(&cef_dir.join(sys::LIBCEF_FILE)) }.expect("cannot load libcef");
+        let cef = sys::find_cef_dir().expect("CEF not found");
+        unsafe { sys::load_libcef(&cef.libcef()) }.expect("cannot load libcef");
     }
 
     #[test]

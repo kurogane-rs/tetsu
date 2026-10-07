@@ -10,9 +10,6 @@ pub mod wrapper;
 pub mod application_mac;
 
 #[cfg(target_os = "macos")]
-pub mod library_loader;
-
-#[cfg(target_os = "macos")]
 pub mod sandbox;
 
 #[cfg(feature = "accelerated_osr")]
@@ -48,14 +45,9 @@ fn test_init_cef() {
 
     static INIT: Once = Once::new();
     INIT.call_once(|| {
-        {
-            let cef_dir = sys::get_cef_dir().expect("CEF not found");
-            unsafe { sys::load_libcef(&cef_dir.join(sys::LIBCEF_FILE)) }
-                .expect("cannot load libcef");
-        }
+        let cef = sys::find_cef_dir().expect("CEF not found");
+        unsafe { sys::load_libcef(&cef.libcef()) }.expect("cannot load libcef");
 
         assert_eq!(initialize(None, None, None, ptr::null_mut()), 0);
-
-        let _ = api_hash(sys::CEF_API_VERSION_LAST, 0);
     });
 }

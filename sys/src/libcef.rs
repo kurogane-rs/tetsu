@@ -3,7 +3,8 @@
 //! The bindings link nothing at build time. Each function
 //! libcef exports is resolved by name when [`load_libcef`] opens the library,
 //! so building needs no CEF distribution and the application decides which
-//! CEF it runs.
+//! CEF it runs. The library must be the CEF build the bindings were generated
+//! from, which loading checks.
 
 use std::{
     ffi::CStr,
@@ -58,6 +59,9 @@ pub enum LoadError {
         name: String,
         source: libloading::Error,
     },
+    /// The library at `path` is another CEF build, commit `found` rather
+    /// than the one the bindings were generated from.
+    VersionMismatch { path: PathBuf, found: String },
     /// The process already runs another libcef.
     AlreadyLoaded { loaded: PathBuf, requested: PathBuf },
 }
@@ -73,6 +77,12 @@ impl fmt::Display for LoadError {
                 crate::CEF_VERSION_MINOR,
                 crate::CEF_VERSION_PATCH
             ),
+            Self::VersionMismatch { path, found } => write!(
+                f,
+                "{} is CEF commit {found}, not CEF {} which these bindings were generated for",
+                path.display(),
+                bindings_version()
+            ),
             Self::AlreadyLoaded { loaded, requested } => write!(
                 f,
                 "cannot load {}: this process already runs {}",
@@ -87,7 +97,7 @@ impl std::error::Error for LoadError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match self {
             Self::Open { source, .. } | Self::Symbol { source, .. } => Some(source),
-            Self::AlreadyLoaded { .. } => None,
+            Self::VersionMismatch { .. } | Self::AlreadyLoaded { .. } => None,
         }
     }
 }
@@ -103,11 +113,14 @@ static LOADED: OnceLock<Loaded> = OnceLock::new();
 static LOADING: Mutex<()> = Mutex::new(());
 
 /// Loads libcef from `path` (`libcef.dll`, `libcef.so`, the framework's binary
-/// on macOS) and resolves the functions it exports.
+/// on macOS, see [`crate::find_cef_dir`]) and resolves the functions it
+/// exports.
 ///
-/// Comes before any other call into CEF. Loading the same path again does
-/// nothing; another path once one is loaded is an error, since a process runs
-/// one CEF.
+/// Comes before any other call into CEF. Fixes the process's CEF API version
+/// to the bindings' (`CEF_API_VERSION_LAST`), as the first `cef_api_hash`
+/// call does, and refuses a library that is not the CEF build the bindings
+/// were generated from. Loading the same path again does nothing; another
+/// path once one is loaded is an error, since a process runs one CEF.
 ///
 /// # Safety
 ///
@@ -130,6 +143,14 @@ pub unsafe fn load_libcef(path: &Path) -> Result<(), LoadError> {
         source,
     })?;
     let functions = LibcefFunctions::resolve(&library)?;
+    if let Err(found) = unsafe { check_build(&functions) } {
+        // Its initializers ran, so it stays mapped rather than being unloaded
+        std::mem::forget(library);
+        return Err(LoadError::VersionMismatch {
+            path: path.to_owned(),
+            found,
+        });
+    }
     let _ = LOADED.set(Loaded {
         path: path.to_owned(),
         functions,
@@ -137,6 +158,53 @@ pub unsafe fn load_libcef(path: &Path) -> Result<(), LoadError> {
     });
 
     Ok(())
+}
+
+/// Fixes the API version and compares the library's commit with the one in
+/// `CEF_VERSION`, returning the library's commit when they differ.
+///
+/// # Safety
+///
+/// `functions` are a loaded libcef's.
+unsafe fn check_build(functions: &LibcefFunctions) -> Result<(), String> {
+    // Only the first call's version counts, for the whole process
+    unsafe { (functions.cef_api_hash)(crate::CEF_API_VERSION_LAST, 0) };
+
+    // Entry 2 is the library's CEF_COMMIT_HASH
+    let found = unsafe { (functions.cef_api_hash)(crate::CEF_API_VERSION_LAST, 2) };
+    let found = if found.is_null() {
+        String::new()
+    } else {
+        unsafe { CStr::from_ptr(found) }
+            .to_string_lossy()
+            .into_owned()
+    };
+
+    let expected = bindings_commit();
+    if !expected.is_empty() && found.starts_with(expected) {
+        Ok(())
+    } else {
+        Err(found)
+    }
+}
+
+/// `CEF_VERSION` of the bindings, such as
+/// `154.0.33+ga03e714+chromium-154.0.8037.94`.
+fn bindings_version() -> &'static str {
+    CStr::from_bytes_with_nul(crate::CEF_VERSION)
+        .ok()
+        .and_then(|version| version.to_str().ok())
+        .unwrap_or_default()
+}
+
+/// The abbreviated commit in `CEF_VERSION`, `a03e714` in
+/// `154.0.33+ga03e714+chromium-154.0.8037.94`.
+fn bindings_commit() -> &'static str {
+    bindings_version()
+        .split('+')
+        .nth(1)
+        .and_then(|commit| commit.strip_prefix('g'))
+        .unwrap_or_default()
 }
 
 /// The libcef this process loaded, once [`load_libcef`] has.
@@ -181,4 +249,21 @@ unsafe fn open(path: &Path) -> Result<Library, libloading::Error> {
     // Lazily bound, as CEF's own framework loader opens it
     unsafe { unix::Library::open(Some(path), unix::RTLD_LAZY | unix::RTLD_LOCAL) }
         .map(|library| Library(library.into()))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn the_bindings_name_their_commit() {
+        let commit = bindings_commit();
+
+        assert!(
+            commit.len() >= 7,
+            "{:?} names no commit",
+            bindings_version()
+        );
+        assert!(commit.chars().all(|c| c.is_ascii_hexdigit()));
+    }
 }

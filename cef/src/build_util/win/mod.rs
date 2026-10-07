@@ -11,13 +11,15 @@ pub enum Error {
     Io(#[from] io::Error),
     #[error("Metadata error: {0:?}")]
     Metadata(#[from] super::metadata::Error),
+    #[error("CEF not found: {0}")]
+    Cef(#[from] tetsu_sys::FindError),
 }
 
 pub type Result<T> = std::result::Result<T, Error>;
 
 /// See https://bitbucket.org/chromiumembedded/cef/wiki/GeneralUsage.md#markdown-header-linux
 pub fn bundle(app_path: &Path, target_path: &Path, executable_name: &str) -> Result<PathBuf> {
-    let cef_path = tetsu_sys::get_cef_dir().unwrap();
+    let cef_path = tetsu_sys::find_cef_dir()?.path;
     copy_directory(&cef_path, app_path)?;
 
     const LOCALES_DIR: &str = "locales";
@@ -60,7 +62,7 @@ fn copy_app(app_path: &Path, target_path: &Path, executable_name: &str) -> Resul
 
         let executable_name = format!("{executable_name}.exe");
         let executable_path = app_path.join(&executable_name);
-        let cef_path = tetsu_sys::get_cef_dir().unwrap();
+        let cef_path = tetsu_sys::find_cef_dir()?.path;
         let target_executable = cef_path.join("bootstrap.exe");
         fs::copy(&target_executable, &executable_path)?;
 

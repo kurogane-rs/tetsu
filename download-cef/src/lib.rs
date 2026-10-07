@@ -48,7 +48,7 @@ pub enum Error {
     #[error("JSON serialization error: {0}")]
     Json(#[from] serde_json::Error),
     #[error(
-        "Undexpected archive version: location: {location} archive {archive} expected {expected}"
+        "Unexpected archive version: location: {location} archive {archive} expected {expected}"
     )]
     VersionMismatch {
         location: String,
@@ -101,6 +101,10 @@ fn unwrap_cef_version(version: &str) -> Result<String> {
         .clone())
 }
 
+/// Checks that the distribution at `location` is exactly CEF `version` (a
+/// crate version's build metadata, such as `154.4.0+154.0.33`, names it) by
+/// its `archive.json`. libcef is loaded at run time and must be the build the
+/// bindings were generated from, so an older or newer archive is refused.
 pub fn check_archive_json(version: &str, location: &str) -> Result<()> {
     let expected = Version::parse(&unwrap_cef_version(version)?)?;
 
@@ -113,7 +117,7 @@ pub fn check_archive_json(version: &str, location: &str) -> Result<()> {
     let archive_version = pattern.replace(&archive_json.name, "$1");
     let archive = Version::parse(&archive_version)?;
 
-    if archive <= expected {
+    if archive == expected {
         Ok(())
     } else {
         Err(Error::VersionMismatch {
@@ -756,3 +760,36 @@ pub const DEFAULT_TARGET: &str = "aarch64-pc-windows-msvc";
 pub const DEFAULT_TARGET: &str = "x86_64-apple-darwin";
 #[cfg(all(target_os = "macos", target_arch = "aarch64"))]
 pub const DEFAULT_TARGET: &str = "aarch64-apple-darwin";
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// A distribution whose `archive.json` names CEF `cef_version`.
+    fn distribution(test: &str, cef_version: &str) -> PathBuf {
+        let dir =
+            std::env::temp_dir().join(format!("tetsu-download-{}-{test}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let name =
+            format!("cef_binary_{cef_version}+ga03e714+chromium-154.0.8037.94_linux64_minimal");
+        std::fs::write(
+            dir.join("archive.json"),
+            format!(r#"{{"type":"minimal","name":"{name}","sha1":""}}"#),
+        )
+        .unwrap();
+        dir
+    }
+
+    #[test]
+    fn only_the_exact_version_passes_the_archive_check() {
+        for (test, found, passes) in [
+            ("same", "154.0.33", true),
+            ("older", "154.0.32", false),
+            ("newer", "154.0.34", false),
+        ] {
+            let dir = distribution(test, found);
+            let checked = check_archive_json("154.4.0+154.0.33", &dir.to_string_lossy());
+            assert_eq!(checked.is_ok(), passes, "an archive of CEF {found}");
+        }
+    }
+}

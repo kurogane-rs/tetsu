@@ -40,12 +40,16 @@ struct Args {
     mirror_url: String,
     #[arg(short, long)]
     archive: Option<String>,
-    output: String,
+    /// The directory to export to; without one, the distribution goes into
+    /// tetsu's shared installation
+    output: Option<String>,
 }
 
 fn main() -> anyhow::Result<()> {
     let args = Args::parse();
-    let output = PathBuf::from(args.output);
+    let Some(output) = args.output.as_deref().map(PathBuf::from) else {
+        return install(&args);
+    };
     let url = args.mirror_url.as_str();
 
     let parent = PathBuf::from(
@@ -100,7 +104,7 @@ fn main() -> anyhow::Result<()> {
 
             if args.nix {
                 return Ok(tetsu_download::install_nix_cef(
-                    &cef_version,
+                    cef_version,
                     &output,
                     false,
                 )?);
@@ -142,6 +146,28 @@ fn main() -> anyhow::Result<()> {
         println!("Renaming: {}", output.display());
         fs::rename(cef_dir, output)?;
     }
+
+    Ok(())
+}
+
+/// Installs the distribution into tetsu's shared installation, where an
+/// application started without `CEF_PATH` finds it (`tetsu_sys::find_cef_dir`).
+fn install(args: &Args) -> anyhow::Result<()> {
+    anyhow::ensure!(
+        !args.nix && args.archive.is_none(),
+        "--nix and --archive export to an output directory"
+    );
+
+    let os_arch = OsAndArch::try_from(args.target.as_str())?;
+    let dir = tetsu_download::cef_install_dir(&args.version, &os_arch)
+        .ok_or(tetsu_download::Error::NoDataDir)?;
+    if args.force && fs::exists(&dir)? {
+        println!("Cleaning up: {}", dir.display());
+        fs::remove_dir_all(&dir)?;
+    }
+
+    let dir = tetsu_download::install(&args.target, &args.version, &args.mirror_url, true)?;
+    println!("Installed: {}", dir.display());
 
     Ok(())
 }

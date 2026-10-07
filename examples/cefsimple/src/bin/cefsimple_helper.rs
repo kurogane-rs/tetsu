@@ -10,15 +10,8 @@ fn main() {
         sandbox
     };
 
-    #[cfg(target_os = "macos")]
-    let _loader = {
-        let loader = library_loader::LibraryLoader::new(&std::env::current_exe().unwrap(), true);
-        assert!(loader.load());
-        loader
-    };
-
-    // Initialize the CEF API version.
-    let _ = api_hash(sys::CEF_API_VERSION_LAST, 0);
+    let cef = sys::find_cef_dir().expect("CEF not found");
+    unsafe { sys::load_libcef(&cef.libcef()) }.expect("cannot load libcef");
 
     execute_process(
         Some(args.as_main_args()),

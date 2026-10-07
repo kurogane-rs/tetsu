@@ -10,7 +10,7 @@ mod mac;
 
 #[cfg(not(all(feature = "sandbox", target_os = "windows")))]
 fn main() -> Result<(), &'static str> {
-    let _library = shared::load_cef();
+    shared::load_cef();
 
     let args = tetsu::args::Args::new();
     let Some(cmd_line) = args.as_cmd_line() else {
