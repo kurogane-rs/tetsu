@@ -18,8 +18,6 @@ sandbox = []
 
 [dependencies]
 dirs = "6"
-
-[target.'cfg(any(target_os = "linux", target_os = "windows"))'.dependencies]
 libloading.workspace = true
 
 [package.metadata.docs.rs]
@@ -27,7 +25,6 @@ features = ["dox"]
 
 [build-dependencies]
 anyhow.workspace = true
-cmake.workspace = true
 fs-err = "3.2.2"
 tetsu-download.workspace = true
 serde_json.workspace = true

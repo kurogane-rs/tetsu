@@ -18,9 +18,15 @@ fn main() -> anyhow::Result<()> {
     println!("cargo::rerun-if-env-changed=TETSU_STAGE_RUNTIME");
     let stage_runtime = env::var("TETSU_STAGE_RUNTIME").is_ok_and(|value| value == "1");
 
-    // Linux and Windows link nothing; the application loads libcef when it
-    // starts (tetsu_sys::load_libcef), so their builds need CEF only for the copy
-    if os_arch.os != "macos" && !stage_runtime {
+    // tetsu's macOS application code uses AppKit
+    if os_arch.os == "macos" {
+        println!("cargo::rustc-link-lib=framework=AppKit");
+    }
+
+    // Nothing links libcef; the application loads it when it starts
+    // (tetsu_sys::load_libcef), so a build needs CEF only for the runtime copy,
+    // which macOS leaves to the application's bundle
+    if os_arch.os == "macos" || !stage_runtime {
         return Ok(());
     }
 
@@ -137,79 +143,10 @@ fn main() -> anyhow::Result<()> {
 
     println!("cargo::metadata=CEF_DIR={cef_dir_str}");
 
-    // Compile the wrapper against an explicit API version instead of the
-    // experimental (unversioned) API that CEF selects by default, which its
-    // own headers call "not back/forward compatible with different CEF
-    // versions". It is the version the crate declares at run time through
-    // `cef_api_hash(CEF_API_VERSION_LAST)`, so the two now agree; without it
-    // the macOS loader in `libcef_dll_dylib.cc` also resolves experimental
-    // entry points, and loading any libcef but this exact build fails on the
-    // first one missing.
-    let api_version = cef_api_version_last(&cef_dir)?;
-    println!("cargo::metadata=CEF_API_VERSION={api_version}");
-
-    match os_arch.os {
-        // A binary run from target/ finds the runtime next to it on Linux and Windows;
-        // macOS needs an app bundle, left to the application's own bundling
-        "linux" | "windows" => copy_cef_runtime_files(&cef_dir, target_dir)?,
-        "macos" => {
-            println!("cargo::rustc-link-search=native={cef_dir_str}");
-            println!("cargo::rustc-link-lib=framework=AppKit");
-
-            // macOS loads the framework at run time, through the wrapper's dylib stubs
-            let project_arch = match os_arch.arch {
-                "aarch64" => "arm64",
-                arch => arch,
-            };
-            let sandbox = if cfg!(feature = "sandbox") {
-                "ON"
-            } else {
-                "OFF"
-            };
-            let build_dir = cmake::Config::new(&cef_dir)
-                .generator("Ninja")
-                .profile("RelWithDebInfo")
-                .build_target("libcef_dll_wrapper")
-                // Seeds the list CEF's cmake appends its own defines to and applies
-                // to the target; CMAKE_CXX_FLAGS would not survive
-                .define(
-                    "CEF_COMPILER_DEFINES",
-                    format!("CEF_API_VERSION={api_version}"),
-                )
-                .no_default_flags(true)
-                .define("PROJECT_ARCH", project_arch)
-                .define("USE_SANDBOX", sandbox)
-                .build()
-                .to_string_lossy()
-                .into_owned();
-            println!("cargo::rustc-link-search=native={build_dir}/build/libcef_dll_wrapper");
-            println!("cargo::rustc-link-lib=static=cef_dll_wrapper");
-        }
-        os => unimplemented!("unknown target {os}"),
-    }
+    // A binary run from target/ finds the runtime next to it
+    copy_cef_runtime_files(&cef_dir, target_dir)?;
 
     Ok(())
-}
-
-/// `CEF_API_VERSION_LAST` from the distribution's generated
-/// `include/cef_api_versions.h`: the newest versioned (non-experimental) API
-/// it supports, written there as `#define CEF_API_VERSION_LAST
-/// CEF_API_VERSION_15101`.
-#[cfg(not(feature = "dox"))]
-fn cef_api_version_last(cef_dir: &std::path::Path) -> anyhow::Result<u32> {
-    let header = cef_dir.join("include").join("cef_api_versions.h");
-    let contents = fs_err::read_to_string(&header)?;
-
-    contents
-        .lines()
-        .find_map(|line| {
-            line.strip_prefix("#define CEF_API_VERSION_LAST ")?
-                .trim()
-                .strip_prefix("CEF_API_VERSION_")?
-                .parse()
-                .ok()
-        })
-        .ok_or_else(|| anyhow::anyhow!("no CEF_API_VERSION_LAST in {}", header.display()))
 }
 
 #[cfg(not(feature = "dox"))]

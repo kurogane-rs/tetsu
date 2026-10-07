@@ -83,8 +83,8 @@ fn main() -> Result<()> {
     sys_bindings.push(&bindings_file);
 
     // Upstream's and bindgen's bindings declare the functions libcef exports;
-    // these targets call them through the libcef the application loads
-    if loader::loads_libcef(target) && loader::rewrite(&sys_bindings)? {
+    // tetsu calls them through the libcef the application loads
+    if loader::rewrite(&sys_bindings)? {
         println!("Rewritten to load libcef: {}", sys_bindings.display());
     }
 

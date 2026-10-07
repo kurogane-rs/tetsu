@@ -10,9 +10,7 @@
 mod bindings;
 pub use bindings::*;
 
-#[cfg(any(target_os = "linux", target_os = "windows"))]
 pub mod libcef;
-#[cfg(any(target_os = "linux", target_os = "windows"))]
 pub use libcef::{libcef_path, load_libcef, LoadError, LIBCEF_FILE};
 
 #[cfg(target_os = "windows")]
@@ -28,10 +26,6 @@ impl Default for HINSTANCE {
         Self(std::ptr::null_mut())
     }
 }
-
-#[cfg(target_os = "macos")]
-pub const FRAMEWORK_PATH: &str =
-    "Chromium Embedded Framework.framework/Chromium Embedded Framework";
 
 use std::{
     env::{
@@ -106,22 +100,6 @@ mod test {
         use std::ptr::*;
 
         unsafe {
-            #[cfg(target_os = "macos")]
-            {
-                use std::os::unix::ffi::OsStrExt;
-
-                let cef_dir = get_cef_dir().expect("CEF not found");
-                let framework_dir = cef_dir
-                    .join(FRAMEWORK_PATH)
-                    .canonicalize()
-                    .expect("failed to get framework path");
-                let framework_dir = std::ffi::CString::new(framework_dir.as_os_str().as_bytes())
-                    .expect("invalid path");
-
-                assert_eq!(cef_load_library(framework_dir.as_ptr().cast()), 1);
-            }
-
-            #[cfg(any(target_os = "linux", target_os = "windows"))]
             load_libcef(&get_cef_dir().expect("CEF not found").join(LIBCEF_FILE))
                 .expect("cannot load libcef");
 

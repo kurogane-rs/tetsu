@@ -1,13 +1,17 @@
-use crate::{load_library, unload_library};
+//! The framework of a macOS application bundle.
+//!
+//! Finds the Chromium Embedded Framework a bundled executable runs with and
+//! loads it through [`tetsu_sys::load_libcef`].
+
+use crate::sys;
 
 pub struct LibraryLoader {
     path: std::path::PathBuf,
 }
 
 impl LibraryLoader {
-    const FRAMEWORK_PATH: &str =
-        "Chromium Embedded Framework.framework/Chromium Embedded Framework";
-
+    /// The framework of the bundle the executable at `path` belongs to; a
+    /// helper sits three levels deeper than the main executable.
     pub fn new(path: &std::path::Path, helper: bool) -> Self {
         let resolver = if helper { "../../.." } else { "../Frameworks" };
         let path = path
@@ -15,31 +19,16 @@ impl LibraryLoader {
             .parent()
             .unwrap()
             .join(resolver)
-            .join(Self::FRAMEWORK_PATH)
+            .join(sys::LIBCEF_FILE)
             .canonicalize()
             .unwrap();
 
         Self { path }
     }
 
-    // See [cef_load_library] for more documentation.
+    /// Loads the framework; false when it cannot be loaded.
     pub fn load(&self) -> bool {
-        Self::load_library(&self.path)
-    }
-
-    fn load_library(name: &std::path::Path) -> bool {
-        use std::os::unix::ffi::OsStrExt;
-        let Ok(name) = std::ffi::CString::new(name.as_os_str().as_bytes()) else {
-            return false;
-        };
-        unsafe { load_library(Some(&*name.as_ptr().cast())) == 1 }
-    }
-}
-
-impl Drop for LibraryLoader {
-    fn drop(&mut self) {
-        if unload_library() != 1 {
-            eprintln!("cannot unload framework {}", self.path.display());
-        }
+        // SAFETY: the framework is loaded before any other call into CEF
+        unsafe { sys::load_libcef(&self.path) }.is_ok()
     }
 }

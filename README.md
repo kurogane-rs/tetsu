@@ -23,7 +23,7 @@ You can still run `export-cef-dir` and set the `CEF_PATH` environment variable i
 
 ### Install Shared CEF Binaries
 
-This step is optional. Linux and Windows builds need no CEF at all (see [Loading libcef](#loading-libcef)). Builds for macOS and the runtime copy below otherwise install the CEF they need once for every project of the user, under `tetsu/cef/<version>/cef_<os>_<arch>` in the local data directory (`~/.local/share`, `%LOCALAPPDATA%`, `~/Library/Application Support`); `tetsu_sys::cef_install_dir()` names that directory at run time, so an application can load its CEF from there. Only a user without a data directory, or `NIX_CEF_BINARY`, gets a copy under the build script's `OUT_DIR`. Export a distribution of your own as below and point `CEF_PATH` at it to build against that instead; repeat this step each time you upgrade to a new version of the `tetsu` crate.
+This step is optional. Builds need no CEF at all (see [Loading libcef](#loading-libcef)). The runtime copy below otherwise installs the CEF it needs once for every project of the user, under `tetsu/cef/<version>/cef_<os>_<arch>` in the local data directory (`~/.local/share`, `%LOCALAPPDATA%`, `~/Library/Application Support`); `tetsu_sys::cef_install_dir()` names that directory at run time, so an application can load its CEF from there. Only a user without a data directory, or `NIX_CEF_BINARY`, gets a copy under the build script's `OUT_DIR`. Export a distribution of your own as below and point `CEF_PATH` at it to build against that instead; repeat this step each time you upgrade to a new version of the `tetsu` crate.
 
 A set `CEF_PATH` is used as it is: when it does not exist or holds no distribution of the CEF version the crate needs, the build fails and names the path. It never downloads into it.
 
@@ -51,7 +51,6 @@ export CEF_PATH="$HOME/.local/share/cef"
 
 ```sh
 export CEF_PATH="$HOME/.local/share/cef"
-export DYLD_FALLBACK_LIBRARY_PATH="$DYLD_FALLBACK_LIBRARY_PATH:$CEF_PATH:$CEF_PATH/Chromium Embedded Framework.framework/Libraries"
 ```
 
 #### Windows (using PowerShell)
@@ -60,7 +59,7 @@ export DYLD_FALLBACK_LIBRARY_PATH="$DYLD_FALLBACK_LIBRARY_PATH:$CEF_PATH:$CEF_PA
 $env:CEF_PATH="$env:USERPROFILE/.local/share/cef"
 ```
 
-On Linux and Windows libcef needs no library search path; the application loads it from a path it names.
+libcef needs no library search path; the application loads it from a path it names.
 
 ### Run the `cefsimple` Example
 
@@ -120,7 +119,7 @@ cargo run --bin bundle-cef-app -- cefsimple -o ./target/bundle
 
 ### Loading libcef
 
-On Linux and Windows the bindings link no libcef. Each function libcef exports is resolved when the application calls `tetsu::sys::load_libcef` with the path to `libcef.dll` or `libcef.so` (`tetsu::sys::LIBCEF_FILE` names the file), which comes before any other call into CEF; one called before panics, naming `load_libcef`. The application decides which CEF it runs, and building needs no CEF distribution.
+The bindings link no libcef. Each function libcef exports is resolved when the application calls `tetsu::sys::load_libcef` with the path to `libcef.dll`, `libcef.so` or the framework's binary on macOS (`tetsu::sys::LIBCEF_FILE` names it within a distribution, or within a bundle's `Contents/Frameworks`; `tetsu::library_loader` finds a bundle's), which comes before any other call into CEF; one called before panics, naming `load_libcef`. The application decides which CEF it runs, and building needs no CEF distribution on any platform, so nothing is compiled from C++ either.
 
 ### Runtime files next to the binary
 

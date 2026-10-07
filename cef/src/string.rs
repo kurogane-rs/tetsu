@@ -1317,31 +1317,6 @@ impl Debug for CefStringMultimap {
 mod test {
     use crate::*;
 
-    #[cfg(target_os = "macos")]
-    fn ensure_dll_loaded() {
-        use std::sync::Once;
-
-        static LOAD_DLL: Once = Once::new();
-
-        LOAD_DLL.call_once(|| {
-            use std::os::unix::ffi::OsStrExt;
-
-            let cef_dir = sys::get_cef_dir().expect("CEF not found");
-            let framework_dir = cef_dir
-                .join(sys::FRAMEWORK_PATH)
-                .canonicalize()
-                .expect("failed to get framework path");
-            let framework_dir =
-                std::ffi::CString::new(framework_dir.as_os_str().as_bytes()).expect("invalid path");
-
-            assert_eq!(
-                unsafe { sys::cef_load_library(framework_dir.as_ptr().cast()) },
-                1
-            );
-        })
-    }
-
-    #[cfg(any(target_os = "linux", target_os = "windows"))]
     fn ensure_dll_loaded() {
         let cef_dir = sys::get_cef_dir().expect("CEF not found");
         unsafe { sys::load_libcef(&cef_dir.join(sys::LIBCEF_FILE)) }.expect("cannot load libcef");

@@ -48,22 +48,6 @@ fn test_init_cef() {
 
     static INIT: Once = Once::new();
     INIT.call_once(|| {
-        #[cfg(target_os = "macos")]
-        unsafe {
-            use std::{ffi::CString, os::unix::ffi::OsStrExt};
-
-            let cef_dir = sys::get_cef_dir().expect("CEF not found");
-            let framework_dir = cef_dir
-                .join(sys::FRAMEWORK_PATH)
-                .canonicalize()
-                .expect("failed to get framework path");
-            let framework_dir =
-                CString::new(framework_dir.as_os_str().as_bytes()).expect("invalid path");
-
-            assert_eq!(sys::cef_load_library(framework_dir.as_ptr().cast()), 1);
-        }
-
-        #[cfg(any(target_os = "linux", target_os = "windows"))]
         {
             let cef_dir = sys::get_cef_dir().expect("CEF not found");
             unsafe { sys::load_libcef(&cef_dir.join(sys::LIBCEF_FILE)) }

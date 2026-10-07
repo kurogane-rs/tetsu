@@ -1,6 +1,6 @@
 //! libcef, loaded when the application starts.
 //!
-//! On Linux and Windows the bindings link nothing at build time. Each function
+//! The bindings link nothing at build time. Each function
 //! libcef exports is resolved by name when [`load_libcef`] opens the library,
 //! so building needs no CEF distribution and the application decides which
 //! CEF it runs.
@@ -20,6 +20,10 @@ pub const LIBCEF_FILE: &str = "libcef.dll";
 /// The library's file name in a CEF distribution's root.
 #[cfg(target_os = "linux")]
 pub const LIBCEF_FILE: &str = "libcef.so";
+/// The library's path in a CEF distribution's root, or in an application
+/// bundle's `Contents/Frameworks`.
+#[cfg(target_os = "macos")]
+pub const LIBCEF_FILE: &str = "Chromium Embedded Framework.framework/Chromium Embedded Framework";
 
 /// libcef, opened once and never closed (CEF cannot be unloaded)
 pub struct Library(libloading::Library);
@@ -98,8 +102,8 @@ struct Loaded {
 static LOADED: OnceLock<Loaded> = OnceLock::new();
 static LOADING: Mutex<()> = Mutex::new(());
 
-/// Loads libcef from `path` (`libcef.dll`, `libcef.so`) and resolves the
-/// functions it exports.
+/// Loads libcef from `path` (`libcef.dll`, `libcef.so`, the framework's binary
+/// on macOS) and resolves the functions it exports.
 ///
 /// Comes before any other call into CEF. Loading the same path again does
 /// nothing; another path once one is loaded is an error, since a process runs
@@ -167,5 +171,14 @@ unsafe fn open(path: &Path) -> Result<Library, libloading::Error> {
     use libloading::os::unix;
 
     unsafe { unix::Library::open(Some(path), unix::RTLD_NOW | unix::RTLD_LOCAL) }
+        .map(|library| Library(library.into()))
+}
+
+#[cfg(target_os = "macos")]
+unsafe fn open(path: &Path) -> Result<Library, libloading::Error> {
+    use libloading::os::unix;
+
+    // Lazily bound, as CEF's own framework loader opens it
+    unsafe { unix::Library::open(Some(path), unix::RTLD_LAZY | unix::RTLD_LOCAL) }
         .map(|library| Library(library.into()))
 }
