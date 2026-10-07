@@ -105,8 +105,20 @@ fn main() -> anyhow::Result<()> {
         })?;
         println!("Using CEF path from environment: {}", cef_dir.display());
         cef_dir
-    } else {
+    } else if env::var("NIX_CEF_BINARY").is_ok() {
         resolve_cef_dir(&out_dir)?
+    } else {
+        // The user's shared installation, which every project and profile
+        // builds and runs with; OUT_DIR only for a user without a data directory
+        match tetsu_download::install(
+            &target,
+            &cef_version,
+            &tetsu_download::default_download_url(),
+            false,
+        ) {
+            Err(tetsu_download::Error::NoDataDir) => resolve_cef_dir(&out_dir)?,
+            installed => installed?,
+        }
     };
 
     // TODO: far from ideal, but there's no other way to get the target dir, see <https://github.com/rust-lang/cargo/issues/9661>

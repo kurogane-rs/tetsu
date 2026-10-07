@@ -67,12 +67,29 @@ pub fn get_cef_dir() -> Option<PathBuf> {
             .flatten()
         }
         Err(_) => {
-            let out_dir = PathBuf::from(env!("OUT_DIR"));
-            let cef_dir = format!("cef_{OS}_{ARCH}");
-            let cef_dir = out_dir.join(&cef_dir).canonicalize().ok()?;
+            let cef_dir = cef_install_dir()?;
             fs::exists(&cef_dir).ok()?.then_some(cef_dir)
         }
     }
+}
+
+/// The user's shared installation of the CEF these bindings were generated
+/// for, `tetsu/cef/<version>/cef_<os>_<arch>` under the local data directory
+/// as `tetsu_download::install` writes it. An application started without a
+/// CEF of its own finds one there; the directory may not exist.
+pub fn cef_install_dir() -> Option<PathBuf> {
+    let package_version = env!("CARGO_PKG_VERSION");
+    let cef_version = package_version
+        .split_once('+')
+        .map(|(_, version)| version)
+        .unwrap_or(package_version);
+
+    dirs::data_local_dir().map(|dir| {
+        dir.join("tetsu")
+            .join("cef")
+            .join(cef_version)
+            .join(format!("cef_{OS}_{ARCH}"))
+    })
 }
 
 #[cfg(test)]

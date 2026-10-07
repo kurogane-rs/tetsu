@@ -59,6 +59,8 @@ pub enum Error {
     InvalidRegexPattern(#[from] regex::Error),
     #[error("Failed to install CEF via Nix: {0}")]
     NixFailed(std::process::ExitStatus),
+    #[error("This user has no local data directory to install CEF into")]
+    NoDataDir,
 }
 
 pub type Result<T> = std::result::Result<T, Error>;
@@ -561,6 +563,69 @@ where
     fs_err::remove_dir_all(old_dir)?;
 
     Ok(cef_dir)
+}
+
+/// Where every project of the user that builds with tetsu finds its CEF,
+/// `tetsu/cef` under the local data directory (`~/.local/share`,
+/// `%LOCALAPPDATA%`, `~/Library/Application Support`). `tetsu_sys::cef_install_dir`
+/// names the same place at run time.
+pub fn cef_install_root() -> Option<PathBuf> {
+    dirs::data_local_dir().map(|dir| dir.join("tetsu").join("cef"))
+}
+
+/// The distribution of `cef_version` for `os_arch` under [`cef_install_root`].
+pub fn cef_install_dir(cef_version: &str, os_arch: &OsAndArch) -> Option<PathBuf> {
+    cef_install_root().map(|root| root.join(cef_version).join(os_arch.to_string()))
+}
+
+/// Installs the distribution of `cef_version` for `target` under
+/// [`cef_install_root`] unless it is there; returns its directory.
+///
+/// Concurrent installs of one version are safe; the first to finish stays.
+pub fn install(
+    target: &str,
+    cef_version: &str,
+    download_url: &str,
+    show_progress: bool,
+) -> Result<PathBuf> {
+    let os_arch = OsAndArch::try_from(target)?;
+    let dir = cef_install_dir(cef_version, &os_arch).ok_or(Error::NoDataDir)?;
+    if archive_json_path(&dir).is_file() {
+        return Ok(dir);
+    }
+
+    let parent = dir
+        .parent()
+        .expect("an install directory sits in its version's");
+    fs_err::create_dir_all(parent)?;
+    let staging = parent.join(format!(".installing-{}", std::process::id()));
+    if staging.exists() {
+        fs_err::remove_dir_all(&staging)?;
+    }
+
+    let installed = (|| {
+        let index = CefIndex::download_from(download_url)?;
+        let version = index.platform(target)?.version(cef_version)?;
+        let archive = version.download_archive_with_retry_from(
+            download_url,
+            &staging,
+            show_progress,
+            Duration::from_secs(15),
+            3,
+        )?;
+        let extracted = extract_target_archive(target, &archive, &staging, show_progress)?;
+        version.write_archive_json(&extracted)?;
+
+        match fs_err::rename(&extracted, &dir) {
+            Ok(()) => Ok(dir.clone()),
+            // Another install of this version arrived first
+            Err(_) if archive_json_path(&dir).is_file() => Ok(dir.clone()),
+            Err(error) => Err(Error::Io(error)),
+        }
+    })();
+    let _ = fs_err::remove_dir_all(&staging);
+
+    installed
 }
 
 /// Installs CEF via Nix and `nixpkgs` into the specified location.

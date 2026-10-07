@@ -23,7 +23,7 @@ You can still run `export-cef-dir` and set the `CEF_PATH` environment variable i
 
 ### Install Shared CEF Binaries
 
-This step is optional. Linux and Windows builds need no CEF at all (see [Loading libcef](#loading-libcef)); builds for macOS and the runtime copy below otherwise download and extract the same files under the `tetsu-sys` build script's `OUT_DIR` directory (when not using `NIX_CEF_BINARY`). You should repeat this step each time you upgrade to a new version of the `tetsu` crate.
+This step is optional. Linux and Windows builds need no CEF at all (see [Loading libcef](#loading-libcef)). Builds for macOS and the runtime copy below otherwise install the CEF they need once for every project of the user, under `tetsu/cef/<version>/cef_<os>_<arch>` in the local data directory (`~/.local/share`, `%LOCALAPPDATA%`, `~/Library/Application Support`); `tetsu_sys::cef_install_dir()` names that directory at run time, so an application can load its CEF from there. Only a user without a data directory, or `NIX_CEF_BINARY`, gets a copy under the build script's `OUT_DIR`. Export a distribution of your own as below and point `CEF_PATH` at it to build against that instead; repeat this step each time you upgrade to a new version of the `tetsu` crate.
 
 A set `CEF_PATH` is used as it is: when it does not exist or holds no distribution of the CEF version the crate needs, the build fails and names the path. It never downloads into it.
 
@@ -136,7 +136,7 @@ cargo install cargo-xwin
 cargo xwin build --target x86_64-pc-windows-msvc
 ```
 
-Nothing is compiled from C++ and nothing of CEF is linked, so a cross-compiled build needs no CEF distribution. The runtime copy (`TETSU_STAGE_RUNTIME=1`) needs the Windows one: a set `CEF_PATH` must hold it (`cargo run -p export-cef-dir -- --target x86_64-pc-windows-msvc <dir>` writes one); without `CEF_PATH` the build downloads it into its `OUT_DIR`.
+Nothing is compiled from C++ and nothing of CEF is linked, so a cross-compiled build needs no CEF distribution. The runtime copy (`TETSU_STAGE_RUNTIME=1`) needs the Windows one: a set `CEF_PATH` must hold it (`cargo run -p export-cef-dir -- --target x86_64-pc-windows-msvc <dir>` writes one); without `CEF_PATH` the build installs it into the shared directory.
 
 ## Contributing
 
