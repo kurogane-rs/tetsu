@@ -23,7 +23,7 @@ You can still run `export-cef-dir` and set the `CEF_PATH` environment variable i
 
 ### Install Shared CEF Binaries
 
-This step is optional, but it will make all other builds of the `tetsu` crate much faster (when not using `NIX_CEF_BINARY`). If you don't do this, the `tetsu-sys` crate `build.rs` script will download and extract the same files under its `OUT_DIR` directory. You should repeat this step each time you upgrade to a new version of the `tetsu` crate.
+This step is optional. Linux and Windows builds need no CEF at all (see [Loading libcef](#loading-libcef)); builds for macOS and the runtime copy below otherwise download and extract the same files under the `tetsu-sys` build script's `OUT_DIR` directory (when not using `NIX_CEF_BINARY`). You should repeat this step each time you upgrade to a new version of the `tetsu` crate.
 
 A set `CEF_PATH` is used as it is: when it does not exist or holds no distribution of the CEF version the crate needs, the build fails and names the path. It never downloads into it.
 
@@ -45,7 +45,6 @@ cargo run -p export-cef-dir -- --force $env:USERPROFILE/.local/share/cef
 
 ```sh
 export CEF_PATH="$HOME/.local/share/cef"
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$CEF_PATH"
 ```
 
 #### macOS
@@ -59,8 +58,9 @@ export DYLD_FALLBACK_LIBRARY_PATH="$DYLD_FALLBACK_LIBRARY_PATH:$CEF_PATH:$CEF_PA
 
 ```pwsh
 $env:CEF_PATH="$env:USERPROFILE/.local/share/cef"
-$env:PATH="$env:PATH;$env:CEF_PATH"
 ```
+
+On Linux and Windows libcef needs no library search path; the application loads it from a path it names.
 
 ### Run the `cefsimple` Example
 
@@ -118,13 +118,17 @@ cargo run --bin bundle-cef-app -- cefsimple -o ./target/bundle
 ./target/bundle/cefsimple.exe
 ```
 
+### Loading libcef
+
+On Linux and Windows the bindings link no libcef. Each function libcef exports is resolved when the application calls `tetsu::sys::load_libcef` with the path to `libcef.dll` or `libcef.so` (`tetsu::sys::LIBCEF_FILE` names the file), which comes before any other call into CEF; one called before panics, naming `load_libcef`. The application decides which CEF it runs, and building needs no CEF distribution.
+
 ### Runtime files next to the binary
 
-On Linux and Windows a binary run from `target/` finds CEF's runtime (the libraries, `.pak` files, `icudtl.dat`, the V8 snapshot and `locales/`) when it sits next to it. Set `TETSU_STAGE_RUNTIME=1` and the `tetsu-sys` build script copies it there. This repository sets it for its own builds (`.cargo/config.toml`), so the examples run with `cargo run`; an application that names CEF's paths itself (`resources_dir_path`, `locales_dir_path`) leaves it unset and skips the copy of up to 1.5 GB per profile.
+On Linux and Windows a binary run from `target/` finds CEF's runtime (the libraries, `.pak` files, `icudtl.dat`, the V8 snapshot and `locales/`) when it sits next to it. Set `TETSU_STAGE_RUNTIME=1` and the `tetsu-sys` build script copies it there. This repository sets it for its own builds (`.cargo/config.toml`), so the examples load libcef from beside their executable and run with `cargo run`; an application that names CEF's paths itself (`resources_dir_path`, `locales_dir_path`) leaves it unset and skips the copy of up to 1.5 GB per profile.
 
 ### Cross-compiling to Windows
 
-The `tetsu-sys` crate can be cross-compiled to `x86_64-pc-windows-msvc` from Linux with [cargo-xwin](https://github.com/rust-cross/cargo-xwin), which downloads the Windows SDK and sets up a `clang-cl` toolchain for both Rust and CMake. Install `clang`, `lld`, `llvm` and `ninja` from your package manager (the MSVC STL headers require Clang 19 or newer; on Ubuntu 24.04 use [apt.llvm.org](https://apt.llvm.org/)), then:
+The `tetsu-sys` crate can be cross-compiled to `x86_64-pc-windows-msvc` from Linux with [cargo-xwin](https://github.com/rust-cross/cargo-xwin), which downloads the Windows SDK and links with `lld-link`. Install `clang`, `lld` and `llvm` from your package manager, then:
 
 ```sh
 rustup target add x86_64-pc-windows-msvc
@@ -132,7 +136,7 @@ cargo install cargo-xwin
 cargo xwin build --target x86_64-pc-windows-msvc
 ```
 
-Nothing is compiled from C++ for Windows: the bindings link `libcef.lib` alone, natively or cross-compiled. A set `CEF_PATH` must hold the Windows distribution (`cargo run -p export-cef-dir -- --target x86_64-pc-windows-msvc <dir>` writes one); without `CEF_PATH` the build downloads it into its `OUT_DIR`.
+Nothing is compiled from C++ and nothing of CEF is linked, so a cross-compiled build needs no CEF distribution. The runtime copy (`TETSU_STAGE_RUNTIME=1`) needs the Windows one: a set `CEF_PATH` must hold it (`cargo run -p export-cef-dir -- --target x86_64-pc-windows-msvc <dir>` writes one); without `CEF_PATH` the build downloads it into its `OUT_DIR`.
 
 ## Contributing
 

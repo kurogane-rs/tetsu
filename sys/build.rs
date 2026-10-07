@@ -12,6 +12,18 @@ fn main() -> anyhow::Result<()> {
     let target = env::var("TARGET")?;
     let os_arch = OsAndArch::try_from(target.as_str())?;
 
+    // The runtime goes next to the binaries only when asked for; an application
+    // that names CEF's paths itself (resources_dir_path, locales_dir_path) needs
+    // no copy of up to 1.5 GB per profile
+    println!("cargo::rerun-if-env-changed=TETSU_STAGE_RUNTIME");
+    let stage_runtime = env::var("TETSU_STAGE_RUNTIME").is_ok_and(|value| value == "1");
+
+    // Linux and Windows link nothing; the application loads libcef when it
+    // starts (tetsu_sys::load_libcef), so their builds need CEF only for the copy
+    if os_arch.os != "macos" && !stage_runtime {
+        return Ok(());
+    }
+
     println!("cargo::rerun-if-env-changed=FLATPAK");
     println!("cargo::rerun-if-env-changed=NIX_CEF_BINARY");
     println!("cargo::rerun-if-env-changed=CEF_PATH");
@@ -97,12 +109,6 @@ fn main() -> anyhow::Result<()> {
         resolve_cef_dir(&out_dir)?
     };
 
-    // The runtime goes next to the binaries only when asked for; an application
-    // that names CEF's paths itself (resources_dir_path, locales_dir_path) needs
-    // no copy of up to 1.5 GB per profile
-    println!("cargo::rerun-if-env-changed=TETSU_STAGE_RUNTIME");
-    let stage_runtime = env::var("TETSU_STAGE_RUNTIME").is_ok_and(|value| value == "1");
-
     // TODO: far from ideal, but there's no other way to get the target dir, see <https://github.com/rust-lang/cargo/issues/9661>
     let target_dir = out_dir
         .parent()
@@ -118,7 +124,6 @@ fn main() -> anyhow::Result<()> {
     println!("cargo::rerun-if-changed={cef_dir_str}");
 
     println!("cargo::metadata=CEF_DIR={cef_dir_str}");
-    println!("cargo::rustc-link-search=native={cef_dir_str}");
 
     // Compile the wrapper against an explicit API version instead of the
     // experimental (unversioned) API that CEF selects by default, which its
@@ -132,25 +137,11 @@ fn main() -> anyhow::Result<()> {
     println!("cargo::metadata=CEF_API_VERSION={api_version}");
 
     match os_arch.os {
-        "linux" => {
-            // A binary run from target/ finds the runtime next to it on Linux and Windows;
-            // macOS needs an app bundle, left to the application's own bundling
-            if stage_runtime {
-                copy_cef_runtime_files(&cef_dir, target_dir)?;
-            }
-
-            println!("cargo::rustc-link-lib=dylib=cef");
-        }
-        "windows" => {
-            if stage_runtime {
-                copy_cef_runtime_files(&cef_dir, target_dir)?;
-            }
-
-            // The bindings call only CEF's C API, which libcef.dll exports itself; the C++
-            // libcef_dll_wrapper links nothing in here, so it is not built
-            println!("cargo::rustc-link-lib=dylib=libcef");
-        }
+        // A binary run from target/ finds the runtime next to it on Linux and Windows;
+        // macOS needs an app bundle, left to the application's own bundling
+        "linux" | "windows" => copy_cef_runtime_files(&cef_dir, target_dir)?,
         "macos" => {
+            println!("cargo::rustc-link-search=native={cef_dir_str}");
             println!("cargo::rustc-link-lib=framework=AppKit");
 
             // macOS loads the framework at run time, through the wrapper's dylib stubs

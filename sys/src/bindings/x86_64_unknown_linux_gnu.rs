@@ -16441,16 +16441,18 @@ pub type __uint_least16_t = __uint16_t;
 pub type __pid_t = ::std::os::raw::c_int;
 pub type __time_t = ::std::os::raw::c_long;
 pub type pid_t = __pid_t;
-unsafe extern "C" {
-    #[doc = "\n Configures the CEF API version and returns API hashes for the libcef\n library. The returned string is owned by the library and should not be\n freed. The |version| parameter should be CEF_API_VERSION and any changes to\n this value will be ignored after the first call to this method. The |entry|\n parameter describes which hash value will be returned:\n\n 0 - CEF_API_HASH_PLATFORM\n 1 - CEF_API_HASH_UNIVERSAL (deprecated, same as CEF_API_HASH_PLATFORM)\n 2 - CEF_COMMIT_HASH (from cef_version.h)\n 3 - CEF_SANDBOX_COMPAT_HASH (from cef_version.h, Windows only)\n"]
-    pub fn cef_api_hash(
-        version: ::std::os::raw::c_int,
-        entry: ::std::os::raw::c_int,
-    ) -> *const ::std::os::raw::c_char;
+#[doc = "\n Configures the CEF API version and returns API hashes for the libcef\n library. The returned string is owned by the library and should not be\n freed. The |version| parameter should be CEF_API_VERSION and any changes to\n this value will be ignored after the first call to this method. The |entry|\n parameter describes which hash value will be returned:\n\n 0 - CEF_API_HASH_PLATFORM\n 1 - CEF_API_HASH_UNIVERSAL (deprecated, same as CEF_API_HASH_PLATFORM)\n 2 - CEF_COMMIT_HASH (from cef_version.h)\n 3 - CEF_SANDBOX_COMPAT_HASH (from cef_version.h, Windows only)\n"]
+#[inline]
+pub unsafe fn cef_api_hash(
+    version: ::std::os::raw::c_int,
+    entry: ::std::os::raw::c_int,
+) -> *const ::std::os::raw::c_char {
+    unsafe { (crate::libcef::functions().cef_api_hash)(version, entry) }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns the CEF API version that was configured by the first call to\n cef_api_hash().\n"]
-    pub fn cef_api_version() -> ::std::os::raw::c_int;
+#[doc = "\n Returns the CEF API version that was configured by the first call to\n cef_api_hash().\n"]
+#[inline]
+pub unsafe fn cef_api_version() -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_api_version)() }
 }
 pub type wchar_t = ::std::os::raw::c_int;
 pub type char16_t = __uint_least16_t;
@@ -16513,156 +16515,181 @@ const _: () = {
         [::std::mem::offset_of!(_cef_string_utf16_t, dtor) - 16usize];
 };
 pub type cef_string_utf16_t = _cef_string_utf16_t;
-unsafe extern "C" {
-    #[doc = "\n These functions set string values. If |copy| is true (1) the value will be\n copied instead of referenced. It is up to the user to properly manage\n the lifespan of references.\n"]
-    pub fn cef_string_wide_set(
-        src: *const wchar_t,
-        src_len: usize,
-        output: *mut cef_string_wide_t,
-        copy: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n These functions set string values. If |copy| is true (1) the value will be\n copied instead of referenced. It is up to the user to properly manage\n the lifespan of references.\n"]
+#[inline]
+pub unsafe fn cef_string_wide_set(
+    src: *const wchar_t,
+    src_len: usize,
+    output: *mut cef_string_wide_t,
+    copy: ::std::os::raw::c_int,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_wide_set)(src, src_len, output, copy) }
 }
-unsafe extern "C" {
-    pub fn cef_string_utf8_set(
-        src: *const ::std::os::raw::c_char,
-        src_len: usize,
-        output: *mut cef_string_utf8_t,
-        copy: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
+#[inline]
+pub unsafe fn cef_string_utf8_set(
+    src: *const ::std::os::raw::c_char,
+    src_len: usize,
+    output: *mut cef_string_utf8_t,
+    copy: ::std::os::raw::c_int,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_utf8_set)(src, src_len, output, copy) }
 }
-unsafe extern "C" {
-    pub fn cef_string_utf16_set(
-        src: *const char16_t,
-        src_len: usize,
-        output: *mut cef_string_utf16_t,
-        copy: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
+#[inline]
+pub unsafe fn cef_string_utf16_set(
+    src: *const char16_t,
+    src_len: usize,
+    output: *mut cef_string_utf16_t,
+    copy: ::std::os::raw::c_int,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_utf16_set)(src, src_len, output, copy) }
 }
-unsafe extern "C" {
-    #[doc = "\n These functions clear string values. The structure itself is not freed.\n"]
-    pub fn cef_string_wide_clear(str_: *mut cef_string_wide_t);
+#[doc = "\n These functions clear string values. The structure itself is not freed.\n"]
+#[inline]
+pub unsafe fn cef_string_wide_clear(str_: *mut cef_string_wide_t) {
+    unsafe { (crate::libcef::functions().cef_string_wide_clear)(str_) }
 }
-unsafe extern "C" {
-    pub fn cef_string_utf8_clear(str_: *mut cef_string_utf8_t);
+#[inline]
+pub unsafe fn cef_string_utf8_clear(str_: *mut cef_string_utf8_t) {
+    unsafe { (crate::libcef::functions().cef_string_utf8_clear)(str_) }
 }
-unsafe extern "C" {
-    pub fn cef_string_utf16_clear(str_: *mut cef_string_utf16_t);
+#[inline]
+pub unsafe fn cef_string_utf16_clear(str_: *mut cef_string_utf16_t) {
+    unsafe { (crate::libcef::functions().cef_string_utf16_clear)(str_) }
 }
-unsafe extern "C" {
-    #[doc = "\n These functions compare two string values with the same results as strcmp().\n"]
-    pub fn cef_string_wide_cmp(
-        str1: *const cef_string_wide_t,
-        str2: *const cef_string_wide_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n These functions compare two string values with the same results as strcmp().\n"]
+#[inline]
+pub unsafe fn cef_string_wide_cmp(
+    str1: *const cef_string_wide_t,
+    str2: *const cef_string_wide_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_wide_cmp)(str1, str2) }
 }
-unsafe extern "C" {
-    pub fn cef_string_utf8_cmp(
-        str1: *const cef_string_utf8_t,
-        str2: *const cef_string_utf8_t,
-    ) -> ::std::os::raw::c_int;
+#[inline]
+pub unsafe fn cef_string_utf8_cmp(
+    str1: *const cef_string_utf8_t,
+    str2: *const cef_string_utf8_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_utf8_cmp)(str1, str2) }
 }
-unsafe extern "C" {
-    pub fn cef_string_utf16_cmp(
-        str1: *const cef_string_utf16_t,
-        str2: *const cef_string_utf16_t,
-    ) -> ::std::os::raw::c_int;
+#[inline]
+pub unsafe fn cef_string_utf16_cmp(
+    str1: *const cef_string_utf16_t,
+    str2: *const cef_string_utf16_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_utf16_cmp)(str1, str2) }
 }
-unsafe extern "C" {
-    #[doc = "\n These functions convert between UTF-8, -16, and -32 strings. They are\n potentially slow so unnecessary conversions should be avoided. The best\n possible result will always be written to |output| with the boolean return\n value indicating whether the conversion is 100% valid.\n"]
-    pub fn cef_string_wide_to_utf8(
-        src: *const wchar_t,
-        src_len: usize,
-        output: *mut cef_string_utf8_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n These functions convert between UTF-8, -16, and -32 strings. They are\n potentially slow so unnecessary conversions should be avoided. The best\n possible result will always be written to |output| with the boolean return\n value indicating whether the conversion is 100% valid.\n"]
+#[inline]
+pub unsafe fn cef_string_wide_to_utf8(
+    src: *const wchar_t,
+    src_len: usize,
+    output: *mut cef_string_utf8_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_wide_to_utf8)(src, src_len, output) }
 }
-unsafe extern "C" {
-    pub fn cef_string_utf8_to_wide(
-        src: *const ::std::os::raw::c_char,
-        src_len: usize,
-        output: *mut cef_string_wide_t,
-    ) -> ::std::os::raw::c_int;
+#[inline]
+pub unsafe fn cef_string_utf8_to_wide(
+    src: *const ::std::os::raw::c_char,
+    src_len: usize,
+    output: *mut cef_string_wide_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_utf8_to_wide)(src, src_len, output) }
 }
-unsafe extern "C" {
-    pub fn cef_string_wide_to_utf16(
-        src: *const wchar_t,
-        src_len: usize,
-        output: *mut cef_string_utf16_t,
-    ) -> ::std::os::raw::c_int;
+#[inline]
+pub unsafe fn cef_string_wide_to_utf16(
+    src: *const wchar_t,
+    src_len: usize,
+    output: *mut cef_string_utf16_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_wide_to_utf16)(src, src_len, output) }
 }
-unsafe extern "C" {
-    pub fn cef_string_utf16_to_wide(
-        src: *const char16_t,
-        src_len: usize,
-        output: *mut cef_string_wide_t,
-    ) -> ::std::os::raw::c_int;
+#[inline]
+pub unsafe fn cef_string_utf16_to_wide(
+    src: *const char16_t,
+    src_len: usize,
+    output: *mut cef_string_wide_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_utf16_to_wide)(src, src_len, output) }
 }
-unsafe extern "C" {
-    pub fn cef_string_utf8_to_utf16(
-        src: *const ::std::os::raw::c_char,
-        src_len: usize,
-        output: *mut cef_string_utf16_t,
-    ) -> ::std::os::raw::c_int;
+#[inline]
+pub unsafe fn cef_string_utf8_to_utf16(
+    src: *const ::std::os::raw::c_char,
+    src_len: usize,
+    output: *mut cef_string_utf16_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_utf8_to_utf16)(src, src_len, output) }
 }
-unsafe extern "C" {
-    pub fn cef_string_utf16_to_utf8(
-        src: *const char16_t,
-        src_len: usize,
-        output: *mut cef_string_utf8_t,
-    ) -> ::std::os::raw::c_int;
+#[inline]
+pub unsafe fn cef_string_utf16_to_utf8(
+    src: *const char16_t,
+    src_len: usize,
+    output: *mut cef_string_utf8_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_utf16_to_utf8)(src, src_len, output) }
 }
-unsafe extern "C" {
-    #[doc = "\n These functions convert an ASCII string, typically a hardcoded constant, to\n a Wide/UTF16 string. Use instead of the UTF8 conversion routines if you know\n the string is ASCII.\n"]
-    pub fn cef_string_ascii_to_wide(
-        src: *const ::std::os::raw::c_char,
-        src_len: usize,
-        output: *mut cef_string_wide_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n These functions convert an ASCII string, typically a hardcoded constant, to\n a Wide/UTF16 string. Use instead of the UTF8 conversion routines if you know\n the string is ASCII.\n"]
+#[inline]
+pub unsafe fn cef_string_ascii_to_wide(
+    src: *const ::std::os::raw::c_char,
+    src_len: usize,
+    output: *mut cef_string_wide_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_ascii_to_wide)(src, src_len, output) }
 }
-unsafe extern "C" {
-    pub fn cef_string_ascii_to_utf16(
-        src: *const ::std::os::raw::c_char,
-        src_len: usize,
-        output: *mut cef_string_utf16_t,
-    ) -> ::std::os::raw::c_int;
+#[inline]
+pub unsafe fn cef_string_ascii_to_utf16(
+    src: *const ::std::os::raw::c_char,
+    src_len: usize,
+    output: *mut cef_string_utf16_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_ascii_to_utf16)(src, src_len, output) }
 }
 #[doc = "\n It is sometimes necessary for the system to allocate string structures with\n the expectation that the user will free them. The userfree types act as a\n hint that the user is responsible for freeing the structure.\n"]
 pub type cef_string_userfree_wide_t = *mut cef_string_wide_t;
 pub type cef_string_userfree_utf8_t = *mut cef_string_utf8_t;
 pub type cef_string_userfree_utf16_t = *mut cef_string_utf16_t;
-unsafe extern "C" {
-    #[doc = "\n These functions allocate a new string structure. They must be freed by\n calling the associated free function.\n"]
-    pub fn cef_string_userfree_wide_alloc() -> cef_string_userfree_wide_t;
+#[doc = "\n These functions allocate a new string structure. They must be freed by\n calling the associated free function.\n"]
+#[inline]
+pub unsafe fn cef_string_userfree_wide_alloc() -> cef_string_userfree_wide_t {
+    unsafe { (crate::libcef::functions().cef_string_userfree_wide_alloc)() }
 }
-unsafe extern "C" {
-    pub fn cef_string_userfree_utf8_alloc() -> cef_string_userfree_utf8_t;
+#[inline]
+pub unsafe fn cef_string_userfree_utf8_alloc() -> cef_string_userfree_utf8_t {
+    unsafe { (crate::libcef::functions().cef_string_userfree_utf8_alloc)() }
 }
-unsafe extern "C" {
-    pub fn cef_string_userfree_utf16_alloc() -> cef_string_userfree_utf16_t;
+#[inline]
+pub unsafe fn cef_string_userfree_utf16_alloc() -> cef_string_userfree_utf16_t {
+    unsafe { (crate::libcef::functions().cef_string_userfree_utf16_alloc)() }
 }
-unsafe extern "C" {
-    #[doc = "\n These functions free the string structure allocated by the associated\n alloc function. Any string contents will first be cleared.\n"]
-    pub fn cef_string_userfree_wide_free(str_: cef_string_userfree_wide_t);
+#[doc = "\n These functions free the string structure allocated by the associated\n alloc function. Any string contents will first be cleared.\n"]
+#[inline]
+pub unsafe fn cef_string_userfree_wide_free(str_: cef_string_userfree_wide_t) {
+    unsafe { (crate::libcef::functions().cef_string_userfree_wide_free)(str_) }
 }
-unsafe extern "C" {
-    pub fn cef_string_userfree_utf8_free(str_: cef_string_userfree_utf8_t);
+#[inline]
+pub unsafe fn cef_string_userfree_utf8_free(str_: cef_string_userfree_utf8_t) {
+    unsafe { (crate::libcef::functions().cef_string_userfree_utf8_free)(str_) }
 }
-unsafe extern "C" {
-    pub fn cef_string_userfree_utf16_free(str_: cef_string_userfree_utf16_t);
+#[inline]
+pub unsafe fn cef_string_userfree_utf16_free(str_: cef_string_userfree_utf16_t) {
+    unsafe { (crate::libcef::functions().cef_string_userfree_utf16_free)(str_) }
 }
-unsafe extern "C" {
-    #[doc = "\n These functions convert utf16 string case using the current ICU locale. This\n may change the length of the string in some cases.\n"]
-    pub fn cef_string_utf16_to_lower(
-        src: *const char16_t,
-        src_len: usize,
-        output: *mut cef_string_utf16_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n These functions convert utf16 string case using the current ICU locale. This\n may change the length of the string in some cases.\n"]
+#[inline]
+pub unsafe fn cef_string_utf16_to_lower(
+    src: *const char16_t,
+    src_len: usize,
+    output: *mut cef_string_utf16_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_utf16_to_lower)(src, src_len, output) }
 }
-unsafe extern "C" {
-    pub fn cef_string_utf16_to_upper(
-        src: *const char16_t,
-        src_len: usize,
-        output: *mut cef_string_utf16_t,
-    ) -> ::std::os::raw::c_int;
+#[inline]
+pub unsafe fn cef_string_utf16_to_upper(
+    src: *const char16_t,
+    src_len: usize,
+    output: *mut cef_string_utf16_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_utf16_to_upper)(src, src_len, output) }
 }
 pub type cef_char_t = char16_t;
 pub type cef_string_userfree_t = cef_string_userfree_utf16_t;
@@ -16674,37 +16701,44 @@ pub struct _cef_string_list_t {
 }
 #[doc = "\n CEF string maps are a set of key/value string pairs.\n"]
 pub type cef_string_list_t = *mut _cef_string_list_t;
-unsafe extern "C" {
-    #[doc = "\n Allocate a new string map.\n"]
-    pub fn cef_string_list_alloc() -> cef_string_list_t;
+#[doc = "\n Allocate a new string map.\n"]
+#[inline]
+pub unsafe fn cef_string_list_alloc() -> cef_string_list_t {
+    unsafe { (crate::libcef::functions().cef_string_list_alloc)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Return the number of elements in the string list.\n"]
-    pub fn cef_string_list_size(list: cef_string_list_t) -> usize;
+#[doc = "\n Return the number of elements in the string list.\n"]
+#[inline]
+pub unsafe fn cef_string_list_size(list: cef_string_list_t) -> usize {
+    unsafe { (crate::libcef::functions().cef_string_list_size)(list) }
 }
-unsafe extern "C" {
-    #[doc = "\n Retrieve the value at the specified zero-based string list index. Returns\n true (1) if the value was successfully retrieved.\n"]
-    pub fn cef_string_list_value(
-        list: cef_string_list_t,
-        index: usize,
-        value: *mut cef_string_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Retrieve the value at the specified zero-based string list index. Returns\n true (1) if the value was successfully retrieved.\n"]
+#[inline]
+pub unsafe fn cef_string_list_value(
+    list: cef_string_list_t,
+    index: usize,
+    value: *mut cef_string_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_list_value)(list, index, value) }
 }
-unsafe extern "C" {
-    #[doc = "\n Append a new value at the end of the string list.\n"]
-    pub fn cef_string_list_append(list: cef_string_list_t, value: *const cef_string_t);
+#[doc = "\n Append a new value at the end of the string list.\n"]
+#[inline]
+pub unsafe fn cef_string_list_append(list: cef_string_list_t, value: *const cef_string_t) {
+    unsafe { (crate::libcef::functions().cef_string_list_append)(list, value) }
 }
-unsafe extern "C" {
-    #[doc = "\n Clear the string list.\n"]
-    pub fn cef_string_list_clear(list: cef_string_list_t);
+#[doc = "\n Clear the string list.\n"]
+#[inline]
+pub unsafe fn cef_string_list_clear(list: cef_string_list_t) {
+    unsafe { (crate::libcef::functions().cef_string_list_clear)(list) }
 }
-unsafe extern "C" {
-    #[doc = "\n Free the string list.\n"]
-    pub fn cef_string_list_free(list: cef_string_list_t);
+#[doc = "\n Free the string list.\n"]
+#[inline]
+pub unsafe fn cef_string_list_free(list: cef_string_list_t) {
+    unsafe { (crate::libcef::functions().cef_string_list_free)(list) }
 }
-unsafe extern "C" {
-    #[doc = "\n Creates a copy of an existing string list.\n"]
-    pub fn cef_string_list_copy(list: cef_string_list_t) -> cef_string_list_t;
+#[doc = "\n Creates a copy of an existing string list.\n"]
+#[inline]
+pub unsafe fn cef_string_list_copy(list: cef_string_list_t) -> cef_string_list_t {
+    unsafe { (crate::libcef::functions().cef_string_list_copy)(list) }
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -16713,53 +16747,61 @@ pub struct _cef_string_map_t {
 }
 #[doc = "\n CEF string maps are a set of key/value string pairs.\n"]
 pub type cef_string_map_t = *mut _cef_string_map_t;
-unsafe extern "C" {
-    #[doc = "\n Allocate a new string map.\n"]
-    pub fn cef_string_map_alloc() -> cef_string_map_t;
+#[doc = "\n Allocate a new string map.\n"]
+#[inline]
+pub unsafe fn cef_string_map_alloc() -> cef_string_map_t {
+    unsafe { (crate::libcef::functions().cef_string_map_alloc)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Return the number of elements in the string map.\n"]
-    pub fn cef_string_map_size(map: cef_string_map_t) -> usize;
+#[doc = "\n Return the number of elements in the string map.\n"]
+#[inline]
+pub unsafe fn cef_string_map_size(map: cef_string_map_t) -> usize {
+    unsafe { (crate::libcef::functions().cef_string_map_size)(map) }
 }
-unsafe extern "C" {
-    #[doc = "\n Return the value assigned to the specified key.\n"]
-    pub fn cef_string_map_find(
-        map: cef_string_map_t,
-        key: *const cef_string_t,
-        value: *mut cef_string_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Return the value assigned to the specified key.\n"]
+#[inline]
+pub unsafe fn cef_string_map_find(
+    map: cef_string_map_t,
+    key: *const cef_string_t,
+    value: *mut cef_string_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_map_find)(map, key, value) }
 }
-unsafe extern "C" {
-    #[doc = "\n Return the key at the specified zero-based string map index.\n"]
-    pub fn cef_string_map_key(
-        map: cef_string_map_t,
-        index: usize,
-        key: *mut cef_string_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Return the key at the specified zero-based string map index.\n"]
+#[inline]
+pub unsafe fn cef_string_map_key(
+    map: cef_string_map_t,
+    index: usize,
+    key: *mut cef_string_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_map_key)(map, index, key) }
 }
-unsafe extern "C" {
-    #[doc = "\n Return the value at the specified zero-based string map index.\n"]
-    pub fn cef_string_map_value(
-        map: cef_string_map_t,
-        index: usize,
-        value: *mut cef_string_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Return the value at the specified zero-based string map index.\n"]
+#[inline]
+pub unsafe fn cef_string_map_value(
+    map: cef_string_map_t,
+    index: usize,
+    value: *mut cef_string_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_map_value)(map, index, value) }
 }
-unsafe extern "C" {
-    #[doc = "\n Append a new key/value pair at the end of the string map. If the key exists,\n overwrite the existing value with a new value w/o changing the pair order.\n"]
-    pub fn cef_string_map_append(
-        map: cef_string_map_t,
-        key: *const cef_string_t,
-        value: *const cef_string_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Append a new key/value pair at the end of the string map. If the key exists,\n overwrite the existing value with a new value w/o changing the pair order.\n"]
+#[inline]
+pub unsafe fn cef_string_map_append(
+    map: cef_string_map_t,
+    key: *const cef_string_t,
+    value: *const cef_string_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_map_append)(map, key, value) }
 }
-unsafe extern "C" {
-    #[doc = "\n Clear the string map.\n"]
-    pub fn cef_string_map_clear(map: cef_string_map_t);
+#[doc = "\n Clear the string map.\n"]
+#[inline]
+pub unsafe fn cef_string_map_clear(map: cef_string_map_t) {
+    unsafe { (crate::libcef::functions().cef_string_map_clear)(map) }
 }
-unsafe extern "C" {
-    #[doc = "\n Free the string map.\n"]
-    pub fn cef_string_map_free(map: cef_string_map_t);
+#[doc = "\n Free the string map.\n"]
+#[inline]
+pub unsafe fn cef_string_map_free(map: cef_string_map_t) {
+    unsafe { (crate::libcef::functions().cef_string_map_free)(map) }
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -16768,61 +16810,72 @@ pub struct _cef_string_multimap_t {
 }
 #[doc = "\n CEF string multimaps are a set of key/value string pairs.\n More than one value can be assigned to a single key.\n"]
 pub type cef_string_multimap_t = *mut _cef_string_multimap_t;
-unsafe extern "C" {
-    #[doc = "\n Allocate a new string multimap.\n"]
-    pub fn cef_string_multimap_alloc() -> cef_string_multimap_t;
+#[doc = "\n Allocate a new string multimap.\n"]
+#[inline]
+pub unsafe fn cef_string_multimap_alloc() -> cef_string_multimap_t {
+    unsafe { (crate::libcef::functions().cef_string_multimap_alloc)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Return the number of elements in the string multimap.\n"]
-    pub fn cef_string_multimap_size(map: cef_string_multimap_t) -> usize;
+#[doc = "\n Return the number of elements in the string multimap.\n"]
+#[inline]
+pub unsafe fn cef_string_multimap_size(map: cef_string_multimap_t) -> usize {
+    unsafe { (crate::libcef::functions().cef_string_multimap_size)(map) }
 }
-unsafe extern "C" {
-    #[doc = "\n Return the number of values with the specified key.\n"]
-    pub fn cef_string_multimap_find_count(
-        map: cef_string_multimap_t,
-        key: *const cef_string_t,
-    ) -> usize;
+#[doc = "\n Return the number of values with the specified key.\n"]
+#[inline]
+pub unsafe fn cef_string_multimap_find_count(
+    map: cef_string_multimap_t,
+    key: *const cef_string_t,
+) -> usize {
+    unsafe { (crate::libcef::functions().cef_string_multimap_find_count)(map, key) }
 }
-unsafe extern "C" {
-    #[doc = "\n Return the value_index-th value with the specified key.\n"]
-    pub fn cef_string_multimap_enumerate(
-        map: cef_string_multimap_t,
-        key: *const cef_string_t,
-        value_index: usize,
-        value: *mut cef_string_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Return the value_index-th value with the specified key.\n"]
+#[inline]
+pub unsafe fn cef_string_multimap_enumerate(
+    map: cef_string_multimap_t,
+    key: *const cef_string_t,
+    value_index: usize,
+    value: *mut cef_string_t,
+) -> ::std::os::raw::c_int {
+    unsafe {
+        (crate::libcef::functions().cef_string_multimap_enumerate)(map, key, value_index, value)
+    }
 }
-unsafe extern "C" {
-    #[doc = "\n Return the key at the specified zero-based string multimap index.\n"]
-    pub fn cef_string_multimap_key(
-        map: cef_string_multimap_t,
-        index: usize,
-        key: *mut cef_string_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Return the key at the specified zero-based string multimap index.\n"]
+#[inline]
+pub unsafe fn cef_string_multimap_key(
+    map: cef_string_multimap_t,
+    index: usize,
+    key: *mut cef_string_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_multimap_key)(map, index, key) }
 }
-unsafe extern "C" {
-    #[doc = "\n Return the value at the specified zero-based string multimap index.\n"]
-    pub fn cef_string_multimap_value(
-        map: cef_string_multimap_t,
-        index: usize,
-        value: *mut cef_string_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Return the value at the specified zero-based string multimap index.\n"]
+#[inline]
+pub unsafe fn cef_string_multimap_value(
+    map: cef_string_multimap_t,
+    index: usize,
+    value: *mut cef_string_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_multimap_value)(map, index, value) }
 }
-unsafe extern "C" {
-    #[doc = "\n Append a new key/value pair at the end of the string multimap.\n"]
-    pub fn cef_string_multimap_append(
-        map: cef_string_multimap_t,
-        key: *const cef_string_t,
-        value: *const cef_string_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Append a new key/value pair at the end of the string multimap.\n"]
+#[inline]
+pub unsafe fn cef_string_multimap_append(
+    map: cef_string_multimap_t,
+    key: *const cef_string_t,
+    value: *const cef_string_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_string_multimap_append)(map, key, value) }
 }
-unsafe extern "C" {
-    #[doc = "\n Clear the string multimap.\n"]
-    pub fn cef_string_multimap_clear(map: cef_string_multimap_t);
+#[doc = "\n Clear the string multimap.\n"]
+#[inline]
+pub unsafe fn cef_string_multimap_clear(map: cef_string_multimap_t) {
+    unsafe { (crate::libcef::functions().cef_string_multimap_clear)(map) }
 }
-unsafe extern "C" {
-    #[doc = "\n Free the string multimap.\n"]
-    pub fn cef_string_multimap_free(map: cef_string_multimap_t);
+#[doc = "\n Free the string multimap.\n"]
+#[inline]
+pub unsafe fn cef_string_multimap_free(map: cef_string_multimap_t) {
+    unsafe { (crate::libcef::functions().cef_string_multimap_free)(map) }
 }
 pub type time_t = __time_t;
 #[doc = "\n Represents a wall clock time in UTC. Values are not guaranteed to be\n monotonically non-decreasing and are subject to large amounts of skew.\n Time is stored internally as microseconds since the Windows epoch (1601).\n\n This is equivalent of Chromium `base::Time` (see base/time/time.h).\n"]
@@ -16879,55 +16932,67 @@ const _: () = {
 };
 #[doc = "\n Time information. Values should always be in UTC.\n"]
 pub type cef_time_t = _cef_time_t;
-unsafe extern "C" {
-    #[doc = "\n Converts cef_time_t to/from time_t. Returns true (1) on success and false\n (0) on failure.\n"]
-    pub fn cef_time_to_timet(
-        cef_time: *const cef_time_t,
-        time: *mut time_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Converts cef_time_t to/from time_t. Returns true (1) on success and false\n (0) on failure.\n"]
+#[inline]
+pub unsafe fn cef_time_to_timet(
+    cef_time: *const cef_time_t,
+    time: *mut time_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_time_to_timet)(cef_time, time) }
 }
-unsafe extern "C" {
-    pub fn cef_time_from_timet(time: time_t, cef_time: *mut cef_time_t) -> ::std::os::raw::c_int;
+#[inline]
+pub unsafe fn cef_time_from_timet(
+    time: time_t,
+    cef_time: *mut cef_time_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_time_from_timet)(time, cef_time) }
 }
-unsafe extern "C" {
-    #[doc = "\n Converts cef_time_t to/from a double which is the number of seconds since\n epoch (Jan 1, 1970). Webkit uses this format to represent time. A value of 0\n means \"not initialized\". Returns true (1) on success and false (0) on\n failure.\n"]
-    pub fn cef_time_to_doublet(
-        cef_time: *const cef_time_t,
-        time: *mut f64,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Converts cef_time_t to/from a double which is the number of seconds since\n epoch (Jan 1, 1970). Webkit uses this format to represent time. A value of 0\n means \"not initialized\". Returns true (1) on success and false (0) on\n failure.\n"]
+#[inline]
+pub unsafe fn cef_time_to_doublet(
+    cef_time: *const cef_time_t,
+    time: *mut f64,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_time_to_doublet)(cef_time, time) }
 }
-unsafe extern "C" {
-    pub fn cef_time_from_doublet(time: f64, cef_time: *mut cef_time_t) -> ::std::os::raw::c_int;
+#[inline]
+pub unsafe fn cef_time_from_doublet(time: f64, cef_time: *mut cef_time_t) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_time_from_doublet)(time, cef_time) }
 }
-unsafe extern "C" {
-    #[doc = "\n Retrieve the current system time. Returns true (1) on success and false (0)\n on failure.\n"]
-    pub fn cef_time_now(cef_time: *mut cef_time_t) -> ::std::os::raw::c_int;
+#[doc = "\n Retrieve the current system time. Returns true (1) on success and false (0)\n on failure.\n"]
+#[inline]
+pub unsafe fn cef_time_now(cef_time: *mut cef_time_t) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_time_now)(cef_time) }
 }
-unsafe extern "C" {
-    #[doc = "\n Retrieve the current system time.\n"]
-    pub fn cef_basetime_now() -> cef_basetime_t;
+#[doc = "\n Retrieve the current system time.\n"]
+#[inline]
+pub unsafe fn cef_basetime_now() -> cef_basetime_t {
+    unsafe { (crate::libcef::functions().cef_basetime_now)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Retrieve the delta in milliseconds between two time values. Returns true (1)\n on success and false (0) on failure."]
-    pub fn cef_time_delta(
-        cef_time1: *const cef_time_t,
-        cef_time2: *const cef_time_t,
-        delta: *mut ::std::os::raw::c_longlong,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Retrieve the delta in milliseconds between two time values. Returns true (1)\n on success and false (0) on failure."]
+#[inline]
+pub unsafe fn cef_time_delta(
+    cef_time1: *const cef_time_t,
+    cef_time2: *const cef_time_t,
+    delta: *mut ::std::os::raw::c_longlong,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_time_delta)(cef_time1, cef_time2, delta) }
 }
-unsafe extern "C" {
-    #[doc = "\n Converts cef_time_t to cef_basetime_t. Returns true (1) on success and\n false (0) on failure.\n"]
-    pub fn cef_time_to_basetime(
-        from: *const cef_time_t,
-        to: *mut cef_basetime_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Converts cef_time_t to cef_basetime_t. Returns true (1) on success and\n false (0) on failure.\n"]
+#[inline]
+pub unsafe fn cef_time_to_basetime(
+    from: *const cef_time_t,
+    to: *mut cef_basetime_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_time_to_basetime)(from, to) }
 }
-unsafe extern "C" {
-    #[doc = "\n Converts cef_basetime_t to cef_time_t. Returns true (1) on success and\n false (0) on failure.\n"]
-    pub fn cef_time_from_basetime(
-        from: cef_basetime_t,
-        to: *mut cef_time_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Converts cef_basetime_t to cef_time_t. Returns true (1) on success and\n false (0) on failure.\n"]
+#[inline]
+pub unsafe fn cef_time_from_basetime(
+    from: cef_basetime_t,
+    to: *mut cef_time_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_time_from_basetime)(from, to) }
 }
 #[repr(u32)]
 #[non_exhaustive]
@@ -17386,8 +17451,9 @@ pub type XDisplay = _XDisplay;
 pub type cef_cursor_handle_t = ::std::os::raw::c_ulong;
 pub type cef_event_handle_t = *mut XEvent;
 pub type cef_window_handle_t = ::std::os::raw::c_ulong;
-unsafe extern "C" {
-    pub fn cef_get_xdisplay() -> *mut XDisplay;
+#[inline]
+pub unsafe fn cef_get_xdisplay() -> *mut XDisplay {
+    unsafe { (crate::libcef::functions().cef_get_xdisplay)() }
 }
 #[doc = "\n Structure representing CefExecuteProcess arguments.\n"]
 #[repr(C)]
@@ -21144,9 +21210,10 @@ const _: () = {
 };
 #[doc = "\n Structure that wraps other data value types. Complex types (binary,\n dictionary and list) will be referenced but not owned by this object. Can be\n used on any process and thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_value_t = _cef_value_t;
-unsafe extern "C" {
-    #[doc = "\n Creates a new object.\n"]
-    pub fn cef_value_create() -> *mut cef_value_t;
+#[doc = "\n Creates a new object.\n"]
+#[inline]
+pub unsafe fn cef_value_create() -> *mut cef_value_t {
+    unsafe { (crate::libcef::functions().cef_value_create)() }
 }
 #[doc = "\n Structure representing a binary value. Can be used on any process and\n thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -21222,12 +21289,13 @@ const _: () = {
 };
 #[doc = "\n Structure representing a binary value. Can be used on any process and\n thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_binary_value_t = _cef_binary_value_t;
-unsafe extern "C" {
-    #[doc = "\n Creates a new object that is not owned by any other object. The specified\n |data| will be copied.\n"]
-    pub fn cef_binary_value_create(
-        data: *const ::std::os::raw::c_void,
-        data_size: usize,
-    ) -> *mut cef_binary_value_t;
+#[doc = "\n Creates a new object that is not owned by any other object. The specified\n |data| will be copied.\n"]
+#[inline]
+pub unsafe fn cef_binary_value_create(
+    data: *const ::std::os::raw::c_void,
+    data_size: usize,
+) -> *mut cef_binary_value_t {
+    unsafe { (crate::libcef::functions().cef_binary_value_create)(data, data_size) }
 }
 #[doc = "\n Structure representing a dictionary value. Can be used on any process and\n thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -21497,9 +21565,10 @@ const _: () = {
 };
 #[doc = "\n Structure representing a dictionary value. Can be used on any process and\n thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_dictionary_value_t = _cef_dictionary_value_t;
-unsafe extern "C" {
-    #[doc = "\n Creates a new object that is not owned by any other object.\n"]
-    pub fn cef_dictionary_value_create() -> *mut cef_dictionary_value_t;
+#[doc = "\n Creates a new object that is not owned by any other object.\n"]
+#[inline]
+pub unsafe fn cef_dictionary_value_create() -> *mut cef_dictionary_value_t {
+    unsafe { (crate::libcef::functions().cef_dictionary_value_create)() }
 }
 #[doc = "\n Structure representing a list value. Can be used on any process and thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -21728,9 +21797,10 @@ const _: () = {
 };
 #[doc = "\n Structure representing a list value. Can be used on any process and thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_list_value_t = _cef_list_value_t;
-unsafe extern "C" {
-    #[doc = "\n Creates a new object that is not owned by any other object.\n"]
-    pub fn cef_list_value_create() -> *mut cef_list_value_t;
+#[doc = "\n Creates a new object that is not owned by any other object.\n"]
+#[inline]
+pub unsafe fn cef_list_value_create() -> *mut cef_list_value_t {
+    unsafe { (crate::libcef::functions().cef_list_value_create)() }
 }
 #[doc = "\n Implement this structure to receive accessibility notification when\n accessibility events have been registered. The functions of this structure\n will be called on the UI thread.\n\n NOTE: This struct is allocated client-side.\n"]
 #[repr(C)]
@@ -21983,9 +22053,10 @@ const _: () = {
 };
 #[doc = "\n Container for a single image represented at different scale factors. All\n image representations should be the same size in density independent pixel\n (DIP) units. For example, if the image at scale factor 1.0 is 100x100 pixels\n then the image at scale factor 2.0 should be 200x200 pixels -- both images\n will display with a DIP size of 100x100 units. The functions of this\n structure can be called on any browser process thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_image_t = _cef_image_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_image_t. It will initially be NULL. Use the Add*()\n functions to add representations at different scale factors.\n"]
-    pub fn cef_image_create() -> *mut cef_image_t;
+#[doc = "\n Create a new cef_image_t. It will initially be NULL. Use the Add*()\n functions to add representations at different scale factors.\n"]
+#[inline]
+pub unsafe fn cef_image_create() -> *mut cef_image_t {
+    unsafe { (crate::libcef::functions().cef_image_create)() }
 }
 #[doc = "\n Structure the client can implement to provide a custom stream reader. The\n functions of this structure may be called on any thread.\n\n NOTE: This struct is allocated client-side.\n"]
 #[repr(C)]
@@ -22093,24 +22164,27 @@ const _: () = {
 };
 #[doc = "\n Structure used to read data from a stream. The functions of this structure\n may be called on any thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_stream_reader_t = _cef_stream_reader_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_stream_reader_t object from a file.\n"]
-    pub fn cef_stream_reader_create_for_file(
-        fileName: *const cef_string_t,
-    ) -> *mut cef_stream_reader_t;
+#[doc = "\n Create a new cef_stream_reader_t object from a file.\n"]
+#[inline]
+pub unsafe fn cef_stream_reader_create_for_file(
+    fileName: *const cef_string_t,
+) -> *mut cef_stream_reader_t {
+    unsafe { (crate::libcef::functions().cef_stream_reader_create_for_file)(fileName) }
 }
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_stream_reader_t object from data.\n"]
-    pub fn cef_stream_reader_create_for_data(
-        data: *mut ::std::os::raw::c_void,
-        size: usize,
-    ) -> *mut cef_stream_reader_t;
+#[doc = "\n Create a new cef_stream_reader_t object from data.\n"]
+#[inline]
+pub unsafe fn cef_stream_reader_create_for_data(
+    data: *mut ::std::os::raw::c_void,
+    size: usize,
+) -> *mut cef_stream_reader_t {
+    unsafe { (crate::libcef::functions().cef_stream_reader_create_for_data)(data, size) }
 }
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_stream_reader_t object from a custom handler.\n"]
-    pub fn cef_stream_reader_create_for_handler(
-        handler: *mut cef_read_handler_t,
-    ) -> *mut cef_stream_reader_t;
+#[doc = "\n Create a new cef_stream_reader_t object from a custom handler.\n"]
+#[inline]
+pub unsafe fn cef_stream_reader_create_for_handler(
+    handler: *mut cef_read_handler_t,
+) -> *mut cef_stream_reader_t {
+    unsafe { (crate::libcef::functions().cef_stream_reader_create_for_handler)(handler) }
 }
 #[doc = "\n Structure the client can implement to provide a custom stream writer. The\n functions of this structure may be called on any thread.\n\n NOTE: This struct is allocated client-side.\n"]
 #[repr(C)]
@@ -22218,17 +22292,19 @@ const _: () = {
 };
 #[doc = "\n Structure used to write data to a stream. The functions of this structure\n may be called on any thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_stream_writer_t = _cef_stream_writer_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_stream_writer_t object for a file.\n"]
-    pub fn cef_stream_writer_create_for_file(
-        fileName: *const cef_string_t,
-    ) -> *mut cef_stream_writer_t;
+#[doc = "\n Create a new cef_stream_writer_t object for a file.\n"]
+#[inline]
+pub unsafe fn cef_stream_writer_create_for_file(
+    fileName: *const cef_string_t,
+) -> *mut cef_stream_writer_t {
+    unsafe { (crate::libcef::functions().cef_stream_writer_create_for_file)(fileName) }
 }
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_stream_writer_t object for a custom handler.\n"]
-    pub fn cef_stream_writer_create_for_handler(
-        handler: *mut cef_write_handler_t,
-    ) -> *mut cef_stream_writer_t;
+#[doc = "\n Create a new cef_stream_writer_t object for a custom handler.\n"]
+#[inline]
+pub unsafe fn cef_stream_writer_create_for_handler(
+    handler: *mut cef_write_handler_t,
+) -> *mut cef_stream_writer_t {
+    unsafe { (crate::libcef::functions().cef_stream_writer_create_for_handler)(handler) }
 }
 #[doc = "\n Structure used to represent drag data. The functions of this structure may\n be called on any thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -22417,9 +22493,10 @@ const _: () = {
 };
 #[doc = "\n Structure used to represent drag data. The functions of this structure may\n be called on any thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_drag_data_t = _cef_drag_data_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_drag_data_t object.\n"]
-    pub fn cef_drag_data_create() -> *mut cef_drag_data_t;
+#[doc = "\n Create a new cef_drag_data_t object.\n"]
+#[inline]
+pub unsafe fn cef_drag_data_create() -> *mut cef_drag_data_t {
+    unsafe { (crate::libcef::functions().cef_drag_data_create)() }
 }
 #[doc = "\n Structure to implement for visiting the DOM. The functions of this structure\n will be called on the render process main thread.\n\n NOTE: This struct is allocated client-side.\n"]
 #[repr(C)]
@@ -22829,9 +22906,10 @@ const _: () = {
 };
 #[doc = "\n Structure representing a message. Can be used on any process and thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_process_message_t = _cef_process_message_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_process_message_t object with the specified name.\n"]
-    pub fn cef_process_message_create(name: *const cef_string_t) -> *mut cef_process_message_t;
+#[doc = "\n Create a new cef_process_message_t object with the specified name.\n"]
+#[inline]
+pub unsafe fn cef_process_message_create(name: *const cef_string_t) -> *mut cef_process_message_t {
+    unsafe { (crate::libcef::functions().cef_process_message_create)(name) }
 }
 #[doc = "\n Structure used to represent a web request. The functions of this structure\n may be called on any thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -22998,9 +23076,10 @@ const _: () = {
 };
 #[doc = "\n Structure used to represent a web request. The functions of this structure\n may be called on any thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_request_t = _cef_request_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_request_t object.\n"]
-    pub fn cef_request_create() -> *mut cef_request_t;
+#[doc = "\n Create a new cef_request_t object.\n"]
+#[inline]
+pub unsafe fn cef_request_create() -> *mut cef_request_t {
+    unsafe { (crate::libcef::functions().cef_request_create)() }
 }
 #[doc = "\n Structure used to represent post data for a web request. The functions of\n this structure may be called on any thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -23067,9 +23146,10 @@ const _: () = {
 };
 #[doc = "\n Structure used to represent post data for a web request. The functions of\n this structure may be called on any thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_post_data_t = _cef_post_data_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_post_data_t object.\n"]
-    pub fn cef_post_data_create() -> *mut cef_post_data_t;
+#[doc = "\n Create a new cef_post_data_t object.\n"]
+#[inline]
+pub unsafe fn cef_post_data_create() -> *mut cef_post_data_t {
+    unsafe { (crate::libcef::functions().cef_post_data_create)() }
 }
 #[doc = "\n Structure used to represent a single element in the request post data. The\n functions of this structure may be called on any thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -23143,9 +23223,10 @@ const _: () = {
 };
 #[doc = "\n Structure used to represent a single element in the request post data. The\n functions of this structure may be called on any thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_post_data_element_t = _cef_post_data_element_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_post_data_element_t object.\n"]
-    pub fn cef_post_data_element_create() -> *mut cef_post_data_element_t;
+#[doc = "\n Create a new cef_post_data_element_t object.\n"]
+#[inline]
+pub unsafe fn cef_post_data_element_create() -> *mut cef_post_data_element_t {
+    unsafe { (crate::libcef::functions().cef_post_data_element_create)() }
 }
 #[doc = "\n Implement this structure to receive string values asynchronously.\n\n NOTE: This struct is allocated client-side.\n"]
 #[repr(C)]
@@ -23734,11 +23815,12 @@ const _: () = {
 };
 #[doc = "\n Structure used for managing cookies. The functions of this structure may be\n called on any thread unless otherwise indicated.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_cookie_manager_t = _cef_cookie_manager_t;
-unsafe extern "C" {
-    #[doc = "\n Returns the global cookie manager. By default data will be stored at\n cef_settings_t.cache_path if specified or in memory otherwise. If |callback|\n is non-NULL it will be executed asnychronously on the UI thread after the\n manager's storage has been initialized. Using this function is equivalent to\n calling cef_request_context_t::cef_request_context_get_global_context()-\n >GetDefaultCookieManager().\n"]
-    pub fn cef_cookie_manager_get_global_manager(
-        callback: *mut _cef_completion_callback_t,
-    ) -> *mut cef_cookie_manager_t;
+#[doc = "\n Returns the global cookie manager. By default data will be stored at\n cef_settings_t.cache_path if specified or in memory otherwise. If |callback|\n is non-NULL it will be executed asnychronously on the UI thread after the\n manager's storage has been initialized. Using this function is equivalent to\n calling cef_request_context_t::cef_request_context_get_global_context()-\n >GetDefaultCookieManager().\n"]
+#[inline]
+pub unsafe fn cef_cookie_manager_get_global_manager(
+    callback: *mut _cef_completion_callback_t,
+) -> *mut cef_cookie_manager_t {
+    unsafe { (crate::libcef::functions().cef_cookie_manager_get_global_manager)(callback) }
 }
 #[doc = "\n Structure to implement for visiting cookie values. The functions of this\n structure will always be called on the UI thread.\n\n NOTE: This struct is allocated client-side.\n"]
 #[repr(C)]
@@ -23878,11 +23960,12 @@ const _: () = {
 };
 #[doc = "\n Supports discovery of and communication with media devices on the local\n network via the Cast and DIAL protocols. The functions of this structure may\n be called on any browser process thread unless otherwise indicated.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_media_router_t = _cef_media_router_t;
-unsafe extern "C" {
-    #[doc = "\n Returns the MediaRouter object associated with the global request context.\n If |callback| is non-NULL it will be executed asnychronously on the UI\n thread after the manager's storage has been initialized. Equivalent to\n calling cef_request_context_t::cef_request_context_get_global_context()-\n >get_media_router().\n"]
-    pub fn cef_media_router_get_global(
-        callback: *mut _cef_completion_callback_t,
-    ) -> *mut cef_media_router_t;
+#[doc = "\n Returns the MediaRouter object associated with the global request context.\n If |callback| is non-NULL it will be executed asnychronously on the UI\n thread after the manager's storage has been initialized. Equivalent to\n calling cef_request_context_t::cef_request_context_get_global_context()-\n >get_media_router().\n"]
+#[inline]
+pub unsafe fn cef_media_router_get_global(
+    callback: *mut _cef_completion_callback_t,
+) -> *mut cef_media_router_t {
+    unsafe { (crate::libcef::functions().cef_media_router_get_global)(callback) }
 }
 #[doc = "\n Implemented by the client to observe MediaRouter events and registered via\n cef_media_router_t::AddObserver. The functions of this structure will be\n called on the browser process UI thread.\n\n NOTE: This struct is allocated client-side.\n"]
 #[repr(C)]
@@ -24277,17 +24360,30 @@ const _: () = {
 };
 #[doc = "\n Manage access to preferences. Many built-in preferences are registered by\n Chromium. Custom preferences can be registered in\n cef_browser_process_handler_t::OnRegisterCustomPreferences.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_preference_manager_t = _cef_preference_manager_t;
-unsafe extern "C" {
-    #[doc = "\n Returns the current Chrome Variations configuration (combination of field\n trials and chrome://flags) as equivalent command-line switches\n (`--[enable|disable]-features=XXXX`, etc). These switches can be used to\n apply the same configuration when launching a CEF-based application. See\n https://developer.chrome.com/docs/web-platform/chrome-variations for\n background and details. Note that field trial tests are disabled by default\n in Official CEF builds (via the `disable_fieldtrial_testing_config=true (1)`\n GN flag). This function must be called on the browser process UI thread.\n"]
-    pub fn cef_preference_manager_get_chrome_variations_as_switches(switches: cef_string_list_t);
+#[doc = "\n Returns the current Chrome Variations configuration (combination of field\n trials and chrome://flags) as equivalent command-line switches\n (`--[enable|disable]-features=XXXX`, etc). These switches can be used to\n apply the same configuration when launching a CEF-based application. See\n https://developer.chrome.com/docs/web-platform/chrome-variations for\n background and details. Note that field trial tests are disabled by default\n in Official CEF builds (via the `disable_fieldtrial_testing_config=true (1)`\n GN flag). This function must be called on the browser process UI thread.\n"]
+#[inline]
+pub unsafe fn cef_preference_manager_get_chrome_variations_as_switches(
+    switches: cef_string_list_t,
+) {
+    unsafe {
+        (crate::libcef::functions().cef_preference_manager_get_chrome_variations_as_switches)(
+            switches,
+        )
+    }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns the current Chrome Variations configuration (combination of field\n trials and chrome://flags) as human-readable strings. This is the human-\n readable equivalent of the \"Active Variations\" section of chrome://version.\n See https://developer.chrome.com/docs/web-platform/chrome-variations for\n background and details. Note that field trial tests are disabled by default\n in Official CEF builds (via the `disable_fieldtrial_testing_config=true (1)`\n GN flag). This function must be called on the browser process UI thread.\n"]
-    pub fn cef_preference_manager_get_chrome_variations_as_strings(strings: cef_string_list_t);
+#[doc = "\n Returns the current Chrome Variations configuration (combination of field\n trials and chrome://flags) as human-readable strings. This is the human-\n readable equivalent of the \"Active Variations\" section of chrome://version.\n See https://developer.chrome.com/docs/web-platform/chrome-variations for\n background and details. Note that field trial tests are disabled by default\n in Official CEF builds (via the `disable_fieldtrial_testing_config=true (1)`\n GN flag). This function must be called on the browser process UI thread.\n"]
+#[inline]
+pub unsafe fn cef_preference_manager_get_chrome_variations_as_strings(strings: cef_string_list_t) {
+    unsafe {
+        (crate::libcef::functions().cef_preference_manager_get_chrome_variations_as_strings)(
+            strings,
+        )
+    }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns the global preference manager object.\n"]
-    pub fn cef_preference_manager_get_global() -> *mut cef_preference_manager_t;
+#[doc = "\n Returns the global preference manager object.\n"]
+#[inline]
+pub unsafe fn cef_preference_manager_get_global() -> *mut cef_preference_manager_t {
+    unsafe { (crate::libcef::functions().cef_preference_manager_get_global)() }
 }
 #[doc = "\n Callback structure for cef_request_context_t::ResolveHost.\n\n NOTE: This struct is allocated client-side.\n"]
 #[repr(C)]
@@ -24567,23 +24663,28 @@ const _: () = {
 };
 #[doc = "\n A request context provides request handling for a set of related browser or\n URL request objects. A request context can be specified when creating a new\n browser via the cef_browser_host_t static factory functions or when creating\n a new URL request via the cef_urlrequest_t static factory functions. Browser\n objects with different request contexts will never be hosted in the same\n render process. Browser objects with the same request context may or may not\n be hosted in the same render process depending on the process model. Browser\n objects created indirectly via the JavaScript window.open function or\n targeted links will share the same render process and the same request\n context as the source browser. When running in single-process mode there is\n only a single render process (the main process) and so all browsers created\n in single-process mode will share the same request context. This will be the\n first request context passed into a cef_browser_host_t static factory\n function and all other request context objects will be ignored.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_request_context_t = _cef_request_context_t;
-unsafe extern "C" {
-    #[doc = "\n Returns the global context object.\n"]
-    pub fn cef_request_context_get_global_context() -> *mut cef_request_context_t;
+#[doc = "\n Returns the global context object.\n"]
+#[inline]
+pub unsafe fn cef_request_context_get_global_context() -> *mut cef_request_context_t {
+    unsafe { (crate::libcef::functions().cef_request_context_get_global_context)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Creates a new context object with the specified |settings| and optional\n |handler|.\n"]
-    pub fn cef_request_context_create_context(
-        settings: *const _cef_request_context_settings_t,
-        handler: *mut _cef_request_context_handler_t,
-    ) -> *mut cef_request_context_t;
+#[doc = "\n Creates a new context object with the specified |settings| and optional\n |handler|.\n"]
+#[inline]
+pub unsafe fn cef_request_context_create_context(
+    settings: *const _cef_request_context_settings_t,
+    handler: *mut _cef_request_context_handler_t,
+) -> *mut cef_request_context_t {
+    unsafe { (crate::libcef::functions().cef_request_context_create_context)(settings, handler) }
 }
-unsafe extern "C" {
-    #[doc = "\n Creates a new context object that shares storage with |other| and uses an\n optional |handler|.\n"]
-    pub fn cef_request_context_cef_create_context_shared(
-        other: *mut cef_request_context_t,
-        handler: *mut _cef_request_context_handler_t,
-    ) -> *mut cef_request_context_t;
+#[doc = "\n Creates a new context object that shares storage with |other| and uses an\n optional |handler|.\n"]
+#[inline]
+pub unsafe fn cef_request_context_cef_create_context_shared(
+    other: *mut cef_request_context_t,
+    handler: *mut _cef_request_context_handler_t,
+) -> *mut cef_request_context_t {
+    unsafe {
+        (crate::libcef::functions().cef_request_context_cef_create_context_shared)(other, handler)
+    }
 }
 #[doc = "\n Structure used to represent a browser. When used in the browser process the\n functions of this structure may be called on any thread unless otherwise\n indicated in the comments. When used in the render process the functions of\n this structure may only be called on the main thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -25372,33 +25473,54 @@ const _: () = {
 };
 #[doc = "\n Structure used to represent the browser process aspects of a browser. The\n functions of this structure can only be called in the browser process. They\n may be called on any thread in that process unless otherwise indicated in\n the comments.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_browser_host_t = _cef_browser_host_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new browser using the window parameters specified by |windowInfo|.\n All values will be copied internally and the actual window (if any) will be\n created on the UI thread. If |request_context| is NULL the global request\n context will be used. This function can be called on any browser process\n thread and will not block. The optional |extra_info| parameter provides an\n opportunity to specify extra information specific to the created browser\n that will be passed to cef_render_process_handler_t::on_browser_created() in\n the render process.\n"]
-    pub fn cef_browser_host_create_browser(
-        windowInfo: *const cef_window_info_t,
-        client: *mut _cef_client_t,
-        url: *const cef_string_t,
-        settings: *const _cef_browser_settings_t,
-        extra_info: *mut _cef_dictionary_value_t,
-        request_context: *mut _cef_request_context_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Create a new browser using the window parameters specified by |windowInfo|.\n All values will be copied internally and the actual window (if any) will be\n created on the UI thread. If |request_context| is NULL the global request\n context will be used. This function can be called on any browser process\n thread and will not block. The optional |extra_info| parameter provides an\n opportunity to specify extra information specific to the created browser\n that will be passed to cef_render_process_handler_t::on_browser_created() in\n the render process.\n"]
+#[inline]
+pub unsafe fn cef_browser_host_create_browser(
+    windowInfo: *const cef_window_info_t,
+    client: *mut _cef_client_t,
+    url: *const cef_string_t,
+    settings: *const _cef_browser_settings_t,
+    extra_info: *mut _cef_dictionary_value_t,
+    request_context: *mut _cef_request_context_t,
+) -> ::std::os::raw::c_int {
+    unsafe {
+        (crate::libcef::functions().cef_browser_host_create_browser)(
+            windowInfo,
+            client,
+            url,
+            settings,
+            extra_info,
+            request_context,
+        )
+    }
 }
-unsafe extern "C" {
-    #[doc = "\n Create a new browser using the window parameters specified by |windowInfo|.\n If |request_context| is NULL the global request context will be used. This\n function can only be called on the browser process UI thread. The optional\n |extra_info| parameter provides an opportunity to specify extra information\n specific to the created browser that will be passed to\n cef_render_process_handler_t::on_browser_created() in the render process.\n"]
-    pub fn cef_browser_host_create_browser_sync(
-        windowInfo: *const cef_window_info_t,
-        client: *mut _cef_client_t,
-        url: *const cef_string_t,
-        settings: *const _cef_browser_settings_t,
-        extra_info: *mut _cef_dictionary_value_t,
-        request_context: *mut _cef_request_context_t,
-    ) -> *mut cef_browser_t;
+#[doc = "\n Create a new browser using the window parameters specified by |windowInfo|.\n If |request_context| is NULL the global request context will be used. This\n function can only be called on the browser process UI thread. The optional\n |extra_info| parameter provides an opportunity to specify extra information\n specific to the created browser that will be passed to\n cef_render_process_handler_t::on_browser_created() in the render process.\n"]
+#[inline]
+pub unsafe fn cef_browser_host_create_browser_sync(
+    windowInfo: *const cef_window_info_t,
+    client: *mut _cef_client_t,
+    url: *const cef_string_t,
+    settings: *const _cef_browser_settings_t,
+    extra_info: *mut _cef_dictionary_value_t,
+    request_context: *mut _cef_request_context_t,
+) -> *mut cef_browser_t {
+    unsafe {
+        (crate::libcef::functions().cef_browser_host_create_browser_sync)(
+            windowInfo,
+            client,
+            url,
+            settings,
+            extra_info,
+            request_context,
+        )
+    }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns the browser (if any) with the specified identifier.\n"]
-    pub fn cef_browser_host_get_browser_by_identifier(
-        browser_id: ::std::os::raw::c_int,
-    ) -> *mut cef_browser_t;
+#[doc = "\n Returns the browser (if any) with the specified identifier.\n"]
+#[inline]
+pub unsafe fn cef_browser_host_get_browser_by_identifier(
+    browser_id: ::std::os::raw::c_int,
+) -> *mut cef_browser_t {
+    unsafe { (crate::libcef::functions().cef_browser_host_get_browser_by_identifier)(browser_id) }
 }
 #[doc = "\n Implement this structure to handle audio events.\n\n NOTE: This struct is allocated client-side.\n"]
 #[repr(C)]
@@ -26144,11 +26266,12 @@ const _: () = {
 };
 #[doc = "\n Supports creation and modification of menus. See cef_menu_id_t for the\n command ids that have default implementations. All user-defined command ids\n should be between MENU_ID_USER_FIRST and MENU_ID_USER_LAST. The functions of\n this structure can only be accessed on the browser process the UI thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_menu_model_t = _cef_menu_model_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new MenuModel with the specified |delegate|.\n"]
-    pub fn cef_menu_model_create(
-        delegate: *mut _cef_menu_model_delegate_t,
-    ) -> *mut cef_menu_model_t;
+#[doc = "\n Create a new MenuModel with the specified |delegate|.\n"]
+#[inline]
+pub unsafe fn cef_menu_model_create(
+    delegate: *mut _cef_menu_model_delegate_t,
+) -> *mut cef_menu_model_t {
+    unsafe { (crate::libcef::functions().cef_menu_model_create)(delegate) }
 }
 #[doc = "\n Callback structure used for continuation of custom context menu display.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -27657,9 +27780,10 @@ const _: () = {
 };
 #[doc = "\n Structure representing print settings.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_print_settings_t = _cef_print_settings_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_print_settings_t object.\n"]
-    pub fn cef_print_settings_create() -> *mut cef_print_settings_t;
+#[doc = "\n Create a new cef_print_settings_t object.\n"]
+#[inline]
+pub unsafe fn cef_print_settings_create() -> *mut cef_print_settings_t {
+    unsafe { (crate::libcef::functions().cef_print_settings_create)() }
 }
 #[doc = "\n Callback structure for asynchronous continuation of print dialog requests.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -28148,9 +28272,10 @@ const _: () = {
 };
 #[doc = "\n Structure used to represent a web response. The functions of this structure\n may be called on any thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_response_t = _cef_response_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_response_t object.\n"]
-    pub fn cef_response_create() -> *mut cef_response_t;
+#[doc = "\n Create a new cef_response_t object.\n"]
+#[inline]
+pub unsafe fn cef_response_create() -> *mut cef_response_t {
+    unsafe { (crate::libcef::functions().cef_response_create)() }
 }
 #[doc = "\n Callback for asynchronous continuation of cef_resource_handler_t::skip().\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -28522,9 +28647,10 @@ const _: () = {
 };
 #[doc = "\n Structure representing SSL information.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_sslinfo_t = _cef_sslinfo_t;
-unsafe extern "C" {
-    #[doc = "\n Returns true (1) if the certificate status represents an error.\n"]
-    pub fn cef_is_cert_status_error(status: cef_cert_status_t) -> ::std::os::raw::c_int;
+#[doc = "\n Returns true (1) if the certificate status represents an error.\n"]
+#[inline]
+pub unsafe fn cef_is_cert_status_error(status: cef_cert_status_t) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_is_cert_status_error)(status) }
 }
 #[doc = "\n Callback structure for asynchronous handling of an unresponsive process.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -29016,13 +29142,15 @@ const _: () = {
 };
 #[doc = "\n Structure used to create and/or parse command line arguments. Arguments with\n \"--\", \"-\" and, on Windows, \"/\" prefixes are considered switches. Switches\n will always precede any arguments without switch prefixes. Switches can\n optionally have a value specified using the \"=\" delimiter (e.g.\n \"-switch=value\"). An argument of \"--\" will terminate switch parsing with all\n subsequent tokens, regardless of prefix, being interpreted as non-switch\n arguments. Switch names should be lowercase ASCII and will be converted to\n such if necessary. Switch values will retain the original case and UTF8\n encoding. This structure can be used before cef_initialize() is called.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_command_line_t = _cef_command_line_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_command_line_t instance.\n"]
-    pub fn cef_command_line_create() -> *mut cef_command_line_t;
+#[doc = "\n Create a new cef_command_line_t instance.\n"]
+#[inline]
+pub unsafe fn cef_command_line_create() -> *mut cef_command_line_t {
+    unsafe { (crate::libcef::functions().cef_command_line_create)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns the singleton global cef_command_line_t object. The returned object\n will be read-only.\n"]
-    pub fn cef_command_line_get_global() -> *mut cef_command_line_t;
+#[doc = "\n Returns the singleton global cef_command_line_t object. The returned object\n will be read-only.\n"]
+#[inline]
+pub unsafe fn cef_command_line_get_global() -> *mut cef_command_line_t {
+    unsafe { (crate::libcef::functions().cef_command_line_get_global)() }
 }
 #[doc = "\n Implement this structure to provide handler implementations. The handler\n instance will not be released until all objects related to the context have\n been destroyed.\n\n NOTE: This struct is allocated client-side.\n"]
 #[repr(C)]
@@ -29235,30 +29363,37 @@ const _: () = {
 };
 #[doc = "\n Structure that asynchronously executes tasks on the associated thread. It is\n safe to call the functions of this structure on any thread.\n\n CEF maintains multiple internal threads that are used for handling different\n types of tasks in different processes. The cef_thread_id_t definitions in\n cef_types.h list the common CEF threads. Task runners are also available for\n other CEF threads as appropriate (for example, V8 WebWorker threads).\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_task_runner_t = _cef_task_runner_t;
-unsafe extern "C" {
-    #[doc = "\n Returns the task runner for the current thread. Only CEF threads will have\n task runners. An NULL reference will be returned if this function is called\n on an invalid thread.\n"]
-    pub fn cef_task_runner_get_for_current_thread() -> *mut cef_task_runner_t;
+#[doc = "\n Returns the task runner for the current thread. Only CEF threads will have\n task runners. An NULL reference will be returned if this function is called\n on an invalid thread.\n"]
+#[inline]
+pub unsafe fn cef_task_runner_get_for_current_thread() -> *mut cef_task_runner_t {
+    unsafe { (crate::libcef::functions().cef_task_runner_get_for_current_thread)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns the task runner for the specified CEF thread.\n"]
-    pub fn cef_task_runner_get_for_thread(threadId: cef_thread_id_t) -> *mut cef_task_runner_t;
+#[doc = "\n Returns the task runner for the specified CEF thread.\n"]
+#[inline]
+pub unsafe fn cef_task_runner_get_for_thread(threadId: cef_thread_id_t) -> *mut cef_task_runner_t {
+    unsafe { (crate::libcef::functions().cef_task_runner_get_for_thread)(threadId) }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns true (1) if called on the specified thread. Equivalent to using\n cef_task_runner_t::GetForThread(threadId)->belongs_to_current_thread().\n"]
-    pub fn cef_currently_on(threadId: cef_thread_id_t) -> ::std::os::raw::c_int;
+#[doc = "\n Returns true (1) if called on the specified thread. Equivalent to using\n cef_task_runner_t::GetForThread(threadId)->belongs_to_current_thread().\n"]
+#[inline]
+pub unsafe fn cef_currently_on(threadId: cef_thread_id_t) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_currently_on)(threadId) }
 }
-unsafe extern "C" {
-    #[doc = "\n Post a task for execution on the specified thread. Equivalent to using\n cef_task_runner_t::GetForThread(threadId)->PostTask(task).\n"]
-    pub fn cef_post_task(threadId: cef_thread_id_t, task: *mut cef_task_t)
-        -> ::std::os::raw::c_int;
+#[doc = "\n Post a task for execution on the specified thread. Equivalent to using\n cef_task_runner_t::GetForThread(threadId)->PostTask(task).\n"]
+#[inline]
+pub unsafe fn cef_post_task(
+    threadId: cef_thread_id_t,
+    task: *mut cef_task_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_post_task)(threadId, task) }
 }
-unsafe extern "C" {
-    #[doc = "\n Post a task for delayed execution on the specified thread. Equivalent to\n using cef_task_runner_t::GetForThread(threadId)->PostDelayedTask(task,\n delay_ms).\n"]
-    pub fn cef_post_delayed_task(
-        threadId: cef_thread_id_t,
-        task: *mut cef_task_t,
-        delay_ms: i64,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Post a task for delayed execution on the specified thread. Equivalent to\n using cef_task_runner_t::GetForThread(threadId)->PostDelayedTask(task,\n delay_ms).\n"]
+#[inline]
+pub unsafe fn cef_post_delayed_task(
+    threadId: cef_thread_id_t,
+    task: *mut cef_task_t,
+    delay_ms: i64,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_post_delayed_task)(threadId, task, delay_ms) }
 }
 #[doc = "\n Structure representing a V8 context handle. V8 handles can only be accessed\n from the thread on which they are created. Valid threads for creating a V8\n handle include the render process main thread (TID_RENDERER) and WebWorker\n threads. A task runner for posting tasks on the associated thread can be\n retrieved via the cef_v8_context_t::get_task_runner() function.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -29340,17 +29475,20 @@ const _: () = {
 };
 #[doc = "\n Structure representing a V8 context handle. V8 handles can only be accessed\n from the thread on which they are created. Valid threads for creating a V8\n handle include the render process main thread (TID_RENDERER) and WebWorker\n threads. A task runner for posting tasks on the associated thread can be\n retrieved via the cef_v8_context_t::get_task_runner() function.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_v8_context_t = _cef_v8_context_t;
-unsafe extern "C" {
-    #[doc = "\n Returns the current (top) context object in the V8 context stack.\n"]
-    pub fn cef_v8_context_get_current_context() -> *mut cef_v8_context_t;
+#[doc = "\n Returns the current (top) context object in the V8 context stack.\n"]
+#[inline]
+pub unsafe fn cef_v8_context_get_current_context() -> *mut cef_v8_context_t {
+    unsafe { (crate::libcef::functions().cef_v8_context_get_current_context)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns the entered (bottom) context object in the V8 context stack.\n"]
-    pub fn cef_v8_context_get_entered_context() -> *mut cef_v8_context_t;
+#[doc = "\n Returns the entered (bottom) context object in the V8 context stack.\n"]
+#[inline]
+pub unsafe fn cef_v8_context_get_entered_context() -> *mut cef_v8_context_t {
+    unsafe { (crate::libcef::functions().cef_v8_context_get_entered_context)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns true (1) if V8 is currently inside a context.\n"]
-    pub fn cef_v8_context_in_context() -> ::std::os::raw::c_int;
+#[doc = "\n Returns true (1) if V8 is currently inside a context.\n"]
+#[inline]
+pub unsafe fn cef_v8_context_in_context() -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_v8_context_in_context)() }
 }
 #[doc = "\n Structure that should be implemented to handle V8 function calls. The\n functions of this structure will be called on the thread associated with the\n V8 function.\n\n NOTE: This struct is allocated client-side.\n"]
 #[repr(C)]
@@ -29612,9 +29750,10 @@ const _: () = {
 };
 #[doc = "\n Structure representing a V8 ArrayBuffer backing store. The backing store\n holds the memory that backs an ArrayBuffer. It must be created on a thread\n with a valid V8 isolate (renderer main thread or WebWorker thread). Once\n created, the data() pointer can be safely read/written from any thread. This\n allows expensive operations like memcpy to be performed on a background\n thread before creating the ArrayBuffer on the V8 thread.\n\n The backing store is consumed when passed to\n cef_v8_value_t::cef_v8_value_create_array_buffer_from_backing_store(), after\n which is_valid() returns false (0).\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_v8_backing_store_t = _cef_v8_backing_store_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new backing store with allocated memory of |byte_length| bytes. The\n memory is uninitialized. This function must be called on a thread with a\n valid V8 isolate. The returned object can safely be passed to other threads.\n Returns nullptr on failure.\n"]
-    pub fn cef_v8_backing_store_create(byte_length: usize) -> *mut cef_v8_backing_store_t;
+#[doc = "\n Create a new backing store with allocated memory of |byte_length| bytes. The\n memory is uninitialized. This function must be called on a thread with a\n valid V8 isolate. The returned object can safely be passed to other threads.\n Returns nullptr on failure.\n"]
+#[inline]
+pub unsafe fn cef_v8_backing_store_create(byte_length: usize) -> *mut cef_v8_backing_store_t {
+    unsafe { (crate::libcef::functions().cef_v8_backing_store_create)(byte_length) }
 }
 #[doc = "\n Structure representing a V8 value handle. V8 handles can only be accessed\n from the thread on which they are created. Valid threads for creating a V8\n handle include the render process main thread (TID_RENDERER) and WebWorker\n threads. A task runner for posting tasks on the associated thread can be\n retrieved via the cef_v8_context_t::get_task_runner() function.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -30004,80 +30143,107 @@ const _: () = {
 };
 #[doc = "\n Structure representing a V8 value handle. V8 handles can only be accessed\n from the thread on which they are created. Valid threads for creating a V8\n handle include the render process main thread (TID_RENDERER) and WebWorker\n threads. A task runner for posting tasks on the associated thread can be\n retrieved via the cef_v8_context_t::get_task_runner() function.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_v8_value_t = _cef_v8_value_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_v8_value_t object of type undefined.\n"]
-    pub fn cef_v8_value_create_undefined() -> *mut cef_v8_value_t;
+#[doc = "\n Create a new cef_v8_value_t object of type undefined.\n"]
+#[inline]
+pub unsafe fn cef_v8_value_create_undefined() -> *mut cef_v8_value_t {
+    unsafe { (crate::libcef::functions().cef_v8_value_create_undefined)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_v8_value_t object of type null.\n"]
-    pub fn cef_v8_value_create_null() -> *mut cef_v8_value_t;
+#[doc = "\n Create a new cef_v8_value_t object of type null.\n"]
+#[inline]
+pub unsafe fn cef_v8_value_create_null() -> *mut cef_v8_value_t {
+    unsafe { (crate::libcef::functions().cef_v8_value_create_null)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_v8_value_t object of type bool.\n"]
-    pub fn cef_v8_value_create_bool(value: ::std::os::raw::c_int) -> *mut cef_v8_value_t;
+#[doc = "\n Create a new cef_v8_value_t object of type bool.\n"]
+#[inline]
+pub unsafe fn cef_v8_value_create_bool(value: ::std::os::raw::c_int) -> *mut cef_v8_value_t {
+    unsafe { (crate::libcef::functions().cef_v8_value_create_bool)(value) }
 }
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_v8_value_t object of type int.\n"]
-    pub fn cef_v8_value_create_int(value: i32) -> *mut cef_v8_value_t;
+#[doc = "\n Create a new cef_v8_value_t object of type int.\n"]
+#[inline]
+pub unsafe fn cef_v8_value_create_int(value: i32) -> *mut cef_v8_value_t {
+    unsafe { (crate::libcef::functions().cef_v8_value_create_int)(value) }
 }
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_v8_value_t object of type unsigned int.\n"]
-    pub fn cef_v8_value_create_uint(value: u32) -> *mut cef_v8_value_t;
+#[doc = "\n Create a new cef_v8_value_t object of type unsigned int.\n"]
+#[inline]
+pub unsafe fn cef_v8_value_create_uint(value: u32) -> *mut cef_v8_value_t {
+    unsafe { (crate::libcef::functions().cef_v8_value_create_uint)(value) }
 }
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_v8_value_t object of type double.\n"]
-    pub fn cef_v8_value_create_double(value: f64) -> *mut cef_v8_value_t;
+#[doc = "\n Create a new cef_v8_value_t object of type double.\n"]
+#[inline]
+pub unsafe fn cef_v8_value_create_double(value: f64) -> *mut cef_v8_value_t {
+    unsafe { (crate::libcef::functions().cef_v8_value_create_double)(value) }
 }
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_v8_value_t object of type Date. This function should only\n be called from within the scope of a cef_render_process_handler_t,\n cef_v8_handler_t or cef_v8_accessor_t callback, or in combination with\n calling enter() and exit() on a stored cef_v8_context_t reference.\n"]
-    pub fn cef_v8_value_create_date(date: cef_basetime_t) -> *mut cef_v8_value_t;
+#[doc = "\n Create a new cef_v8_value_t object of type Date. This function should only\n be called from within the scope of a cef_render_process_handler_t,\n cef_v8_handler_t or cef_v8_accessor_t callback, or in combination with\n calling enter() and exit() on a stored cef_v8_context_t reference.\n"]
+#[inline]
+pub unsafe fn cef_v8_value_create_date(date: cef_basetime_t) -> *mut cef_v8_value_t {
+    unsafe { (crate::libcef::functions().cef_v8_value_create_date)(date) }
 }
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_v8_value_t object of type string.\n"]
-    pub fn cef_v8_value_create_string(value: *const cef_string_t) -> *mut cef_v8_value_t;
+#[doc = "\n Create a new cef_v8_value_t object of type string.\n"]
+#[inline]
+pub unsafe fn cef_v8_value_create_string(value: *const cef_string_t) -> *mut cef_v8_value_t {
+    unsafe { (crate::libcef::functions().cef_v8_value_create_string)(value) }
 }
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_v8_value_t object of type object with optional accessor\n and/or interceptor. This function should only be called from within the\n scope of a cef_render_process_handler_t, cef_v8_handler_t or\n cef_v8_accessor_t callback, or in combination with calling enter() and\n exit() on a stored cef_v8_context_t reference.\n"]
-    pub fn cef_v8_value_create_object(
-        accessor: *mut cef_v8_accessor_t,
-        interceptor: *mut cef_v8_interceptor_t,
-    ) -> *mut cef_v8_value_t;
+#[doc = "\n Create a new cef_v8_value_t object of type object with optional accessor\n and/or interceptor. This function should only be called from within the\n scope of a cef_render_process_handler_t, cef_v8_handler_t or\n cef_v8_accessor_t callback, or in combination with calling enter() and\n exit() on a stored cef_v8_context_t reference.\n"]
+#[inline]
+pub unsafe fn cef_v8_value_create_object(
+    accessor: *mut cef_v8_accessor_t,
+    interceptor: *mut cef_v8_interceptor_t,
+) -> *mut cef_v8_value_t {
+    unsafe { (crate::libcef::functions().cef_v8_value_create_object)(accessor, interceptor) }
 }
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_v8_value_t object of type array with the specified\n |length|. If |length| is negative the returned array will have length 0.\n This function should only be called from within the scope of a\n cef_render_process_handler_t, cef_v8_handler_t or cef_v8_accessor_t\n callback, or in combination with calling enter() and exit() on a stored\n cef_v8_context_t reference.\n"]
-    pub fn cef_v8_value_create_array(length: ::std::os::raw::c_int) -> *mut cef_v8_value_t;
+#[doc = "\n Create a new cef_v8_value_t object of type array with the specified\n |length|. If |length| is negative the returned array will have length 0.\n This function should only be called from within the scope of a\n cef_render_process_handler_t, cef_v8_handler_t or cef_v8_accessor_t\n callback, or in combination with calling enter() and exit() on a stored\n cef_v8_context_t reference.\n"]
+#[inline]
+pub unsafe fn cef_v8_value_create_array(length: ::std::os::raw::c_int) -> *mut cef_v8_value_t {
+    unsafe { (crate::libcef::functions().cef_v8_value_create_array)(length) }
 }
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_v8_value_t object of type ArrayBuffer which wraps the\n provided |buffer| of size |length| bytes. The ArrayBuffer is externalized,\n meaning that it does not own |buffer|. The caller is responsible for freeing\n |buffer| when requested via a call to\n cef_v8_array_buffer_release_callback_t::ReleaseBuffer. This function should\n only be called from within the scope of a cef_render_process_handler_t,\n cef_v8_handler_t or cef_v8_accessor_t callback, or in combination with\n calling enter() and exit() on a stored cef_v8_context_t reference.\n\n NOTE: Always returns nullptr when V8 sandbox is enabled.\n"]
-    pub fn cef_v8_value_create_array_buffer(
-        buffer: *mut ::std::os::raw::c_void,
-        length: usize,
-        release_callback: *mut cef_v8_array_buffer_release_callback_t,
-    ) -> *mut cef_v8_value_t;
+#[doc = "\n Create a new cef_v8_value_t object of type ArrayBuffer which wraps the\n provided |buffer| of size |length| bytes. The ArrayBuffer is externalized,\n meaning that it does not own |buffer|. The caller is responsible for freeing\n |buffer| when requested via a call to\n cef_v8_array_buffer_release_callback_t::ReleaseBuffer. This function should\n only be called from within the scope of a cef_render_process_handler_t,\n cef_v8_handler_t or cef_v8_accessor_t callback, or in combination with\n calling enter() and exit() on a stored cef_v8_context_t reference.\n\n NOTE: Always returns nullptr when V8 sandbox is enabled.\n"]
+#[inline]
+pub unsafe fn cef_v8_value_create_array_buffer(
+    buffer: *mut ::std::os::raw::c_void,
+    length: usize,
+    release_callback: *mut cef_v8_array_buffer_release_callback_t,
+) -> *mut cef_v8_value_t {
+    unsafe {
+        (crate::libcef::functions().cef_v8_value_create_array_buffer)(
+            buffer,
+            length,
+            release_callback,
+        )
+    }
 }
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_v8_value_t object of type ArrayBuffer which copies the\n provided |buffer| of size |length| bytes. This function should only be\n called from within the scope of a cef_render_process_handler_t,\n cef_v8_handler_t or cef_v8_accessor_t callback, or in combination with\n calling enter() and exit() on a stored cef_v8_context_t reference.\n"]
-    pub fn cef_v8_value_create_array_buffer_with_copy(
-        buffer: *mut ::std::os::raw::c_void,
-        length: usize,
-    ) -> *mut cef_v8_value_t;
+#[doc = "\n Create a new cef_v8_value_t object of type ArrayBuffer which copies the\n provided |buffer| of size |length| bytes. This function should only be\n called from within the scope of a cef_render_process_handler_t,\n cef_v8_handler_t or cef_v8_accessor_t callback, or in combination with\n calling enter() and exit() on a stored cef_v8_context_t reference.\n"]
+#[inline]
+pub unsafe fn cef_v8_value_create_array_buffer_with_copy(
+    buffer: *mut ::std::os::raw::c_void,
+    length: usize,
+) -> *mut cef_v8_value_t {
+    unsafe {
+        (crate::libcef::functions().cef_v8_value_create_array_buffer_with_copy)(buffer, length)
+    }
 }
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_v8_value_t object of type ArrayBuffer from a backing store\n previously created with cef_v8_backing_store_t::cef_translator_test_scoped_l\n ibrary_child_child_create(). This is a zero-copy operation - the ArrayBuffer\n uses the memory already allocated by the backing store. The backing store is\n consumed and becomes invalid after this call. This function should only be\n called from within the scope of a cef_render_process_handler_t,\n cef_v8_handler_t or cef_v8_accessor_t callback, or in combination with\n calling enter() and exit() on a stored cef_v8_context_t reference.\n"]
-    pub fn cef_v8_value_create_array_buffer_from_backing_store(
-        backing_store: *mut cef_v8_backing_store_t,
-    ) -> *mut cef_v8_value_t;
+#[doc = "\n Create a new cef_v8_value_t object of type ArrayBuffer from a backing store\n previously created with cef_v8_backing_store_t::cef_translator_test_scoped_l\n ibrary_child_child_create(). This is a zero-copy operation - the ArrayBuffer\n uses the memory already allocated by the backing store. The backing store is\n consumed and becomes invalid after this call. This function should only be\n called from within the scope of a cef_render_process_handler_t,\n cef_v8_handler_t or cef_v8_accessor_t callback, or in combination with\n calling enter() and exit() on a stored cef_v8_context_t reference.\n"]
+#[inline]
+pub unsafe fn cef_v8_value_create_array_buffer_from_backing_store(
+    backing_store: *mut cef_v8_backing_store_t,
+) -> *mut cef_v8_value_t {
+    unsafe {
+        (crate::libcef::functions().cef_v8_value_create_array_buffer_from_backing_store)(
+            backing_store,
+        )
+    }
 }
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_v8_value_t object of type function. This function should\n only be called from within the scope of a cef_render_process_handler_t,\n cef_v8_handler_t or cef_v8_accessor_t callback, or in combination with\n calling enter() and exit() on a stored cef_v8_context_t reference.\n"]
-    pub fn cef_v8_value_create_function(
-        name: *const cef_string_t,
-        handler: *mut cef_v8_handler_t,
-    ) -> *mut cef_v8_value_t;
+#[doc = "\n Create a new cef_v8_value_t object of type function. This function should\n only be called from within the scope of a cef_render_process_handler_t,\n cef_v8_handler_t or cef_v8_accessor_t callback, or in combination with\n calling enter() and exit() on a stored cef_v8_context_t reference.\n"]
+#[inline]
+pub unsafe fn cef_v8_value_create_function(
+    name: *const cef_string_t,
+    handler: *mut cef_v8_handler_t,
+) -> *mut cef_v8_value_t {
+    unsafe { (crate::libcef::functions().cef_v8_value_create_function)(name, handler) }
 }
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_v8_value_t object of type Promise. This function should\n only be called from within the scope of a cef_render_process_handler_t,\n cef_v8_handler_t or cef_v8_accessor_t callback, or in combination with\n calling enter() and exit() on a stored cef_v8_context_t reference.\n"]
-    pub fn cef_v8_value_create_promise() -> *mut cef_v8_value_t;
+#[doc = "\n Create a new cef_v8_value_t object of type Promise. This function should\n only be called from within the scope of a cef_render_process_handler_t,\n cef_v8_handler_t or cef_v8_accessor_t callback, or in combination with\n calling enter() and exit() on a stored cef_v8_context_t reference.\n"]
+#[inline]
+pub unsafe fn cef_v8_value_create_promise() -> *mut cef_v8_value_t {
+    unsafe { (crate::libcef::functions().cef_v8_value_create_promise)() }
 }
 #[doc = "\n Structure representing a V8 stack trace handle. V8 handles can only be\n accessed from the thread on which they are created. Valid threads for\n creating a V8 handle include the render process main thread (TID_RENDERER)\n and WebWorker threads. A task runner for posting tasks on the associated\n thread can be retrieved via the cef_v8_context_t::get_task_runner()\n function.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -30117,11 +30283,12 @@ const _: () = {
 };
 #[doc = "\n Structure representing a V8 stack trace handle. V8 handles can only be\n accessed from the thread on which they are created. Valid threads for\n creating a V8 handle include the render process main thread (TID_RENDERER)\n and WebWorker threads. A task runner for posting tasks on the associated\n thread can be retrieved via the cef_v8_context_t::get_task_runner()\n function.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_v8_stack_trace_t = _cef_v8_stack_trace_t;
-unsafe extern "C" {
-    #[doc = "\n Returns the stack trace for the currently active context. |frame_limit| is\n the maximum number of frames that will be captured.\n"]
-    pub fn cef_v8_stack_trace_get_current(
-        frame_limit: ::std::os::raw::c_int,
-    ) -> *mut cef_v8_stack_trace_t;
+#[doc = "\n Returns the stack trace for the currently active context. |frame_limit| is\n the maximum number of frames that will be captured.\n"]
+#[inline]
+pub unsafe fn cef_v8_stack_trace_get_current(
+    frame_limit: ::std::os::raw::c_int,
+) -> *mut cef_v8_stack_trace_t {
+    unsafe { (crate::libcef::functions().cef_v8_stack_trace_get_current)(frame_limit) }
 }
 #[doc = "\n Structure representing a V8 stack frame handle. V8 handles can only be\n accessed from the thread on which they are created. Valid threads for\n creating a V8 handle include the render process main thread (TID_RENDERER)\n and WebWorker threads. A task runner for posting tasks on the associated\n thread can be retrieved via the cef_v8_context_t::get_task_runner()\n function.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -30406,17 +30573,25 @@ const _: () = {
 };
 #[doc = "\n Structure that creates cef_resource_handler_t instances for handling scheme\n requests. The functions of this structure will always be called on the IO\n thread.\n\n NOTE: This struct is allocated client-side.\n"]
 pub type cef_scheme_handler_factory_t = _cef_scheme_handler_factory_t;
-unsafe extern "C" {
-    #[doc = "\n Register a scheme handler factory with the global request context. An NULL\n |domain_name| value for a standard scheme will cause the factory to match\n all domain names. The |domain_name| value will be ignored for non-standard\n schemes. If |scheme_name| is a built-in scheme and no handler is returned by\n |factory| then the built-in scheme handler factory will be called. If\n |scheme_name| is a custom scheme then you must also implement the\n cef_app_t::on_register_custom_schemes() function in all processes. This\n function may be called multiple times to change or remove the factory that\n matches the specified |scheme_name| and optional |domain_name|. Returns\n false (0) if an error occurs. This function may be called on any thread in\n the browser process. Using this function is equivalent to calling cef_reques\n t_context_t::cef_request_context_get_global_context()-\n >register_scheme_handler_factory().\n"]
-    pub fn cef_register_scheme_handler_factory(
-        scheme_name: *const cef_string_t,
-        domain_name: *const cef_string_t,
-        factory: *mut cef_scheme_handler_factory_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Register a scheme handler factory with the global request context. An NULL\n |domain_name| value for a standard scheme will cause the factory to match\n all domain names. The |domain_name| value will be ignored for non-standard\n schemes. If |scheme_name| is a built-in scheme and no handler is returned by\n |factory| then the built-in scheme handler factory will be called. If\n |scheme_name| is a custom scheme then you must also implement the\n cef_app_t::on_register_custom_schemes() function in all processes. This\n function may be called multiple times to change or remove the factory that\n matches the specified |scheme_name| and optional |domain_name|. Returns\n false (0) if an error occurs. This function may be called on any thread in\n the browser process. Using this function is equivalent to calling cef_reques\n t_context_t::cef_request_context_get_global_context()-\n >register_scheme_handler_factory().\n"]
+#[inline]
+pub unsafe fn cef_register_scheme_handler_factory(
+    scheme_name: *const cef_string_t,
+    domain_name: *const cef_string_t,
+    factory: *mut cef_scheme_handler_factory_t,
+) -> ::std::os::raw::c_int {
+    unsafe {
+        (crate::libcef::functions().cef_register_scheme_handler_factory)(
+            scheme_name,
+            domain_name,
+            factory,
+        )
+    }
 }
-unsafe extern "C" {
-    #[doc = "\n Clear all scheme handler factories registered with the global request\n context. Returns false (0) on error. This function may be called on any\n thread in the browser process. Using this function is equivalent to calling\n cef_request_context_t::cef_request_context_get_global_context()-\n >clear_scheme_handler_factories().\n"]
-    pub fn cef_clear_scheme_handler_factories() -> ::std::os::raw::c_int;
+#[doc = "\n Clear all scheme handler factories registered with the global request\n context. Returns false (0) on error. This function may be called on any\n thread in the browser process. Using this function is equivalent to calling\n cef_request_context_t::cef_request_context_get_global_context()-\n >clear_scheme_handler_factories().\n"]
+#[inline]
+pub unsafe fn cef_clear_scheme_handler_factories() -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_clear_scheme_handler_factories)() }
 }
 #[doc = "\n Implement this structure to provide handler implementations. Methods will be\n called by the process and/or thread indicated.\n\n NOTE: This struct is allocated client-side.\n"]
 #[repr(C)]
@@ -30467,46 +30642,63 @@ const _: () = {
 };
 #[doc = "\n Implement this structure to provide handler implementations. Methods will be\n called by the process and/or thread indicated.\n\n NOTE: This struct is allocated client-side.\n"]
 pub type cef_app_t = _cef_app_t;
-unsafe extern "C" {
-    #[doc = "\n This function should be called from the application entry point function to\n execute a secondary process. It can be used to run secondary processes from\n the browser client executable (default behavior) or from a separate\n executable specified by the cef_settings_t.browser_subprocess_path value. If\n called for the browser process (identified by no \"type\" command-line value)\n it will return immediately with a value of -1. If called for a recognized\n secondary process it will block until the process should exit and then\n return the process exit code. The |application| parameter may be NULL. The\n |windows_sandbox_info| parameter is only used on Windows and may be NULL\n (see cef_sandbox_win.h for details).\n"]
-    pub fn cef_execute_process(
-        args: *const cef_main_args_t,
-        application: *mut cef_app_t,
-        windows_sandbox_info: *mut ::std::os::raw::c_void,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n This function should be called from the application entry point function to\n execute a secondary process. It can be used to run secondary processes from\n the browser client executable (default behavior) or from a separate\n executable specified by the cef_settings_t.browser_subprocess_path value. If\n called for the browser process (identified by no \"type\" command-line value)\n it will return immediately with a value of -1. If called for a recognized\n secondary process it will block until the process should exit and then\n return the process exit code. The |application| parameter may be NULL. The\n |windows_sandbox_info| parameter is only used on Windows and may be NULL\n (see cef_sandbox_win.h for details).\n"]
+#[inline]
+pub unsafe fn cef_execute_process(
+    args: *const cef_main_args_t,
+    application: *mut cef_app_t,
+    windows_sandbox_info: *mut ::std::os::raw::c_void,
+) -> ::std::os::raw::c_int {
+    unsafe {
+        (crate::libcef::functions().cef_execute_process)(args, application, windows_sandbox_info)
+    }
 }
-unsafe extern "C" {
-    #[doc = "\n This function should be called on the main application thread to initialize\n the CEF browser process. The |application| parameter may be NULL. Returns\n true (1) if initialization succeeds. Returns false (0) if initialization\n fails or if early exit is desired (for example, due to process singleton\n relaunch behavior). If this function returns false (0) then the application\n should exit immediately without calling any other CEF functions except,\n optionally, CefGetExitCode. The |windows_sandbox_info| parameter is only\n used on Windows and may be NULL (see cef_sandbox_win.h for details).\n"]
-    pub fn cef_initialize(
-        args: *const cef_main_args_t,
-        settings: *const _cef_settings_t,
-        application: *mut cef_app_t,
-        windows_sandbox_info: *mut ::std::os::raw::c_void,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n This function should be called on the main application thread to initialize\n the CEF browser process. The |application| parameter may be NULL. Returns\n true (1) if initialization succeeds. Returns false (0) if initialization\n fails or if early exit is desired (for example, due to process singleton\n relaunch behavior). If this function returns false (0) then the application\n should exit immediately without calling any other CEF functions except,\n optionally, CefGetExitCode. The |windows_sandbox_info| parameter is only\n used on Windows and may be NULL (see cef_sandbox_win.h for details).\n"]
+#[inline]
+pub unsafe fn cef_initialize(
+    args: *const cef_main_args_t,
+    settings: *const _cef_settings_t,
+    application: *mut cef_app_t,
+    windows_sandbox_info: *mut ::std::os::raw::c_void,
+) -> ::std::os::raw::c_int {
+    unsafe {
+        (crate::libcef::functions().cef_initialize)(
+            args,
+            settings,
+            application,
+            windows_sandbox_info,
+        )
+    }
 }
-unsafe extern "C" {
-    #[doc = "\n This function can optionally be called on the main application thread after\n CefInitialize to retrieve the initialization exit code. When CefInitialize\n returns true (1) the exit code will be 0 (CEF_RESULT_CODE_NORMAL_EXIT).\n Otherwise, see cef_resultcode_t for possible exit code values including\n browser process initialization errors and normal early exit conditions (such\n as CEF_RESULT_CODE_NORMAL_EXIT_PROCESS_NOTIFIED for process singleton\n relaunch behavior).\n"]
-    pub fn cef_get_exit_code() -> ::std::os::raw::c_int;
+#[doc = "\n This function can optionally be called on the main application thread after\n CefInitialize to retrieve the initialization exit code. When CefInitialize\n returns true (1) the exit code will be 0 (CEF_RESULT_CODE_NORMAL_EXIT).\n Otherwise, see cef_resultcode_t for possible exit code values including\n browser process initialization errors and normal early exit conditions (such\n as CEF_RESULT_CODE_NORMAL_EXIT_PROCESS_NOTIFIED for process singleton\n relaunch behavior).\n"]
+#[inline]
+pub unsafe fn cef_get_exit_code() -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_get_exit_code)() }
 }
-unsafe extern "C" {
-    #[doc = "\n This function should be called on the main application thread to shut down\n the CEF browser process before the application exits. Do not call any other\n CEF functions after calling this function.\n"]
-    pub fn cef_shutdown();
+#[doc = "\n This function should be called on the main application thread to shut down\n the CEF browser process before the application exits. Do not call any other\n CEF functions after calling this function.\n"]
+#[inline]
+pub unsafe fn cef_shutdown() {
+    unsafe { (crate::libcef::functions().cef_shutdown)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Perform a single iteration of CEF message loop processing. This function is\n provided for cases where the CEF message loop must be integrated into an\n existing application message loop. Use of this function is not recommended\n for most users; use either the cef_run_message_loop() function or\n cef_settings_t.multi_threaded_message_loop if possible. When using this\n function care must be taken to balance performance against excessive CPU\n usage. It is recommended to enable the cef_settings_t.external_message_pump\n option when using this function so that\n cef_browser_process_handler_t::on_schedule_message_pump_work() callbacks can\n facilitate the scheduling process. This function should only be called on\n the main application thread and only if cef_initialize() is called with a\n cef_settings_t.multi_threaded_message_loop value of false (0). This function\n will not block.\n"]
-    pub fn cef_do_message_loop_work();
+#[doc = "\n Perform a single iteration of CEF message loop processing. This function is\n provided for cases where the CEF message loop must be integrated into an\n existing application message loop. Use of this function is not recommended\n for most users; use either the cef_run_message_loop() function or\n cef_settings_t.multi_threaded_message_loop if possible. When using this\n function care must be taken to balance performance against excessive CPU\n usage. It is recommended to enable the cef_settings_t.external_message_pump\n option when using this function so that\n cef_browser_process_handler_t::on_schedule_message_pump_work() callbacks can\n facilitate the scheduling process. This function should only be called on\n the main application thread and only if cef_initialize() is called with a\n cef_settings_t.multi_threaded_message_loop value of false (0). This function\n will not block.\n"]
+#[inline]
+pub unsafe fn cef_do_message_loop_work() {
+    unsafe { (crate::libcef::functions().cef_do_message_loop_work)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Run the CEF message loop. Use this function instead of an application-\n provided message loop to get the best balance between performance and CPU\n usage. This function should only be called on the main application thread\n and only if cef_initialize() is called with a\n cef_settings_t.multi_threaded_message_loop value of false (0). This function\n will block until a quit message is received by the system.\n"]
-    pub fn cef_run_message_loop();
+#[doc = "\n Run the CEF message loop. Use this function instead of an application-\n provided message loop to get the best balance between performance and CPU\n usage. This function should only be called on the main application thread\n and only if cef_initialize() is called with a\n cef_settings_t.multi_threaded_message_loop value of false (0). This function\n will block until a quit message is received by the system.\n"]
+#[inline]
+pub unsafe fn cef_run_message_loop() {
+    unsafe { (crate::libcef::functions().cef_run_message_loop)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Quit the CEF message loop that was started by calling\n cef_run_message_loop(). This function should only be called on the main\n application thread and only if cef_run_message_loop() was used.\n"]
-    pub fn cef_quit_message_loop();
+#[doc = "\n Quit the CEF message loop that was started by calling\n cef_run_message_loop(). This function should only be called on the main\n application thread and only if cef_run_message_loop() was used.\n"]
+#[inline]
+pub unsafe fn cef_quit_message_loop() {
+    unsafe { (crate::libcef::functions().cef_quit_message_loop)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Set to true (1) before calling OS APIs on the CEF UI thread that will enter\n a native message loop (see usage restrictions below). Set to false (0) after\n exiting the native message loop. On Windows, use the CefSetOSModalLoop\n function instead in cases like native top menus where resize of the browser\n content is not required, or in cases like printer APIs where reentrancy\n safety cannot be guaranteed.\n\n Nested processing of Chromium tasks is disabled by default because common\n controls and/or printer functions may use nested native message loops that\n lead to unplanned reentrancy. This function re-enables nested processing in\n the scope of an upcoming native message loop. It must only be used in cases\n where the stack is reentrancy safe and processing nestable tasks is\n explicitly safe. Do not use in cases (like the printer example) where an OS\n API may experience unplanned reentrancy as a result of a new task executing\n immediately.\n\n For instance,\n - The UI thread is running a message loop.\n - It receives a task #1 and executes it.\n - The task #1 implicitly starts a nested message loop. For example, via\n   Windows APIs such as MessageBox or GetSaveFileName, or default handling of\n   a user-initiated drag/resize operation (e.g. DefWindowProc handling of\n   WM_SYSCOMMAND for SC_MOVE/SC_SIZE).\n - The UI thread receives a task #2 before or while in this second message\n   loop.\n - With NestableTasksAllowed set to true (1), the task #2 will run right\n   away. Otherwise, it will be executed right after task #1 completes at\n   \"thread message loop level\".\n"]
-    pub fn cef_set_nestable_tasks_allowed(allowed: ::std::os::raw::c_int);
+#[doc = "\n Set to true (1) before calling OS APIs on the CEF UI thread that will enter\n a native message loop (see usage restrictions below). Set to false (0) after\n exiting the native message loop. On Windows, use the CefSetOSModalLoop\n function instead in cases like native top menus where resize of the browser\n content is not required, or in cases like printer APIs where reentrancy\n safety cannot be guaranteed.\n\n Nested processing of Chromium tasks is disabled by default because common\n controls and/or printer functions may use nested native message loops that\n lead to unplanned reentrancy. This function re-enables nested processing in\n the scope of an upcoming native message loop. It must only be used in cases\n where the stack is reentrancy safe and processing nestable tasks is\n explicitly safe. Do not use in cases (like the printer example) where an OS\n API may experience unplanned reentrancy as a result of a new task executing\n immediately.\n\n For instance,\n - The UI thread is running a message loop.\n - It receives a task #1 and executes it.\n - The task #1 implicitly starts a nested message loop. For example, via\n   Windows APIs such as MessageBox or GetSaveFileName, or default handling of\n   a user-initiated drag/resize operation (e.g. DefWindowProc handling of\n   WM_SYSCOMMAND for SC_MOVE/SC_SIZE).\n - The UI thread receives a task #2 before or while in this second message\n   loop.\n - With NestableTasksAllowed set to true (1), the task #2 will run right\n   away. Otherwise, it will be executed right after task #1 completes at\n   \"thread message loop level\".\n"]
+#[inline]
+pub unsafe fn cef_set_nestable_tasks_allowed(allowed: ::std::os::raw::c_int) {
+    unsafe { (crate::libcef::functions().cef_set_nestable_tasks_allowed)(allowed) }
 }
 #[repr(u32)]
 #[non_exhaustive]
@@ -30691,192 +30883,249 @@ const _: () = {
 };
 #[doc = "\n This structure provides access to Chromium's component updater service,\n allowing clients to discover registered components and trigger on-demand\n updates. The functions of this structure may only be called on the browser\n process UI thread. If the CEF context is not initialized or the component\n updater service is not available, functions will return safe defaults (0,\n nullptr, or NULL).\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_component_updater_t = _cef_component_updater_t;
-unsafe extern "C" {
-    #[doc = "\n Returns the global cef_component_updater_t singleton. Returns nullptr if\n called from the incorrect thread.\n"]
-    pub fn cef_component_updater_get() -> *mut cef_component_updater_t;
+#[doc = "\n Returns the global cef_component_updater_t singleton. Returns nullptr if\n called from the incorrect thread.\n"]
+#[inline]
+pub unsafe fn cef_component_updater_get() -> *mut cef_component_updater_t {
+    unsafe { (crate::libcef::functions().cef_component_updater_get)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Crash reporting is configured using an INI-style config file named\n \"crash_reporter.cfg\". On Windows and Linux this file must be placed next to\n the main application executable. On macOS this file must be placed in the\n top-level app bundle Resources directory (e.g.\n \"<appname>.app/Contents/Resources\"). File contents are as follows:\n\n <pre>\n  # Comments start with a hash character and must be on their own line.\n\n  [Config]\n  ProductName=<Value of the \"prod\" crash key; defaults to \"cef\">\n  ProductVersion=<Value of the \"ver\" crash key; defaults to the CEF version>\n  AppName=<Windows only; App-specific folder name component for storing crash\n           information; default to \"CEF\">\n  ExternalHandler=<Windows only; Name of the external handler exe to use\n                   instead of re-launching the main exe; default to empty>\n  BrowserCrashForwardingEnabled=<macOS only; True if browser process crashes\n                                 should be forwarded to the system crash\n                                 reporter; default to false>\n  ServerURL=<crash server URL; default to empty>\n  RateLimitEnabled=<True if uploads should be rate limited; default to true>\n  MaxUploadsPerDay=<Max uploads per 24 hours, used if rate limit is enabled;\n                    default to 5>\n  MaxDatabaseSizeInMb=<Total crash report disk usage greater than this value\n                       will cause older reports to be deleted; default to 20>\n  MaxDatabaseAgeInDays=<Crash reports older than this value will be deleted;\n                        default to 5>\n\n  [CrashKeys]\n  my_key1=<small|medium|large>\n  my_key2=<small|medium|large>\n </pre>\n\n <b>Config section:</b>\n\n If \"ProductName\" and/or \"ProductVersion\" are set then the specified values\n will be included in the crash dump metadata. On macOS if these values are\n set to NULL then they will be retrieved from the Info.plist file using the\n \"CFBundleName\" and \"CFBundleShortVersionString\" keys respectively.\n\n If \"AppName\" is set on Windows then crash report information (metrics,\n database and dumps) will be stored locally on disk under the\n \"C:\\Users\\[CurrentUser]\\AppData\\Local\\[AppName]\\User Data\" folder. On other\n platforms the cef_settings_t.root_cache_path value will be used.\n\n If \"ExternalHandler\" is set on Windows then the specified exe will be\n launched as the crashpad-handler instead of re-launching the main process\n exe. The value can be an absolute path or a path relative to the main exe\n directory. On Linux the cef_settings_t.browser_subprocess_path value will be\n used. On macOS the existing subprocess app bundle will be used.\n\n If \"BrowserCrashForwardingEnabled\" is set to true (1) on macOS then browser\n process crashes will be forwarded to the system crash reporter. This results\n in the crash UI dialog being displayed to the user and crash reports being\n logged under \"~/Library/Logs/DiagnosticReports\". Forwarding of crash reports\n from non-browser processes and Debug builds is always disabled.\n\n If \"ServerURL\" is set then crashes will be uploaded as a multi-part POST\n request to the specified URL. Otherwise, reports will only be stored locally\n on disk.\n\n If \"RateLimitEnabled\" is set to true (1) then crash report uploads will be\n rate limited as follows:\n  1. If \"MaxUploadsPerDay\" is set to a positive value then at most the\n     specified number of crashes will be uploaded in each 24 hour period.\n  2. If crash upload fails due to a network or server error then an\n     incremental backoff delay up to a maximum of 24 hours will be applied\n     for retries.\n  3. If a backoff delay is applied and \"MaxUploadsPerDay\" is > 1 then the\n     \"MaxUploadsPerDay\" value will be reduced to 1 until the client is\n     restarted. This helps to avoid an upload flood when the network or\n     server error is resolved.\n Rate limiting is not supported on Linux.\n\n If \"MaxDatabaseSizeInMb\" is set to a positive value then crash report\n storage on disk will be limited to that size in megabytes. For example, on\n Windows each dump is about 600KB so a \"MaxDatabaseSizeInMb\" value of 20\n equates to about 34 crash reports stored on disk. Not supported on Linux.\n\n If \"MaxDatabaseAgeInDays\" is set to a positive value then crash reports\n older than the specified age in days will be deleted. Not supported on\n Linux.\n\n <b>CrashKeys section:</b>\n\n A maximum of 26 crash keys of each size can be specified for use by the\n application. Crash key values will be truncated based on the specified size\n (small = 64 bytes, medium = 256 bytes, large = 1024 bytes). The value of\n crash keys can be set from any thread or process using the\n CefSetCrashKeyValue function. These key/value pairs will be sent to the\n crash server along with the crash dump file.\n"]
-    pub fn cef_crash_reporting_enabled() -> ::std::os::raw::c_int;
+#[doc = "\n Crash reporting is configured using an INI-style config file named\n \"crash_reporter.cfg\". On Windows and Linux this file must be placed next to\n the main application executable. On macOS this file must be placed in the\n top-level app bundle Resources directory (e.g.\n \"<appname>.app/Contents/Resources\"). File contents are as follows:\n\n <pre>\n  # Comments start with a hash character and must be on their own line.\n\n  [Config]\n  ProductName=<Value of the \"prod\" crash key; defaults to \"cef\">\n  ProductVersion=<Value of the \"ver\" crash key; defaults to the CEF version>\n  AppName=<Windows only; App-specific folder name component for storing crash\n           information; default to \"CEF\">\n  ExternalHandler=<Windows only; Name of the external handler exe to use\n                   instead of re-launching the main exe; default to empty>\n  BrowserCrashForwardingEnabled=<macOS only; True if browser process crashes\n                                 should be forwarded to the system crash\n                                 reporter; default to false>\n  ServerURL=<crash server URL; default to empty>\n  RateLimitEnabled=<True if uploads should be rate limited; default to true>\n  MaxUploadsPerDay=<Max uploads per 24 hours, used if rate limit is enabled;\n                    default to 5>\n  MaxDatabaseSizeInMb=<Total crash report disk usage greater than this value\n                       will cause older reports to be deleted; default to 20>\n  MaxDatabaseAgeInDays=<Crash reports older than this value will be deleted;\n                        default to 5>\n\n  [CrashKeys]\n  my_key1=<small|medium|large>\n  my_key2=<small|medium|large>\n </pre>\n\n <b>Config section:</b>\n\n If \"ProductName\" and/or \"ProductVersion\" are set then the specified values\n will be included in the crash dump metadata. On macOS if these values are\n set to NULL then they will be retrieved from the Info.plist file using the\n \"CFBundleName\" and \"CFBundleShortVersionString\" keys respectively.\n\n If \"AppName\" is set on Windows then crash report information (metrics,\n database and dumps) will be stored locally on disk under the\n \"C:\\Users\\[CurrentUser]\\AppData\\Local\\[AppName]\\User Data\" folder. On other\n platforms the cef_settings_t.root_cache_path value will be used.\n\n If \"ExternalHandler\" is set on Windows then the specified exe will be\n launched as the crashpad-handler instead of re-launching the main process\n exe. The value can be an absolute path or a path relative to the main exe\n directory. On Linux the cef_settings_t.browser_subprocess_path value will be\n used. On macOS the existing subprocess app bundle will be used.\n\n If \"BrowserCrashForwardingEnabled\" is set to true (1) on macOS then browser\n process crashes will be forwarded to the system crash reporter. This results\n in the crash UI dialog being displayed to the user and crash reports being\n logged under \"~/Library/Logs/DiagnosticReports\". Forwarding of crash reports\n from non-browser processes and Debug builds is always disabled.\n\n If \"ServerURL\" is set then crashes will be uploaded as a multi-part POST\n request to the specified URL. Otherwise, reports will only be stored locally\n on disk.\n\n If \"RateLimitEnabled\" is set to true (1) then crash report uploads will be\n rate limited as follows:\n  1. If \"MaxUploadsPerDay\" is set to a positive value then at most the\n     specified number of crashes will be uploaded in each 24 hour period.\n  2. If crash upload fails due to a network or server error then an\n     incremental backoff delay up to a maximum of 24 hours will be applied\n     for retries.\n  3. If a backoff delay is applied and \"MaxUploadsPerDay\" is > 1 then the\n     \"MaxUploadsPerDay\" value will be reduced to 1 until the client is\n     restarted. This helps to avoid an upload flood when the network or\n     server error is resolved.\n Rate limiting is not supported on Linux.\n\n If \"MaxDatabaseSizeInMb\" is set to a positive value then crash report\n storage on disk will be limited to that size in megabytes. For example, on\n Windows each dump is about 600KB so a \"MaxDatabaseSizeInMb\" value of 20\n equates to about 34 crash reports stored on disk. Not supported on Linux.\n\n If \"MaxDatabaseAgeInDays\" is set to a positive value then crash reports\n older than the specified age in days will be deleted. Not supported on\n Linux.\n\n <b>CrashKeys section:</b>\n\n A maximum of 26 crash keys of each size can be specified for use by the\n application. Crash key values will be truncated based on the specified size\n (small = 64 bytes, medium = 256 bytes, large = 1024 bytes). The value of\n crash keys can be set from any thread or process using the\n CefSetCrashKeyValue function. These key/value pairs will be sent to the\n crash server along with the crash dump file.\n"]
+#[inline]
+pub unsafe fn cef_crash_reporting_enabled() -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_crash_reporting_enabled)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Sets or clears a specific key-value pair from the crash metadata.\n"]
-    pub fn cef_set_crash_key_value(key: *const cef_string_t, value: *const cef_string_t);
+#[doc = "\n Sets or clears a specific key-value pair from the crash metadata.\n"]
+#[inline]
+pub unsafe fn cef_set_crash_key_value(key: *const cef_string_t, value: *const cef_string_t) {
+    unsafe { (crate::libcef::functions().cef_set_crash_key_value)(key, value) }
 }
-unsafe extern "C" {
-    #[doc = "\n Creates a directory and all parent directories if they don't already exist.\n Returns true (1) on successful creation or if the directory already exists.\n The directory is only readable by the current user. Calling this function on\n the browser process UI or IO threads is not allowed.\n"]
-    pub fn cef_create_directory(full_path: *const cef_string_t) -> ::std::os::raw::c_int;
+#[doc = "\n Creates a directory and all parent directories if they don't already exist.\n Returns true (1) on successful creation or if the directory already exists.\n The directory is only readable by the current user. Calling this function on\n the browser process UI or IO threads is not allowed.\n"]
+#[inline]
+pub unsafe fn cef_create_directory(full_path: *const cef_string_t) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_create_directory)(full_path) }
 }
-unsafe extern "C" {
-    #[doc = "\n Get the temporary directory provided by the system.\n\n WARNING: In general, you should use the temp directory variants below\n instead of this function. Those variants will ensure that the proper\n permissions are set so that other users on the system can't edit them while\n they're open (which could lead to security issues).\n"]
-    pub fn cef_get_temp_directory(temp_dir: *mut cef_string_t) -> ::std::os::raw::c_int;
+#[doc = "\n Get the temporary directory provided by the system.\n\n WARNING: In general, you should use the temp directory variants below\n instead of this function. Those variants will ensure that the proper\n permissions are set so that other users on the system can't edit them while\n they're open (which could lead to security issues).\n"]
+#[inline]
+pub unsafe fn cef_get_temp_directory(temp_dir: *mut cef_string_t) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_get_temp_directory)(temp_dir) }
 }
-unsafe extern "C" {
-    #[doc = "\n Creates a new directory. On Windows if |prefix| is provided the new\n directory name is in the format of \"prefixyyyy\". Returns true (1) on success\n and sets |new_temp_path| to the full path of the directory that was created.\n The directory is only readable by the current user. Calling this function on\n the browser process UI or IO threads is not allowed.\n"]
-    pub fn cef_create_new_temp_directory(
-        prefix: *const cef_string_t,
-        new_temp_path: *mut cef_string_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Creates a new directory. On Windows if |prefix| is provided the new\n directory name is in the format of \"prefixyyyy\". Returns true (1) on success\n and sets |new_temp_path| to the full path of the directory that was created.\n The directory is only readable by the current user. Calling this function on\n the browser process UI or IO threads is not allowed.\n"]
+#[inline]
+pub unsafe fn cef_create_new_temp_directory(
+    prefix: *const cef_string_t,
+    new_temp_path: *mut cef_string_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_create_new_temp_directory)(prefix, new_temp_path) }
 }
-unsafe extern "C" {
-    #[doc = "\n Creates a directory within another directory. Extra characters will be\n appended to |prefix| to ensure that the new directory does not have the same\n name as an existing directory. Returns true (1) on success and sets\n |new_dir| to the full path of the directory that was created. The directory\n is only readable by the current user. Calling this function on the browser\n process UI or IO threads is not allowed.\n"]
-    pub fn cef_create_temp_directory_in_directory(
-        base_dir: *const cef_string_t,
-        prefix: *const cef_string_t,
-        new_dir: *mut cef_string_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Creates a directory within another directory. Extra characters will be\n appended to |prefix| to ensure that the new directory does not have the same\n name as an existing directory. Returns true (1) on success and sets\n |new_dir| to the full path of the directory that was created. The directory\n is only readable by the current user. Calling this function on the browser\n process UI or IO threads is not allowed.\n"]
+#[inline]
+pub unsafe fn cef_create_temp_directory_in_directory(
+    base_dir: *const cef_string_t,
+    prefix: *const cef_string_t,
+    new_dir: *mut cef_string_t,
+) -> ::std::os::raw::c_int {
+    unsafe {
+        (crate::libcef::functions().cef_create_temp_directory_in_directory)(
+            base_dir, prefix, new_dir,
+        )
+    }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns true (1) if the given path exists and is a directory. Calling this\n function on the browser process UI or IO threads is not allowed.\n"]
-    pub fn cef_directory_exists(path: *const cef_string_t) -> ::std::os::raw::c_int;
+#[doc = "\n Returns true (1) if the given path exists and is a directory. Calling this\n function on the browser process UI or IO threads is not allowed.\n"]
+#[inline]
+pub unsafe fn cef_directory_exists(path: *const cef_string_t) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_directory_exists)(path) }
 }
-unsafe extern "C" {
-    #[doc = "\n Deletes the given path whether it's a file or a directory. If |path| is a\n directory all contents will be deleted.  If |recursive| is true (1) any sub-\n directories and their contents will also be deleted (equivalent to executing\n \"rm -rf\", so use with caution). On POSIX environments if |path| is a\n symbolic link then only the symlink will be deleted. Returns true (1) on\n successful deletion or if |path| does not exist. Calling this function on\n the browser process UI or IO threads is not allowed.\n"]
-    pub fn cef_delete_file(
-        path: *const cef_string_t,
-        recursive: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Deletes the given path whether it's a file or a directory. If |path| is a\n directory all contents will be deleted.  If |recursive| is true (1) any sub-\n directories and their contents will also be deleted (equivalent to executing\n \"rm -rf\", so use with caution). On POSIX environments if |path| is a\n symbolic link then only the symlink will be deleted. Returns true (1) on\n successful deletion or if |path| does not exist. Calling this function on\n the browser process UI or IO threads is not allowed.\n"]
+#[inline]
+pub unsafe fn cef_delete_file(
+    path: *const cef_string_t,
+    recursive: ::std::os::raw::c_int,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_delete_file)(path, recursive) }
 }
-unsafe extern "C" {
-    #[doc = "\n Writes the contents of |src_dir| into a zip archive at |dest_file|. If\n |include_hidden_files| is true (1) files starting with \".\" will be included.\n Returns true (1) on success.  Calling this function on the browser process\n UI or IO threads is not allowed.\n"]
-    pub fn cef_zip_directory(
-        src_dir: *const cef_string_t,
-        dest_file: *const cef_string_t,
-        include_hidden_files: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Writes the contents of |src_dir| into a zip archive at |dest_file|. If\n |include_hidden_files| is true (1) files starting with \".\" will be included.\n Returns true (1) on success.  Calling this function on the browser process\n UI or IO threads is not allowed.\n"]
+#[inline]
+pub unsafe fn cef_zip_directory(
+    src_dir: *const cef_string_t,
+    dest_file: *const cef_string_t,
+    include_hidden_files: ::std::os::raw::c_int,
+) -> ::std::os::raw::c_int {
+    unsafe {
+        (crate::libcef::functions().cef_zip_directory)(src_dir, dest_file, include_hidden_files)
+    }
 }
-unsafe extern "C" {
-    #[doc = "\n Loads the existing \"Certificate Revocation Lists\" file that is managed by\n Google Chrome. This file can generally be found in Chrome's User Data\n directory (e.g. \"C:\\Users\\[User]\\AppData\\Local\\Google\\Chrome\\User Data\\\" on\n Windows) and is updated periodically by Chrome's component updater service.\n Must be called in the browser process after the context has been\n initialized. See https://dev.chromium.org/Home/chromium-security/crlsets for\n background.\n"]
-    pub fn cef_load_crlsets_file(path: *const cef_string_t);
+#[doc = "\n Loads the existing \"Certificate Revocation Lists\" file that is managed by\n Google Chrome. This file can generally be found in Chrome's User Data\n directory (e.g. \"C:\\Users\\[User]\\AppData\\Local\\Google\\Chrome\\User Data\\\" on\n Windows) and is updated periodically by Chrome's component updater service.\n Must be called in the browser process after the context has been\n initialized. See https://dev.chromium.org/Home/chromium-security/crlsets for\n background.\n"]
+#[inline]
+pub unsafe fn cef_load_crlsets_file(path: *const cef_string_t) {
+    unsafe { (crate::libcef::functions().cef_load_crlsets_file)(path) }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns true (1) if the application text direction is right-to-left.\n"]
-    pub fn cef_is_rtl() -> ::std::os::raw::c_int;
+#[doc = "\n Returns true (1) if the application text direction is right-to-left.\n"]
+#[inline]
+pub unsafe fn cef_is_rtl() -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_is_rtl)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Add an entry to the cross-origin access whitelist.\n\n The same-origin policy restricts how scripts hosted from different origins\n (scheme + domain + port) can communicate. By default, scripts can only\n access resources with the same origin. Scripts hosted on the HTTP and HTTPS\n schemes (but no other schemes) can use the \"Access-Control-Allow-Origin\"\n header to allow cross-origin requests. For example,\n https://source.example.com can make XMLHttpRequest requests on\n http://target.example.com if the http://target.example.com request returns\n an \"Access-Control-Allow-Origin: https://source.example.com\" response\n header.\n\n Scripts in separate frames or iframes and hosted from the same protocol and\n domain suffix can execute cross-origin JavaScript if both pages set the\n document.domain value to the same domain suffix. For example,\n scheme://foo.example.com and scheme://bar.example.com can communicate using\n JavaScript if both domains set document.domain=\"example.com\".\n\n This function is used to allow access to origins that would otherwise\n violate the same-origin policy. Scripts hosted underneath the fully\n qualified |source_origin| URL (like http://www.example.com) will be allowed\n access to all resources hosted on the specified |target_protocol| and\n |target_domain|. If |target_domain| is non-NULL and\n |allow_target_subdomains| is false (0) only exact domain matches will be\n allowed. If |target_domain| contains a top- level domain component (like\n \"example.com\") and |allow_target_subdomains| is true (1) sub-domain matches\n will be allowed. If |target_domain| is NULL and |allow_target_subdomains| if\n true (1) all domains and IP addresses will be allowed.\n\n This function cannot be used to bypass the restrictions on local or display\n isolated schemes. See the comments on CefRegisterCustomScheme for more\n information.\n\n This function may be called on any thread. Returns false (0) if\n |source_origin| is invalid or the whitelist cannot be accessed.\n"]
-    pub fn cef_add_cross_origin_whitelist_entry(
-        source_origin: *const cef_string_t,
-        target_protocol: *const cef_string_t,
-        target_domain: *const cef_string_t,
-        allow_target_subdomains: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Add an entry to the cross-origin access whitelist.\n\n The same-origin policy restricts how scripts hosted from different origins\n (scheme + domain + port) can communicate. By default, scripts can only\n access resources with the same origin. Scripts hosted on the HTTP and HTTPS\n schemes (but no other schemes) can use the \"Access-Control-Allow-Origin\"\n header to allow cross-origin requests. For example,\n https://source.example.com can make XMLHttpRequest requests on\n http://target.example.com if the http://target.example.com request returns\n an \"Access-Control-Allow-Origin: https://source.example.com\" response\n header.\n\n Scripts in separate frames or iframes and hosted from the same protocol and\n domain suffix can execute cross-origin JavaScript if both pages set the\n document.domain value to the same domain suffix. For example,\n scheme://foo.example.com and scheme://bar.example.com can communicate using\n JavaScript if both domains set document.domain=\"example.com\".\n\n This function is used to allow access to origins that would otherwise\n violate the same-origin policy. Scripts hosted underneath the fully\n qualified |source_origin| URL (like http://www.example.com) will be allowed\n access to all resources hosted on the specified |target_protocol| and\n |target_domain|. If |target_domain| is non-NULL and\n |allow_target_subdomains| is false (0) only exact domain matches will be\n allowed. If |target_domain| contains a top- level domain component (like\n \"example.com\") and |allow_target_subdomains| is true (1) sub-domain matches\n will be allowed. If |target_domain| is NULL and |allow_target_subdomains| if\n true (1) all domains and IP addresses will be allowed.\n\n This function cannot be used to bypass the restrictions on local or display\n isolated schemes. See the comments on CefRegisterCustomScheme for more\n information.\n\n This function may be called on any thread. Returns false (0) if\n |source_origin| is invalid or the whitelist cannot be accessed.\n"]
+#[inline]
+pub unsafe fn cef_add_cross_origin_whitelist_entry(
+    source_origin: *const cef_string_t,
+    target_protocol: *const cef_string_t,
+    target_domain: *const cef_string_t,
+    allow_target_subdomains: ::std::os::raw::c_int,
+) -> ::std::os::raw::c_int {
+    unsafe {
+        (crate::libcef::functions().cef_add_cross_origin_whitelist_entry)(
+            source_origin,
+            target_protocol,
+            target_domain,
+            allow_target_subdomains,
+        )
+    }
 }
-unsafe extern "C" {
-    #[doc = "\n Remove an entry from the cross-origin access whitelist. Returns false (0) if\n |source_origin| is invalid or the whitelist cannot be accessed.\n"]
-    pub fn cef_remove_cross_origin_whitelist_entry(
-        source_origin: *const cef_string_t,
-        target_protocol: *const cef_string_t,
-        target_domain: *const cef_string_t,
-        allow_target_subdomains: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Remove an entry from the cross-origin access whitelist. Returns false (0) if\n |source_origin| is invalid or the whitelist cannot be accessed.\n"]
+#[inline]
+pub unsafe fn cef_remove_cross_origin_whitelist_entry(
+    source_origin: *const cef_string_t,
+    target_protocol: *const cef_string_t,
+    target_domain: *const cef_string_t,
+    allow_target_subdomains: ::std::os::raw::c_int,
+) -> ::std::os::raw::c_int {
+    unsafe {
+        (crate::libcef::functions().cef_remove_cross_origin_whitelist_entry)(
+            source_origin,
+            target_protocol,
+            target_domain,
+            allow_target_subdomains,
+        )
+    }
 }
-unsafe extern "C" {
-    #[doc = "\n Remove all entries from the cross-origin access whitelist. Returns false (0)\n if the whitelist cannot be accessed.\n"]
-    pub fn cef_clear_cross_origin_whitelist() -> ::std::os::raw::c_int;
+#[doc = "\n Remove all entries from the cross-origin access whitelist. Returns false (0)\n if the whitelist cannot be accessed.\n"]
+#[inline]
+pub unsafe fn cef_clear_cross_origin_whitelist() -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_clear_cross_origin_whitelist)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Combines specified |base_url| and |relative_url| into |resolved_url|.\n Returns false (0) if one of the URLs is NULL or invalid.\n"]
-    pub fn cef_resolve_url(
-        base_url: *const cef_string_t,
-        relative_url: *const cef_string_t,
-        resolved_url: *mut cef_string_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Combines specified |base_url| and |relative_url| into |resolved_url|.\n Returns false (0) if one of the URLs is NULL or invalid.\n"]
+#[inline]
+pub unsafe fn cef_resolve_url(
+    base_url: *const cef_string_t,
+    relative_url: *const cef_string_t,
+    resolved_url: *mut cef_string_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_resolve_url)(base_url, relative_url, resolved_url) }
 }
-unsafe extern "C" {
-    #[doc = "\n Parse the specified |url| into its component parts. Returns false (0) if the\n URL is NULL or invalid.\n"]
-    pub fn cef_parse_url(
-        url: *const cef_string_t,
-        parts: *mut _cef_urlparts_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Parse the specified |url| into its component parts. Returns false (0) if the\n URL is NULL or invalid.\n"]
+#[inline]
+pub unsafe fn cef_parse_url(
+    url: *const cef_string_t,
+    parts: *mut _cef_urlparts_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_parse_url)(url, parts) }
 }
-unsafe extern "C" {
-    #[doc = "\n Creates a URL from the specified |parts|, which must contain a non-NULL spec\n or a non-NULL host and path (at a minimum), but not both. Returns false (0)\n if |parts| isn't initialized as described.\n"]
-    pub fn cef_create_url(
-        parts: *const _cef_urlparts_t,
-        url: *mut cef_string_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Creates a URL from the specified |parts|, which must contain a non-NULL spec\n or a non-NULL host and path (at a minimum), but not both. Returns false (0)\n if |parts| isn't initialized as described.\n"]
+#[inline]
+pub unsafe fn cef_create_url(
+    parts: *const _cef_urlparts_t,
+    url: *mut cef_string_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_create_url)(parts, url) }
 }
-unsafe extern "C" {
-    #[doc = "\n This is a convenience function for formatting a URL in a concise and human-\n friendly way to help users make security-related decisions (or in other\n circumstances when people need to distinguish sites, origins, or otherwise-\n simplified URLs from each other). Internationalized domain names (IDN) may\n be presented in Unicode if the conversion is considered safe. The returned\n value will (a) omit the path for standard schemes, excepting file and\n filesystem, and (b) omit the port if it is the default for the scheme. Do\n not use this for URLs which will be parsed or sent to other applications.\n"]
-    pub fn cef_format_url_for_security_display(
-        origin_url: *const cef_string_t,
-    ) -> cef_string_userfree_t;
+#[doc = "\n This is a convenience function for formatting a URL in a concise and human-\n friendly way to help users make security-related decisions (or in other\n circumstances when people need to distinguish sites, origins, or otherwise-\n simplified URLs from each other). Internationalized domain names (IDN) may\n be presented in Unicode if the conversion is considered safe. The returned\n value will (a) omit the path for standard schemes, excepting file and\n filesystem, and (b) omit the port if it is the default for the scheme. Do\n not use this for URLs which will be parsed or sent to other applications.\n"]
+#[inline]
+pub unsafe fn cef_format_url_for_security_display(
+    origin_url: *const cef_string_t,
+) -> cef_string_userfree_t {
+    unsafe { (crate::libcef::functions().cef_format_url_for_security_display)(origin_url) }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns the mime type for the specified file extension or an NULL string if\n unknown.\n"]
-    pub fn cef_get_mime_type(extension: *const cef_string_t) -> cef_string_userfree_t;
+#[doc = "\n Returns the mime type for the specified file extension or an NULL string if\n unknown.\n"]
+#[inline]
+pub unsafe fn cef_get_mime_type(extension: *const cef_string_t) -> cef_string_userfree_t {
+    unsafe { (crate::libcef::functions().cef_get_mime_type)(extension) }
 }
-unsafe extern "C" {
-    #[doc = "\n Get the extensions associated with the given mime type. This should be\n passed in lower case. There could be multiple extensions for a given mime\n type, like \"html,htm\" for \"text/html\", or \"txt,text,html,...\" for \"text/*\".\n Any existing elements in the provided vector will not be erased.\n"]
-    pub fn cef_get_extensions_for_mime_type(
-        mime_type: *const cef_string_t,
-        extensions: cef_string_list_t,
-    );
+#[doc = "\n Get the extensions associated with the given mime type. This should be\n passed in lower case. There could be multiple extensions for a given mime\n type, like \"html,htm\" for \"text/html\", or \"txt,text,html,...\" for \"text/*\".\n Any existing elements in the provided vector will not be erased.\n"]
+#[inline]
+pub unsafe fn cef_get_extensions_for_mime_type(
+    mime_type: *const cef_string_t,
+    extensions: cef_string_list_t,
+) {
+    unsafe { (crate::libcef::functions().cef_get_extensions_for_mime_type)(mime_type, extensions) }
 }
-unsafe extern "C" {
-    #[doc = "\n Encodes |data| as a base64 string.\n"]
-    pub fn cef_base64_encode(
-        data: *const ::std::os::raw::c_void,
-        data_size: usize,
-    ) -> cef_string_userfree_t;
+#[doc = "\n Encodes |data| as a base64 string.\n"]
+#[inline]
+pub unsafe fn cef_base64_encode(
+    data: *const ::std::os::raw::c_void,
+    data_size: usize,
+) -> cef_string_userfree_t {
+    unsafe { (crate::libcef::functions().cef_base64_encode)(data, data_size) }
 }
-unsafe extern "C" {
-    #[doc = "\n Decodes the base64 encoded string |data|. The returned value will be NULL if\n the decoding fails.\n"]
-    pub fn cef_base64_decode(data: *const cef_string_t) -> *mut _cef_binary_value_t;
+#[doc = "\n Decodes the base64 encoded string |data|. The returned value will be NULL if\n the decoding fails.\n"]
+#[inline]
+pub unsafe fn cef_base64_decode(data: *const cef_string_t) -> *mut _cef_binary_value_t {
+    unsafe { (crate::libcef::functions().cef_base64_decode)(data) }
 }
-unsafe extern "C" {
-    #[doc = "\n Escapes characters in |text| which are unsuitable for use as a query\n parameter value. Everything except alphanumerics and -_.!~*'() will be\n converted to \"%XX\". If |use_plus| is true (1) spaces will change to \"+\". The\n result is basically the same as encodeURIComponent in Javacript.\n"]
-    pub fn cef_uriencode(
-        text: *const cef_string_t,
-        use_plus: ::std::os::raw::c_int,
-    ) -> cef_string_userfree_t;
+#[doc = "\n Escapes characters in |text| which are unsuitable for use as a query\n parameter value. Everything except alphanumerics and -_.!~*'() will be\n converted to \"%XX\". If |use_plus| is true (1) spaces will change to \"+\". The\n result is basically the same as encodeURIComponent in Javacript.\n"]
+#[inline]
+pub unsafe fn cef_uriencode(
+    text: *const cef_string_t,
+    use_plus: ::std::os::raw::c_int,
+) -> cef_string_userfree_t {
+    unsafe { (crate::libcef::functions().cef_uriencode)(text, use_plus) }
 }
-unsafe extern "C" {
-    #[doc = "\n Unescapes |text| and returns the result. Unescaping consists of looking for\n the exact pattern \"%XX\" where each X is a hex digit and converting to the\n character with the numerical value of those digits (e.g. \"i%20=%203%3b\"\n unescapes to \"i = 3;\"). If |convert_to_utf8| is true (1) this function will\n attempt to interpret the initial decoded result as UTF-8. If the result is\n convertable into UTF-8 it will be returned as converted. Otherwise the\n initial decoded result will be returned.  The |unescape_rule| parameter\n supports further customization the decoding process.\n"]
-    pub fn cef_uridecode(
-        text: *const cef_string_t,
-        convert_to_utf8: ::std::os::raw::c_int,
-        unescape_rule: cef_uri_unescape_rule_t,
-    ) -> cef_string_userfree_t;
+#[doc = "\n Unescapes |text| and returns the result. Unescaping consists of looking for\n the exact pattern \"%XX\" where each X is a hex digit and converting to the\n character with the numerical value of those digits (e.g. \"i%20=%203%3b\"\n unescapes to \"i = 3;\"). If |convert_to_utf8| is true (1) this function will\n attempt to interpret the initial decoded result as UTF-8. If the result is\n convertable into UTF-8 it will be returned as converted. Otherwise the\n initial decoded result will be returned.  The |unescape_rule| parameter\n supports further customization the decoding process.\n"]
+#[inline]
+pub unsafe fn cef_uridecode(
+    text: *const cef_string_t,
+    convert_to_utf8: ::std::os::raw::c_int,
+    unescape_rule: cef_uri_unescape_rule_t,
+) -> cef_string_userfree_t {
+    unsafe { (crate::libcef::functions().cef_uridecode)(text, convert_to_utf8, unescape_rule) }
 }
-unsafe extern "C" {
-    #[doc = "\n Parses the specified |json_string| and returns a dictionary or list\n representation. If JSON parsing fails this function returns NULL.\n"]
-    pub fn cef_parse_json(
-        json_string: *const cef_string_t,
-        options: cef_json_parser_options_t,
-    ) -> *mut _cef_value_t;
+#[doc = "\n Parses the specified |json_string| and returns a dictionary or list\n representation. If JSON parsing fails this function returns NULL.\n"]
+#[inline]
+pub unsafe fn cef_parse_json(
+    json_string: *const cef_string_t,
+    options: cef_json_parser_options_t,
+) -> *mut _cef_value_t {
+    unsafe { (crate::libcef::functions().cef_parse_json)(json_string, options) }
 }
-unsafe extern "C" {
-    #[doc = "\n Parses the specified UTF8-encoded |json| buffer of size |json_size| and\n returns a dictionary or list representation. If JSON parsing fails this\n function returns NULL.\n"]
-    pub fn cef_parse_json_buffer(
-        json: *const ::std::os::raw::c_void,
-        json_size: usize,
-        options: cef_json_parser_options_t,
-    ) -> *mut _cef_value_t;
+#[doc = "\n Parses the specified UTF8-encoded |json| buffer of size |json_size| and\n returns a dictionary or list representation. If JSON parsing fails this\n function returns NULL.\n"]
+#[inline]
+pub unsafe fn cef_parse_json_buffer(
+    json: *const ::std::os::raw::c_void,
+    json_size: usize,
+    options: cef_json_parser_options_t,
+) -> *mut _cef_value_t {
+    unsafe { (crate::libcef::functions().cef_parse_json_buffer)(json, json_size, options) }
 }
-unsafe extern "C" {
-    #[doc = "\n Parses the specified |json_string| and returns a dictionary or list\n representation. If JSON parsing fails this function returns NULL and\n populates |error_msg_out| with a formatted error message.\n"]
-    pub fn cef_parse_jsonand_return_error(
-        json_string: *const cef_string_t,
-        options: cef_json_parser_options_t,
-        error_msg_out: *mut cef_string_t,
-    ) -> *mut _cef_value_t;
+#[doc = "\n Parses the specified |json_string| and returns a dictionary or list\n representation. If JSON parsing fails this function returns NULL and\n populates |error_msg_out| with a formatted error message.\n"]
+#[inline]
+pub unsafe fn cef_parse_jsonand_return_error(
+    json_string: *const cef_string_t,
+    options: cef_json_parser_options_t,
+    error_msg_out: *mut cef_string_t,
+) -> *mut _cef_value_t {
+    unsafe {
+        (crate::libcef::functions().cef_parse_jsonand_return_error)(
+            json_string,
+            options,
+            error_msg_out,
+        )
+    }
 }
-unsafe extern "C" {
-    #[doc = "\n Generates a JSON string from the specified root |node| which should be a\n dictionary or list value. Returns an NULL string on failure. This function\n requires exclusive access to |node| including any underlying data.\n"]
-    pub fn cef_write_json(
-        node: *mut _cef_value_t,
-        options: cef_json_writer_options_t,
-    ) -> cef_string_userfree_t;
+#[doc = "\n Generates a JSON string from the specified root |node| which should be a\n dictionary or list value. Returns an NULL string on failure. This function\n requires exclusive access to |node| including any underlying data.\n"]
+#[inline]
+pub unsafe fn cef_write_json(
+    node: *mut _cef_value_t,
+    options: cef_json_writer_options_t,
+) -> cef_string_userfree_t {
+    unsafe { (crate::libcef::functions().cef_write_json)(node, options) }
 }
-unsafe extern "C" {
-    #[doc = "\n Retrieve the path associated with the specified |key|. Returns true (1) on\n success. Can be called on any thread in the browser process.\n"]
-    pub fn cef_get_path(key: cef_path_key_t, path: *mut cef_string_t) -> ::std::os::raw::c_int;
+#[doc = "\n Retrieve the path associated with the specified |key|. Returns true (1) on\n success. Can be called on any thread in the browser process.\n"]
+#[inline]
+pub unsafe fn cef_get_path(key: cef_path_key_t, path: *mut cef_string_t) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_get_path)(key, path) }
 }
-unsafe extern "C" {
-    #[doc = "\n Launches the process specified via |command_line|. Returns true (1) upon\n success. Must be called on the browser process TID_PROCESS_LAUNCHER thread.\n\n Unix-specific notes:\n - All file descriptors open in the parent process will be closed in the\n   child process except for stdin, stdout, and stderr.\n - If the first argument on the command line does not contain a slash, PATH\n   will be searched. (See man execvp.)\n"]
-    pub fn cef_launch_process(command_line: *mut _cef_command_line_t) -> ::std::os::raw::c_int;
+#[doc = "\n Launches the process specified via |command_line|. Returns true (1) upon\n success. Must be called on the browser process TID_PROCESS_LAUNCHER thread.\n\n Unix-specific notes:\n - All file descriptors open in the parent process will be closed in the\n   child process except for stdin, stdout, and stderr.\n - If the first argument on the command line does not contain a slash, PATH\n   will be searched. (See man execvp.)\n"]
+#[inline]
+pub unsafe fn cef_launch_process(command_line: *mut _cef_command_line_t) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_launch_process)(command_line) }
 }
 #[doc = "\n Structure used for retrieving resources from the resource bundle (*.pak)\n files loaded by CEF during startup or via the cef_resource_bundle_handler_t\n returned from cef_app_t::GetResourceBundleHandler. See CefSettings for\n additional options related to resource bundle loading. The functions of this\n structure may be called on any thread unless otherwise indicated.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -30923,9 +31172,10 @@ const _: () = {
 };
 #[doc = "\n Structure used for retrieving resources from the resource bundle (*.pak)\n files loaded by CEF during startup or via the cef_resource_bundle_handler_t\n returned from cef_app_t::GetResourceBundleHandler. See CefSettings for\n additional options related to resource bundle loading. The functions of this\n structure may be called on any thread unless otherwise indicated.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_resource_bundle_t = _cef_resource_bundle_t;
-unsafe extern "C" {
-    #[doc = "\n Returns the global resource bundle instance.\n"]
-    pub fn cef_resource_bundle_get_global() -> *mut cef_resource_bundle_t;
+#[doc = "\n Returns the global resource bundle instance.\n"]
+#[inline]
+pub unsafe fn cef_resource_bundle_get_global() -> *mut cef_resource_bundle_t {
+    unsafe { (crate::libcef::functions().cef_resource_bundle_get_global)() }
 }
 #[doc = "\n Structure representing a server that supports HTTP and WebSocket requests.\n Server capacity is limited and is intended to handle only a small number of\n simultaneous connections (e.g. for communicating between applications on\n localhost). The functions of this structure are safe to call from any thread\n in the brower process unless otherwise indicated.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -31048,14 +31298,15 @@ const _: () = {
 };
 #[doc = "\n Structure representing a server that supports HTTP and WebSocket requests.\n Server capacity is limited and is intended to handle only a small number of\n simultaneous connections (e.g. for communicating between applications on\n localhost). The functions of this structure are safe to call from any thread\n in the brower process unless otherwise indicated.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_server_t = _cef_server_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new server that binds to |address| and |port|. |address| must be a\n valid IPv4 or IPv6 address (e.g. 127.0.0.1 or ::1) and |port| must be a port\n number outside of the reserved range (e.g. between 1025 and 65535 on most\n platforms). |backlog| is the maximum number of pending connections. A new\n thread will be created for each CreateServer call (the \"dedicated server\n thread\"). It is therefore recommended to use a different\n cef_server_handler_t instance for each CreateServer call to avoid thread\n safety issues in the cef_server_handler_t implementation. The\n cef_server_handler_t::OnServerCreated function will be called on the\n dedicated server thread to report success or failure. See\n cef_server_handler_t::OnServerCreated documentation for a description of\n server lifespan.\n"]
-    pub fn cef_server_create(
-        address: *const cef_string_t,
-        port: u16,
-        backlog: ::std::os::raw::c_int,
-        handler: *mut _cef_server_handler_t,
-    );
+#[doc = "\n Create a new server that binds to |address| and |port|. |address| must be a\n valid IPv4 or IPv6 address (e.g. 127.0.0.1 or ::1) and |port| must be a port\n number outside of the reserved range (e.g. between 1025 and 65535 on most\n platforms). |backlog| is the maximum number of pending connections. A new\n thread will be created for each CreateServer call (the \"dedicated server\n thread\"). It is therefore recommended to use a different\n cef_server_handler_t instance for each CreateServer call to avoid thread\n safety issues in the cef_server_handler_t implementation. The\n cef_server_handler_t::OnServerCreated function will be called on the\n dedicated server thread to report success or failure. See\n cef_server_handler_t::OnServerCreated documentation for a description of\n server lifespan.\n"]
+#[inline]
+pub unsafe fn cef_server_create(
+    address: *const cef_string_t,
+    port: u16,
+    backlog: ::std::os::raw::c_int,
+    handler: *mut _cef_server_handler_t,
+) {
+    unsafe { (crate::libcef::functions().cef_server_create)(address, port, backlog, handler) }
 }
 #[doc = "\n Implement this structure to handle HTTP server requests. A new thread will\n be created for each cef_server_t::CreateServer call (the \"dedicated server\n thread\"), and the functions of this structure will be called on that thread.\n It is therefore recommended to use a different cef_server_handler_t instance\n for each cef_server_t::CreateServer call to avoid thread safety issues in\n the cef_server_handler_t implementation.\n\n NOTE: This struct is allocated client-side.\n"]
 #[repr(C)]
@@ -31201,12 +31452,15 @@ const _: () = {
 };
 #[doc = "\n Structure that builds a cef_process_message_t containing a shared memory\n region. This structure is not thread-safe but may be used exclusively on a\n different thread from the one which constructed it.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_shared_process_message_builder_t = _cef_shared_process_message_builder_t;
-unsafe extern "C" {
-    #[doc = "\n Creates a new cef_shared_process_message_builder_t with the specified |name|\n and shared memory region of specified |byte_size|.\n"]
-    pub fn cef_shared_process_message_builder_create(
-        name: *const cef_string_t,
-        byte_size: usize,
-    ) -> *mut cef_shared_process_message_builder_t;
+#[doc = "\n Creates a new cef_shared_process_message_builder_t with the specified |name|\n and shared memory region of specified |byte_size|.\n"]
+#[inline]
+pub unsafe fn cef_shared_process_message_builder_create(
+    name: *const cef_string_t,
+    byte_size: usize,
+) -> *mut cef_shared_process_message_builder_t {
+    unsafe {
+        (crate::libcef::functions().cef_shared_process_message_builder_create)(name, byte_size)
+    }
 }
 #[doc = "\n Structure that facilitates managing the browser-related tasks. The functions\n of this structure may only be called on the UI thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -31267,20 +31521,23 @@ const _: () = {
 };
 #[doc = "\n Structure that facilitates managing the browser-related tasks. The functions\n of this structure may only be called on the UI thread.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_task_manager_t = _cef_task_manager_t;
-unsafe extern "C" {
-    #[doc = "\n Returns the global task manager object. Returns nullptr if the function was\n called from the incorrect thread.\n"]
-    pub fn cef_task_manager_get() -> *mut cef_task_manager_t;
+#[doc = "\n Returns the global task manager object. Returns nullptr if the function was\n called from the incorrect thread.\n"]
+#[inline]
+pub unsafe fn cef_task_manager_get() -> *mut cef_task_manager_t {
+    unsafe { (crate::libcef::functions().cef_task_manager_get)() }
 }
 pub type pthread_t = ::std::os::raw::c_ulong;
 pub type cef_platform_thread_id_t = pid_t;
-unsafe extern "C" {
-    #[doc = "\n Returns the current platform thread ID.\n"]
-    pub fn cef_get_current_platform_thread_id() -> cef_platform_thread_id_t;
+#[doc = "\n Returns the current platform thread ID.\n"]
+#[inline]
+pub unsafe fn cef_get_current_platform_thread_id() -> cef_platform_thread_id_t {
+    unsafe { (crate::libcef::functions().cef_get_current_platform_thread_id)() }
 }
 pub type cef_platform_thread_handle_t = pthread_t;
-unsafe extern "C" {
-    #[doc = "\n Returns the current platform thread handle.\n"]
-    pub fn cef_get_current_platform_thread_handle() -> cef_platform_thread_handle_t;
+#[doc = "\n Returns the current platform thread handle.\n"]
+#[inline]
+pub unsafe fn cef_get_current_platform_thread_handle() -> cef_platform_thread_handle_t {
+    unsafe { (crate::libcef::functions().cef_get_current_platform_thread_handle)() }
 }
 #[doc = "\n A simple thread abstraction that establishes a message loop on a new thread.\n The consumer uses cef_task_runner_t to execute code on the thread's message\n loop. The thread is terminated when the cef_thread_t object is destroyed or\n stop() is called. All pending tasks queued on the thread's message loop will\n run to completion before the thread is terminated. cef_thread_create() can\n be called on any valid CEF thread in either the browser or render process.\n This structure should only be used for tasks that require a dedicated\n thread. In most cases you can post tasks to an existing CEF thread instead\n of creating a new one; see cef_task.h for details.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -31318,15 +31575,24 @@ const _: () = {
 };
 #[doc = "\n A simple thread abstraction that establishes a message loop on a new thread.\n The consumer uses cef_task_runner_t to execute code on the thread's message\n loop. The thread is terminated when the cef_thread_t object is destroyed or\n stop() is called. All pending tasks queued on the thread's message loop will\n run to completion before the thread is terminated. cef_thread_create() can\n be called on any valid CEF thread in either the browser or render process.\n This structure should only be used for tasks that require a dedicated\n thread. In most cases you can post tasks to an existing CEF thread instead\n of creating a new one; see cef_task.h for details.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_thread_t = _cef_thread_t;
-unsafe extern "C" {
-    #[doc = "\n Create and start a new thread. This function does not block waiting for the\n thread to run initialization. |display_name| is the name that will be used\n to identify the thread. |priority| is the thread execution priority.\n |message_loop_type| indicates the set of asynchronous events that the thread\n can process. If |stoppable| is true (1) the thread will stopped and joined\n on destruction or when stop() is called; otherwise, the thread cannot be\n stopped and will be leaked on shutdown. On Windows the |com_init_mode| value\n specifies how COM will be initialized for the thread. If |com_init_mode| is\n set to COM_INIT_MODE_STA then |message_loop_type| must be set to ML_TYPE_UI.\n"]
-    pub fn cef_thread_create(
-        display_name: *const cef_string_t,
-        priority: cef_thread_priority_t,
-        message_loop_type: cef_message_loop_type_t,
-        stoppable: ::std::os::raw::c_int,
-        com_init_mode: cef_com_init_mode_t,
-    ) -> *mut cef_thread_t;
+#[doc = "\n Create and start a new thread. This function does not block waiting for the\n thread to run initialization. |display_name| is the name that will be used\n to identify the thread. |priority| is the thread execution priority.\n |message_loop_type| indicates the set of asynchronous events that the thread\n can process. If |stoppable| is true (1) the thread will stopped and joined\n on destruction or when stop() is called; otherwise, the thread cannot be\n stopped and will be leaked on shutdown. On Windows the |com_init_mode| value\n specifies how COM will be initialized for the thread. If |com_init_mode| is\n set to COM_INIT_MODE_STA then |message_loop_type| must be set to ML_TYPE_UI.\n"]
+#[inline]
+pub unsafe fn cef_thread_create(
+    display_name: *const cef_string_t,
+    priority: cef_thread_priority_t,
+    message_loop_type: cef_message_loop_type_t,
+    stoppable: ::std::os::raw::c_int,
+    com_init_mode: cef_com_init_mode_t,
+) -> *mut cef_thread_t {
+    unsafe {
+        (crate::libcef::functions().cef_thread_create)(
+            display_name,
+            priority,
+            message_loop_type,
+            stoppable,
+            com_init_mode,
+        )
+    }
 }
 #[doc = "\n Implement this structure to receive notification when tracing has completed.\n The functions of this structure will be called on the browser process UI\n thread.\n\n NOTE: This struct is allocated client-side.\n"]
 #[repr(C)]
@@ -31355,23 +31621,26 @@ const _: () = {
 };
 #[doc = "\n Implement this structure to receive notification when tracing has completed.\n The functions of this structure will be called on the browser process UI\n thread.\n\n NOTE: This struct is allocated client-side.\n"]
 pub type cef_end_tracing_callback_t = _cef_end_tracing_callback_t;
-unsafe extern "C" {
-    #[doc = "\n Start tracing events on all processes. Tracing is initialized asynchronously\n and |callback| will be executed on the UI thread after initialization is\n complete.\n\n If CefBeginTracing was called previously, or if a CefEndTracingAsync call is\n pending, CefBeginTracing will fail and return false (0).\n\n |categories| is a comma-delimited list of category wildcards. A category can\n have an optional '-' prefix to make it an excluded category. Having both\n included and excluded categories in the same list is not supported.\n\n Examples:\n - \"test_MyTest*\"\n - \"test_MyTest*,test_OtherStuff\"\n - \"-excluded_category1,-excluded_category2\"\n\n This function must be called on the browser process UI thread.\n"]
-    pub fn cef_begin_tracing(
-        categories: *const cef_string_t,
-        callback: *mut _cef_completion_callback_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Start tracing events on all processes. Tracing is initialized asynchronously\n and |callback| will be executed on the UI thread after initialization is\n complete.\n\n If CefBeginTracing was called previously, or if a CefEndTracingAsync call is\n pending, CefBeginTracing will fail and return false (0).\n\n |categories| is a comma-delimited list of category wildcards. A category can\n have an optional '-' prefix to make it an excluded category. Having both\n included and excluded categories in the same list is not supported.\n\n Examples:\n - \"test_MyTest*\"\n - \"test_MyTest*,test_OtherStuff\"\n - \"-excluded_category1,-excluded_category2\"\n\n This function must be called on the browser process UI thread.\n"]
+#[inline]
+pub unsafe fn cef_begin_tracing(
+    categories: *const cef_string_t,
+    callback: *mut _cef_completion_callback_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_begin_tracing)(categories, callback) }
 }
-unsafe extern "C" {
-    #[doc = "\n Stop tracing events on all processes.\n\n This function will fail and return false (0) if a previous call to\n CefEndTracingAsync is already pending or if CefBeginTracing was not called.\n\n |tracing_file| is the path at which tracing data will be written and\n |callback| is the callback that will be executed once all processes have\n sent their trace data. If |tracing_file| is NULL a new temporary file path\n will be used. If |callback| is NULL no trace data will be written.\n\n This function must be called on the browser process UI thread.\n"]
-    pub fn cef_end_tracing(
-        tracing_file: *const cef_string_t,
-        callback: *mut cef_end_tracing_callback_t,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Stop tracing events on all processes.\n\n This function will fail and return false (0) if a previous call to\n CefEndTracingAsync is already pending or if CefBeginTracing was not called.\n\n |tracing_file| is the path at which tracing data will be written and\n |callback| is the callback that will be executed once all processes have\n sent their trace data. If |tracing_file| is NULL a new temporary file path\n will be used. If |callback| is NULL no trace data will be written.\n\n This function must be called on the browser process UI thread.\n"]
+#[inline]
+pub unsafe fn cef_end_tracing(
+    tracing_file: *const cef_string_t,
+    callback: *mut cef_end_tracing_callback_t,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_end_tracing)(tracing_file, callback) }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns the current system trace time or, if none is defined, the current\n high-res time. Can be used by clients to synchronize with the time\n information in trace events.\n"]
-    pub fn cef_now_from_system_trace_time() -> i64;
+#[doc = "\n Returns the current system trace time or, if none is defined, the current\n high-res time. Can be used by clients to synchronize with the time\n information in trace events.\n"]
+#[inline]
+pub unsafe fn cef_now_from_system_trace_time() -> i64 {
+    unsafe { (crate::libcef::functions().cef_now_from_system_trace_time)() }
 }
 #[doc = "\n Structure used to make a URL request. URL requests are not associated with a\n browser instance so no cef_client_t callbacks will be executed. URL requests\n can be created on any valid CEF thread in either the browser or render\n process. Once created the functions of the URL request object must be\n accessed on the same thread that created it.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -31429,13 +31698,14 @@ const _: () = {
 };
 #[doc = "\n Structure used to make a URL request. URL requests are not associated with a\n browser instance so no cef_client_t callbacks will be executed. URL requests\n can be created on any valid CEF thread in either the browser or render\n process. Once created the functions of the URL request object must be\n accessed on the same thread that created it.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_urlrequest_t = _cef_urlrequest_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new URL request that is not associated with a specific browser or\n frame. Use cef_frame_t::CreateURLRequest instead if you want the request to\n have this association, in which case it may be handled differently (see\n documentation on that function). A request created with this function may\n only originate from the browser process, and will behave as follows:\n   - It may be intercepted by the client via CefResourceRequestHandler or\n     CefSchemeHandlerFactory.\n   - POST data may only contain only a single element of type PDE_TYPE_FILE\n     or PDE_TYPE_BYTES.\n   - If |request_context| is empty the global request context will be used.\n\n The |request| object will be marked as read-only after calling this\n function.\n"]
-    pub fn cef_urlrequest_create(
-        request: *mut _cef_request_t,
-        client: *mut _cef_urlrequest_client_t,
-        request_context: *mut _cef_request_context_t,
-    ) -> *mut cef_urlrequest_t;
+#[doc = "\n Create a new URL request that is not associated with a specific browser or\n frame. Use cef_frame_t::CreateURLRequest instead if you want the request to\n have this association, in which case it may be handled differently (see\n documentation on that function). A request created with this function may\n only originate from the browser process, and will behave as follows:\n   - It may be intercepted by the client via CefResourceRequestHandler or\n     CefSchemeHandlerFactory.\n   - POST data may only contain only a single element of type PDE_TYPE_FILE\n     or PDE_TYPE_BYTES.\n   - If |request_context| is empty the global request context will be used.\n\n The |request| object will be marked as read-only after calling this\n function.\n"]
+#[inline]
+pub unsafe fn cef_urlrequest_create(
+    request: *mut _cef_request_t,
+    client: *mut _cef_urlrequest_client_t,
+    request_context: *mut _cef_request_context_t,
+) -> *mut cef_urlrequest_t {
+    unsafe { (crate::libcef::functions().cef_urlrequest_create)(request, client, request_context) }
 }
 #[doc = "\n Structure that should be implemented by the cef_urlrequest_t client. The\n functions of this structure will be called on the same thread that created\n the request unless otherwise documented.\n\n NOTE: This struct is allocated client-side.\n"]
 #[repr(C)]
@@ -31552,12 +31822,15 @@ const _: () = {
 };
 #[doc = "\n WaitableEvent is a thread synchronization tool that allows one thread to\n wait for another thread to finish some work. This is equivalent to using a\n Lock+ConditionVariable to protect a simple boolean value. However, using\n WaitableEvent in conjunction with a Lock to wait for a more complex state\n change (e.g., for an item to be added to a queue) is not recommended. In\n that case consider using a ConditionVariable instead of a WaitableEvent. It\n is safe to create and/or signal a WaitableEvent from any thread. Blocking on\n a WaitableEvent by calling the *wait() functions is not allowed on the\n browser process UI or IO threads.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_waitable_event_t = _cef_waitable_event_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new waitable event. If |automatic_reset| is true (1) then the event\n state is automatically reset to un-signaled after a single waiting thread\n has been released; otherwise, the state remains signaled until reset() is\n called manually. If |initially_signaled| is true (1) then the event will\n start in the signaled state.\n"]
-    pub fn cef_waitable_event_create(
-        automatic_reset: ::std::os::raw::c_int,
-        initially_signaled: ::std::os::raw::c_int,
-    ) -> *mut cef_waitable_event_t;
+#[doc = "\n Create a new waitable event. If |automatic_reset| is true (1) then the event\n state is automatically reset to un-signaled after a single waiting thread\n has been released; otherwise, the state remains signaled until reset() is\n called manually. If |initially_signaled| is true (1) then the event will\n start in the signaled state.\n"]
+#[inline]
+pub unsafe fn cef_waitable_event_create(
+    automatic_reset: ::std::os::raw::c_int,
+    initially_signaled: ::std::os::raw::c_int,
+) -> *mut cef_waitable_event_t {
+    unsafe {
+        (crate::libcef::functions().cef_waitable_event_create)(automatic_reset, initially_signaled)
+    }
 }
 #[doc = "\n Structure that supports the reading of XML data via the libxml streaming\n API. The functions of this structure should only be called on the thread\n that creates the object.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -31768,13 +32041,14 @@ const _: () = {
 };
 #[doc = "\n Structure that supports the reading of XML data via the libxml streaming\n API. The functions of this structure should only be called on the thread\n that creates the object.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_xml_reader_t = _cef_xml_reader_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_xml_reader_t object. The returned object's functions can\n only be called from the thread that created the object.\n"]
-    pub fn cef_xml_reader_create(
-        stream: *mut _cef_stream_reader_t,
-        encodingType: cef_xml_encoding_type_t,
-        URI: *const cef_string_t,
-    ) -> *mut cef_xml_reader_t;
+#[doc = "\n Create a new cef_xml_reader_t object. The returned object's functions can\n only be called from the thread that created the object.\n"]
+#[inline]
+pub unsafe fn cef_xml_reader_create(
+    stream: *mut _cef_stream_reader_t,
+    encodingType: cef_xml_encoding_type_t,
+    URI: *const cef_string_t,
+) -> *mut cef_xml_reader_t {
+    unsafe { (crate::libcef::functions().cef_xml_reader_create)(stream, encodingType, URI) }
 }
 #[doc = "\n Structure that supports the reading of zip archives via the zlib unzip API.\n The functions of this structure should only be called on the thread that\n creates the object.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -31872,9 +32146,10 @@ const _: () = {
 };
 #[doc = "\n Structure that supports the reading of zip archives via the zlib unzip API.\n The functions of this structure should only be called on the thread that\n creates the object.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_zip_reader_t = _cef_zip_reader_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new cef_zip_reader_t object. The returned object's functions can\n only be called from the thread that created the object.\n"]
-    pub fn cef_zip_reader_create(stream: *mut _cef_stream_reader_t) -> *mut cef_zip_reader_t;
+#[doc = "\n Create a new cef_zip_reader_t object. The returned object's functions can\n only be called from the thread that created the object.\n"]
+#[inline]
+pub unsafe fn cef_zip_reader_create(stream: *mut _cef_stream_reader_t) -> *mut cef_zip_reader_t {
+    unsafe { (crate::libcef::functions().cef_zip_reader_create)(stream) }
 }
 #[doc = "\n A Layout handles the sizing of the children of a Panel according to\n implementation-specific heuristics. Methods must be called on the browser\n process UI thread unless otherwise indicated.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -32159,7 +32434,11 @@ const _: () = {
     ) - 152usize];
     ["Offset of field: _cef_browser_view_delegate_t::get_chrome_toolbar_type"]
         [::std::mem::offset_of!(_cef_browser_view_delegate_t, get_chrome_toolbar_type) - 160usize];
-    ["Offset of field: _cef_browser_view_delegate_t::use_frameless_window_for_picture_in_picture"] [:: std :: mem :: offset_of ! (_cef_browser_view_delegate_t , use_frameless_window_for_picture_in_picture) - 168usize] ;
+    ["Offset of field: _cef_browser_view_delegate_t::use_frameless_window_for_picture_in_picture"]
+        [::std::mem::offset_of!(
+            _cef_browser_view_delegate_t,
+            use_frameless_window_for_picture_in_picture
+        ) - 168usize];
     ["Offset of field: _cef_browser_view_delegate_t::on_gesture_command"]
         [::std::mem::offset_of!(_cef_browser_view_delegate_t, on_gesture_command) - 176usize];
     ["Offset of field: _cef_browser_view_delegate_t::get_browser_runtime_style"][::std::mem::offset_of!(
@@ -32171,7 +32450,12 @@ const _: () = {
         allow_move_for_picture_in_picture
     )
         - 192usize];
-    ["Offset of field: _cef_browser_view_delegate_t::allow_picture_in_picture_without_user_activation"] [:: std :: mem :: offset_of ! (_cef_browser_view_delegate_t , allow_picture_in_picture_without_user_activation) - 200usize] ;
+    [
+        "Offset of field: _cef_browser_view_delegate_t::allow_picture_in_picture_without_user_activation",
+    ][::std::mem::offset_of!(
+        _cef_browser_view_delegate_t,
+        allow_picture_in_picture_without_user_activation
+    ) - 200usize];
 };
 #[doc = "\n Implement this structure to handle BrowserView events. The functions of this\n structure will be called on the browser process UI thread unless otherwise\n indicated.\n\n NOTE: This struct is allocated client-side.\n"]
 pub type cef_browser_view_delegate_t = _cef_browser_view_delegate_t;
@@ -32561,22 +32845,33 @@ const _: () = {
 };
 #[doc = "\n A View hosting a cef_browser_t instance. Methods must be called on the\n browser process UI thread unless otherwise indicated.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_browser_view_t = _cef_browser_view_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new BrowserView. The underlying cef_browser_t will not be created\n until this view is added to the views hierarchy. The optional |extra_info|\n parameter provides an opportunity to specify extra information specific to\n the created browser that will be passed to\n cef_render_process_handler_t::on_browser_created() in the render process.\n"]
-    pub fn cef_browser_view_create(
-        client: *mut _cef_client_t,
-        url: *const cef_string_t,
-        settings: *const _cef_browser_settings_t,
-        extra_info: *mut _cef_dictionary_value_t,
-        request_context: *mut _cef_request_context_t,
-        delegate: *mut _cef_browser_view_delegate_t,
-    ) -> *mut cef_browser_view_t;
+#[doc = "\n Create a new BrowserView. The underlying cef_browser_t will not be created\n until this view is added to the views hierarchy. The optional |extra_info|\n parameter provides an opportunity to specify extra information specific to\n the created browser that will be passed to\n cef_render_process_handler_t::on_browser_created() in the render process.\n"]
+#[inline]
+pub unsafe fn cef_browser_view_create(
+    client: *mut _cef_client_t,
+    url: *const cef_string_t,
+    settings: *const _cef_browser_settings_t,
+    extra_info: *mut _cef_dictionary_value_t,
+    request_context: *mut _cef_request_context_t,
+    delegate: *mut _cef_browser_view_delegate_t,
+) -> *mut cef_browser_view_t {
+    unsafe {
+        (crate::libcef::functions().cef_browser_view_create)(
+            client,
+            url,
+            settings,
+            extra_info,
+            request_context,
+            delegate,
+        )
+    }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns the BrowserView associated with |browser|.\n"]
-    pub fn cef_browser_view_get_for_browser(
-        browser: *mut _cef_browser_t,
-    ) -> *mut cef_browser_view_t;
+#[doc = "\n Returns the BrowserView associated with |browser|.\n"]
+#[inline]
+pub unsafe fn cef_browser_view_get_for_browser(
+    browser: *mut _cef_browser_t,
+) -> *mut cef_browser_view_t {
+    unsafe { (crate::libcef::functions().cef_browser_view_get_for_browser)(browser) }
 }
 #[doc = "\n A View representing a button. Depending on the specific type, the button\n could be implemented by a native control or custom rendered. Methods must be\n called on the browser process UI thread unless otherwise indicated.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -32711,47 +33006,60 @@ const _: () = {
 };
 #[doc = "\n This structure typically, but not always, corresponds to a physical display\n connected to the system. A fake Display may exist on a headless system, or a\n Display may correspond to a remote, virtual display. All size and position\n values are in density independent pixel (DIP) coordinates unless otherwise\n indicated. Methods must be called on the browser process UI thread unless\n otherwise indicated.\n\n For details on coordinate systems and usage see\n https://chromiumembedded.github.io/cef/general_usage#coordinate-systems\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_display_t = _cef_display_t;
-unsafe extern "C" {
-    #[doc = "\n Returns the primary Display.\n"]
-    pub fn cef_display_get_primary() -> *mut cef_display_t;
+#[doc = "\n Returns the primary Display.\n"]
+#[inline]
+pub unsafe fn cef_display_get_primary() -> *mut cef_display_t {
+    unsafe { (crate::libcef::functions().cef_display_get_primary)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns the Display nearest |point|. Set |input_pixel_coords| to true (1) if\n |point| is in pixel screen coordinates instead of DIP screen coordinates.\n"]
-    pub fn cef_display_get_nearest_point(
-        point: *const cef_point_t,
-        input_pixel_coords: ::std::os::raw::c_int,
-    ) -> *mut cef_display_t;
+#[doc = "\n Returns the Display nearest |point|. Set |input_pixel_coords| to true (1) if\n |point| is in pixel screen coordinates instead of DIP screen coordinates.\n"]
+#[inline]
+pub unsafe fn cef_display_get_nearest_point(
+    point: *const cef_point_t,
+    input_pixel_coords: ::std::os::raw::c_int,
+) -> *mut cef_display_t {
+    unsafe { (crate::libcef::functions().cef_display_get_nearest_point)(point, input_pixel_coords) }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns the Display that most closely intersects |bounds|.  Set\n |input_pixel_coords| to true (1) if |bounds| is in pixel screen coordinates\n instead of DIP screen coordinates.\n"]
-    pub fn cef_display_get_matching_bounds(
-        bounds: *const cef_rect_t,
-        input_pixel_coords: ::std::os::raw::c_int,
-    ) -> *mut cef_display_t;
+#[doc = "\n Returns the Display that most closely intersects |bounds|.  Set\n |input_pixel_coords| to true (1) if |bounds| is in pixel screen coordinates\n instead of DIP screen coordinates.\n"]
+#[inline]
+pub unsafe fn cef_display_get_matching_bounds(
+    bounds: *const cef_rect_t,
+    input_pixel_coords: ::std::os::raw::c_int,
+) -> *mut cef_display_t {
+    unsafe {
+        (crate::libcef::functions().cef_display_get_matching_bounds)(bounds, input_pixel_coords)
+    }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns the total number of Displays. Mirrored displays are excluded; this\n function is intended to return the number of distinct, usable displays.\n"]
-    pub fn cef_display_get_count() -> usize;
+#[doc = "\n Returns the total number of Displays. Mirrored displays are excluded; this\n function is intended to return the number of distinct, usable displays.\n"]
+#[inline]
+pub unsafe fn cef_display_get_count() -> usize {
+    unsafe { (crate::libcef::functions().cef_display_get_count)() }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns all Displays. Mirrored displays are excluded; this function is\n intended to return distinct, usable displays.\n"]
-    pub fn cef_display_get_alls(displaysCount: *mut usize, displays: *mut *mut cef_display_t);
+#[doc = "\n Returns all Displays. Mirrored displays are excluded; this function is\n intended to return distinct, usable displays.\n"]
+#[inline]
+pub unsafe fn cef_display_get_alls(displaysCount: *mut usize, displays: *mut *mut cef_display_t) {
+    unsafe { (crate::libcef::functions().cef_display_get_alls)(displaysCount, displays) }
 }
-unsafe extern "C" {
-    #[doc = "\n Convert |point| from DIP screen coordinates to pixel screen coordinates.\n This function is only used on Windows.\n"]
-    pub fn cef_display_convert_screen_point_to_pixels(point: *const cef_point_t) -> cef_point_t;
+#[doc = "\n Convert |point| from DIP screen coordinates to pixel screen coordinates.\n This function is only used on Windows.\n"]
+#[inline]
+pub unsafe fn cef_display_convert_screen_point_to_pixels(point: *const cef_point_t) -> cef_point_t {
+    unsafe { (crate::libcef::functions().cef_display_convert_screen_point_to_pixels)(point) }
 }
-unsafe extern "C" {
-    #[doc = "\n Convert |point| from pixel screen coordinates to DIP screen coordinates.\n This function is only used on Windows.\n"]
-    pub fn cef_display_convert_screen_point_from_pixels(point: *const cef_point_t) -> cef_point_t;
+#[doc = "\n Convert |point| from pixel screen coordinates to DIP screen coordinates.\n This function is only used on Windows.\n"]
+#[inline]
+pub unsafe fn cef_display_convert_screen_point_from_pixels(
+    point: *const cef_point_t,
+) -> cef_point_t {
+    unsafe { (crate::libcef::functions().cef_display_convert_screen_point_from_pixels)(point) }
 }
-unsafe extern "C" {
-    #[doc = "\n Convert |rect| from DIP screen coordinates to pixel screen coordinates. This\n function is only used on Windows.\n"]
-    pub fn cef_display_convert_screen_rect_to_pixels(rect: *const cef_rect_t) -> cef_rect_t;
+#[doc = "\n Convert |rect| from DIP screen coordinates to pixel screen coordinates. This\n function is only used on Windows.\n"]
+#[inline]
+pub unsafe fn cef_display_convert_screen_rect_to_pixels(rect: *const cef_rect_t) -> cef_rect_t {
+    unsafe { (crate::libcef::functions().cef_display_convert_screen_rect_to_pixels)(rect) }
 }
-unsafe extern "C" {
-    #[doc = "\n Convert |rect| from pixel screen coordinates to DIP screen coordinates. This\n function is only used on Windows.\n"]
-    pub fn cef_display_convert_screen_rect_from_pixels(rect: *const cef_rect_t) -> cef_rect_t;
+#[doc = "\n Convert |rect| from pixel screen coordinates to DIP screen coordinates. This\n function is only used on Windows.\n"]
+#[inline]
+pub unsafe fn cef_display_convert_screen_rect_from_pixels(rect: *const cef_rect_t) -> cef_rect_t {
+    unsafe { (crate::libcef::functions().cef_display_convert_screen_rect_from_pixels)(rect) }
 }
 #[doc = "\n A simple Layout that causes the associated Panel's one child to be sized to\n match the bounds of its parent. Methods must be called on the browser\n process UI thread unless otherwise indicated.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -32865,12 +33173,13 @@ const _: () = {
 };
 #[doc = "\n LabelButton is a button with optional text and/or icon. Methods must be\n called on the browser process UI thread unless otherwise indicated.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_label_button_t = _cef_label_button_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new LabelButton. A |delegate| must be provided to handle the button\n click. |text| will be shown on the LabelButton and used as the default\n accessible name.\n"]
-    pub fn cef_label_button_create(
-        delegate: *mut _cef_button_delegate_t,
-        text: *const cef_string_t,
-    ) -> *mut cef_label_button_t;
+#[doc = "\n Create a new LabelButton. A |delegate| must be provided to handle the button\n click. |text| will be shown on the LabelButton and used as the default\n accessible name.\n"]
+#[inline]
+pub unsafe fn cef_label_button_create(
+    delegate: *mut _cef_button_delegate_t,
+    text: *const cef_string_t,
+) -> *mut cef_label_button_t {
+    unsafe { (crate::libcef::functions().cef_label_button_create)(delegate, text) }
 }
 #[doc = "\n MenuButton pressed lock is released when this object is destroyed.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -32950,12 +33259,13 @@ const _: () = {
 };
 #[doc = "\n MenuButton is a button with optional text, icon and/or menu marker that\n shows a menu when clicked with the left mouse button. All size and position\n values are in density independent pixels (DIP) unless otherwise indicated.\n Methods must be called on the browser process UI thread unless otherwise\n indicated.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_menu_button_t = _cef_menu_button_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new MenuButton. A |delegate| must be provided to call show_menu()\n when the button is clicked. |text| will be shown on the MenuButton and used\n as the default accessible name. If |with_frame| is true (1) the button will\n have a visible frame at all times, center alignment, additional padding and\n a default minimum size of 70x33 DIP. If |with_frame| is false (0) the button\n will only have a visible frame on hover/press, left alignment, less padding\n and no default minimum size.\n"]
-    pub fn cef_menu_button_create(
-        delegate: *mut _cef_menu_button_delegate_t,
-        text: *const cef_string_t,
-    ) -> *mut cef_menu_button_t;
+#[doc = "\n Create a new MenuButton. A |delegate| must be provided to call show_menu()\n when the button is clicked. |text| will be shown on the MenuButton and used\n as the default accessible name. If |with_frame| is true (1) the button will\n have a visible frame at all times, center alignment, additional padding and\n a default minimum size of 70x33 DIP. If |with_frame| is false (0) the button\n will only have a visible frame on hover/press, left alignment, less padding\n and no default minimum size.\n"]
+#[inline]
+pub unsafe fn cef_menu_button_create(
+    delegate: *mut _cef_menu_button_delegate_t,
+    text: *const cef_string_t,
+) -> *mut cef_menu_button_t {
+    unsafe { (crate::libcef::functions().cef_menu_button_create)(delegate, text) }
 }
 #[doc = "\n Controller for an overlay that contains a contents View added via\n cef_window_t::AddOverlayView. Methods exposed by this controller should be\n called in preference to functions of the same name exposed by the contents\n View unless otherwise indicated. Methods must be called on the browser\n process UI thread unless otherwise indicated.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -33201,9 +33511,10 @@ const _: () = {
 };
 #[doc = "\n A Panel is a container in the views hierarchy that can contain other Views\n as children. Methods must be called on the browser process UI thread unless\n otherwise indicated.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_panel_t = _cef_panel_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new Panel.\n"]
-    pub fn cef_panel_create(delegate: *mut _cef_panel_delegate_t) -> *mut cef_panel_t;
+#[doc = "\n Create a new Panel.\n"]
+#[inline]
+pub unsafe fn cef_panel_create(delegate: *mut _cef_panel_delegate_t) -> *mut cef_panel_t {
+    unsafe { (crate::libcef::functions().cef_panel_create)(delegate) }
 }
 #[doc = "\n A ScrollView will show horizontal and/or vertical scrollbars when necessary\n based on the size of the attached content view. Methods must be called on\n the browser process UI thread unless otherwise indicated.\n\n NOTE: This struct is allocated DLL-side.\n"]
 #[repr(C)]
@@ -33262,9 +33573,12 @@ const _: () = {
 };
 #[doc = "\n A ScrollView will show horizontal and/or vertical scrollbars when necessary\n based on the size of the attached content view. Methods must be called on\n the browser process UI thread unless otherwise indicated.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_scroll_view_t = _cef_scroll_view_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new ScrollView.\n"]
-    pub fn cef_scroll_view_create(delegate: *mut _cef_view_delegate_t) -> *mut cef_scroll_view_t;
+#[doc = "\n Create a new ScrollView.\n"]
+#[inline]
+pub unsafe fn cef_scroll_view_create(
+    delegate: *mut _cef_view_delegate_t,
+) -> *mut cef_scroll_view_t {
+    unsafe { (crate::libcef::functions().cef_scroll_view_create)(delegate) }
 }
 #[doc = "\n Implement this structure to handle Textfield events. The functions of this\n structure will be called on the browser process UI thread unless otherwise\n indicated.\n\n NOTE: This struct is allocated client-side.\n"]
 #[repr(C)]
@@ -33495,9 +33809,12 @@ const _: () = {
 };
 #[doc = "\n A Textfield supports editing of text. This control is custom rendered with\n no platform-specific code. Methods must be called on the browser process UI\n thread unless otherwise indicated.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_textfield_t = _cef_textfield_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new Textfield.\n"]
-    pub fn cef_textfield_create(delegate: *mut _cef_textfield_delegate_t) -> *mut cef_textfield_t;
+#[doc = "\n Create a new Textfield.\n"]
+#[inline]
+pub unsafe fn cef_textfield_create(
+    delegate: *mut _cef_textfield_delegate_t,
+) -> *mut cef_textfield_t {
+    unsafe { (crate::libcef::functions().cef_textfield_create)(delegate) }
 }
 #[doc = "\n Implement this structure to handle window events. The functions of this\n structure will be called on the browser process UI thread unless otherwise\n indicated.\n\n NOTE: This struct is allocated client-side.\n"]
 #[repr(C)]
@@ -34002,26 +34319,33 @@ const _: () = {
 };
 #[doc = "\n A Window is a top-level Window/widget in the Views hierarchy. By default it\n will have a non-client area with title bar, icon and buttons that supports\n moving and resizing. All size and position values are in density independent\n pixels (DIP) unless otherwise indicated. Methods must be called on the\n browser process UI thread unless otherwise indicated.\n\n NOTE: This struct is allocated DLL-side.\n"]
 pub type cef_window_t = _cef_window_t;
-unsafe extern "C" {
-    #[doc = "\n Create a new Window.\n"]
-    pub fn cef_window_create_top_level(delegate: *mut _cef_window_delegate_t) -> *mut cef_window_t;
+#[doc = "\n Create a new Window.\n"]
+#[inline]
+pub unsafe fn cef_window_create_top_level(
+    delegate: *mut _cef_window_delegate_t,
+) -> *mut cef_window_t {
+    unsafe { (crate::libcef::functions().cef_window_create_top_level)(delegate) }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns the numeric ID value for an IDR |name| from cef_pack_resources.h or\n -1 if |name| is unrecognized by the current CEF/Chromium build. This\n function provides version-safe mapping of resource IDR names to\n version-specific numeric ID values. Numeric ID values are likely to change\n across CEF/Chromium versions but names generally remain the same.\n"]
-    pub fn cef_id_for_pack_resource_name(
-        name: *const ::std::os::raw::c_char,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Returns the numeric ID value for an IDR |name| from cef_pack_resources.h or\n -1 if |name| is unrecognized by the current CEF/Chromium build. This\n function provides version-safe mapping of resource IDR names to\n version-specific numeric ID values. Numeric ID values are likely to change\n across CEF/Chromium versions but names generally remain the same.\n"]
+#[inline]
+pub unsafe fn cef_id_for_pack_resource_name(
+    name: *const ::std::os::raw::c_char,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_id_for_pack_resource_name)(name) }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns the numeric ID value for an IDS |name| from cef_pack_strings.h or -1\n if |name| is unrecognized by the current CEF/Chromium build. This function\n provides version-safe mapping of string IDS names to version-specific\n numeric ID values. Numeric ID values are likely to change across\n CEF/Chromium versions but names generally remain the same.\n"]
-    pub fn cef_id_for_pack_string_name(
-        name: *const ::std::os::raw::c_char,
-    ) -> ::std::os::raw::c_int;
+#[doc = "\n Returns the numeric ID value for an IDS |name| from cef_pack_strings.h or -1\n if |name| is unrecognized by the current CEF/Chromium build. This function\n provides version-safe mapping of string IDS names to version-specific\n numeric ID values. Numeric ID values are likely to change across\n CEF/Chromium versions but names generally remain the same.\n"]
+#[inline]
+pub unsafe fn cef_id_for_pack_string_name(
+    name: *const ::std::os::raw::c_char,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_id_for_pack_string_name)(name) }
 }
-unsafe extern "C" {
-    #[doc = "\n Returns the numeric ID value for an IDC |name| from cef_command_ids.h or -1\n if |name| is unrecognized by the current CEF/Chromium build. This function\n provides version-safe mapping of command IDC names to version-specific\n numeric ID values. Numeric ID values are likely to change across\n CEF/Chromium versions but names generally remain the same.\n"]
-    pub fn cef_id_for_command_id_name(name: *const ::std::os::raw::c_char)
-        -> ::std::os::raw::c_int;
+#[doc = "\n Returns the numeric ID value for an IDC |name| from cef_command_ids.h or -1\n if |name| is unrecognized by the current CEF/Chromium build. This function\n provides version-safe mapping of command IDC names to version-specific\n numeric ID values. Numeric ID values are likely to change across\n CEF/Chromium versions but names generally remain the same.\n"]
+#[inline]
+pub unsafe fn cef_id_for_command_id_name(
+    name: *const ::std::os::raw::c_char,
+) -> ::std::os::raw::c_int {
+    unsafe { (crate::libcef::functions().cef_id_for_command_id_name)(name) }
 }
 impl cef_color_id_t {
     pub const CEF_ColorRefPrimary0: cef_color_id_t = cef_color_id_t::CEF_UiColorsStart;
@@ -35665,4 +35989,854 @@ pub enum cef_color_id_t {
     CEF_ColorWindowControlButtonBackgroundInactive = 1621,
     CEF_ChromeColorsEnd = 1622,
     CEF_UiColorsLast = 65535,
+}
+#[doc = " The functions libcef exports, resolved when it is loaded."]
+pub struct LibcefFunctions {
+    pub cef_api_hash: unsafe extern "C" fn(
+        version: ::std::os::raw::c_int,
+        entry: ::std::os::raw::c_int,
+    ) -> *const ::std::os::raw::c_char,
+    pub cef_api_version: unsafe extern "C" fn() -> ::std::os::raw::c_int,
+    pub cef_string_wide_set: unsafe extern "C" fn(
+        src: *const wchar_t,
+        src_len: usize,
+        output: *mut cef_string_wide_t,
+        copy: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_utf8_set: unsafe extern "C" fn(
+        src: *const ::std::os::raw::c_char,
+        src_len: usize,
+        output: *mut cef_string_utf8_t,
+        copy: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_utf16_set: unsafe extern "C" fn(
+        src: *const char16_t,
+        src_len: usize,
+        output: *mut cef_string_utf16_t,
+        copy: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_wide_clear: unsafe extern "C" fn(str_: *mut cef_string_wide_t),
+    pub cef_string_utf8_clear: unsafe extern "C" fn(str_: *mut cef_string_utf8_t),
+    pub cef_string_utf16_clear: unsafe extern "C" fn(str_: *mut cef_string_utf16_t),
+    pub cef_string_wide_cmp: unsafe extern "C" fn(
+        str1: *const cef_string_wide_t,
+        str2: *const cef_string_wide_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_utf8_cmp: unsafe extern "C" fn(
+        str1: *const cef_string_utf8_t,
+        str2: *const cef_string_utf8_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_utf16_cmp: unsafe extern "C" fn(
+        str1: *const cef_string_utf16_t,
+        str2: *const cef_string_utf16_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_wide_to_utf8: unsafe extern "C" fn(
+        src: *const wchar_t,
+        src_len: usize,
+        output: *mut cef_string_utf8_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_utf8_to_wide: unsafe extern "C" fn(
+        src: *const ::std::os::raw::c_char,
+        src_len: usize,
+        output: *mut cef_string_wide_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_wide_to_utf16: unsafe extern "C" fn(
+        src: *const wchar_t,
+        src_len: usize,
+        output: *mut cef_string_utf16_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_utf16_to_wide: unsafe extern "C" fn(
+        src: *const char16_t,
+        src_len: usize,
+        output: *mut cef_string_wide_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_utf8_to_utf16: unsafe extern "C" fn(
+        src: *const ::std::os::raw::c_char,
+        src_len: usize,
+        output: *mut cef_string_utf16_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_utf16_to_utf8: unsafe extern "C" fn(
+        src: *const char16_t,
+        src_len: usize,
+        output: *mut cef_string_utf8_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_ascii_to_wide: unsafe extern "C" fn(
+        src: *const ::std::os::raw::c_char,
+        src_len: usize,
+        output: *mut cef_string_wide_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_ascii_to_utf16: unsafe extern "C" fn(
+        src: *const ::std::os::raw::c_char,
+        src_len: usize,
+        output: *mut cef_string_utf16_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_userfree_wide_alloc: unsafe extern "C" fn() -> cef_string_userfree_wide_t,
+    pub cef_string_userfree_utf8_alloc: unsafe extern "C" fn() -> cef_string_userfree_utf8_t,
+    pub cef_string_userfree_utf16_alloc: unsafe extern "C" fn() -> cef_string_userfree_utf16_t,
+    pub cef_string_userfree_wide_free: unsafe extern "C" fn(str_: cef_string_userfree_wide_t),
+    pub cef_string_userfree_utf8_free: unsafe extern "C" fn(str_: cef_string_userfree_utf8_t),
+    pub cef_string_userfree_utf16_free: unsafe extern "C" fn(str_: cef_string_userfree_utf16_t),
+    pub cef_string_utf16_to_lower: unsafe extern "C" fn(
+        src: *const char16_t,
+        src_len: usize,
+        output: *mut cef_string_utf16_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_utf16_to_upper: unsafe extern "C" fn(
+        src: *const char16_t,
+        src_len: usize,
+        output: *mut cef_string_utf16_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_list_alloc: unsafe extern "C" fn() -> cef_string_list_t,
+    pub cef_string_list_size: unsafe extern "C" fn(list: cef_string_list_t) -> usize,
+    pub cef_string_list_value: unsafe extern "C" fn(
+        list: cef_string_list_t,
+        index: usize,
+        value: *mut cef_string_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_list_append:
+        unsafe extern "C" fn(list: cef_string_list_t, value: *const cef_string_t),
+    pub cef_string_list_clear: unsafe extern "C" fn(list: cef_string_list_t),
+    pub cef_string_list_free: unsafe extern "C" fn(list: cef_string_list_t),
+    pub cef_string_list_copy: unsafe extern "C" fn(list: cef_string_list_t) -> cef_string_list_t,
+    pub cef_string_map_alloc: unsafe extern "C" fn() -> cef_string_map_t,
+    pub cef_string_map_size: unsafe extern "C" fn(map: cef_string_map_t) -> usize,
+    pub cef_string_map_find: unsafe extern "C" fn(
+        map: cef_string_map_t,
+        key: *const cef_string_t,
+        value: *mut cef_string_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_map_key: unsafe extern "C" fn(
+        map: cef_string_map_t,
+        index: usize,
+        key: *mut cef_string_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_map_value: unsafe extern "C" fn(
+        map: cef_string_map_t,
+        index: usize,
+        value: *mut cef_string_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_map_append: unsafe extern "C" fn(
+        map: cef_string_map_t,
+        key: *const cef_string_t,
+        value: *const cef_string_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_map_clear: unsafe extern "C" fn(map: cef_string_map_t),
+    pub cef_string_map_free: unsafe extern "C" fn(map: cef_string_map_t),
+    pub cef_string_multimap_alloc: unsafe extern "C" fn() -> cef_string_multimap_t,
+    pub cef_string_multimap_size: unsafe extern "C" fn(map: cef_string_multimap_t) -> usize,
+    pub cef_string_multimap_find_count:
+        unsafe extern "C" fn(map: cef_string_multimap_t, key: *const cef_string_t) -> usize,
+    pub cef_string_multimap_enumerate: unsafe extern "C" fn(
+        map: cef_string_multimap_t,
+        key: *const cef_string_t,
+        value_index: usize,
+        value: *mut cef_string_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_multimap_key: unsafe extern "C" fn(
+        map: cef_string_multimap_t,
+        index: usize,
+        key: *mut cef_string_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_multimap_value: unsafe extern "C" fn(
+        map: cef_string_multimap_t,
+        index: usize,
+        value: *mut cef_string_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_multimap_append: unsafe extern "C" fn(
+        map: cef_string_multimap_t,
+        key: *const cef_string_t,
+        value: *const cef_string_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_string_multimap_clear: unsafe extern "C" fn(map: cef_string_multimap_t),
+    pub cef_string_multimap_free: unsafe extern "C" fn(map: cef_string_multimap_t),
+    pub cef_time_to_timet: unsafe extern "C" fn(
+        cef_time: *const cef_time_t,
+        time: *mut time_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_time_from_timet:
+        unsafe extern "C" fn(time: time_t, cef_time: *mut cef_time_t) -> ::std::os::raw::c_int,
+    pub cef_time_to_doublet:
+        unsafe extern "C" fn(cef_time: *const cef_time_t, time: *mut f64) -> ::std::os::raw::c_int,
+    pub cef_time_from_doublet:
+        unsafe extern "C" fn(time: f64, cef_time: *mut cef_time_t) -> ::std::os::raw::c_int,
+    pub cef_time_now: unsafe extern "C" fn(cef_time: *mut cef_time_t) -> ::std::os::raw::c_int,
+    pub cef_basetime_now: unsafe extern "C" fn() -> cef_basetime_t,
+    pub cef_time_delta: unsafe extern "C" fn(
+        cef_time1: *const cef_time_t,
+        cef_time2: *const cef_time_t,
+        delta: *mut ::std::os::raw::c_longlong,
+    ) -> ::std::os::raw::c_int,
+    pub cef_time_to_basetime: unsafe extern "C" fn(
+        from: *const cef_time_t,
+        to: *mut cef_basetime_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_time_from_basetime:
+        unsafe extern "C" fn(from: cef_basetime_t, to: *mut cef_time_t) -> ::std::os::raw::c_int,
+    pub cef_get_xdisplay: unsafe extern "C" fn() -> *mut XDisplay,
+    pub cef_value_create: unsafe extern "C" fn() -> *mut cef_value_t,
+    pub cef_binary_value_create: unsafe extern "C" fn(
+        data: *const ::std::os::raw::c_void,
+        data_size: usize,
+    ) -> *mut cef_binary_value_t,
+    pub cef_dictionary_value_create: unsafe extern "C" fn() -> *mut cef_dictionary_value_t,
+    pub cef_list_value_create: unsafe extern "C" fn() -> *mut cef_list_value_t,
+    pub cef_image_create: unsafe extern "C" fn() -> *mut cef_image_t,
+    pub cef_stream_reader_create_for_file:
+        unsafe extern "C" fn(fileName: *const cef_string_t) -> *mut cef_stream_reader_t,
+    pub cef_stream_reader_create_for_data: unsafe extern "C" fn(
+        data: *mut ::std::os::raw::c_void,
+        size: usize,
+    ) -> *mut cef_stream_reader_t,
+    pub cef_stream_reader_create_for_handler:
+        unsafe extern "C" fn(handler: *mut cef_read_handler_t) -> *mut cef_stream_reader_t,
+    pub cef_stream_writer_create_for_file:
+        unsafe extern "C" fn(fileName: *const cef_string_t) -> *mut cef_stream_writer_t,
+    pub cef_stream_writer_create_for_handler:
+        unsafe extern "C" fn(handler: *mut cef_write_handler_t) -> *mut cef_stream_writer_t,
+    pub cef_drag_data_create: unsafe extern "C" fn() -> *mut cef_drag_data_t,
+    pub cef_process_message_create:
+        unsafe extern "C" fn(name: *const cef_string_t) -> *mut cef_process_message_t,
+    pub cef_request_create: unsafe extern "C" fn() -> *mut cef_request_t,
+    pub cef_post_data_create: unsafe extern "C" fn() -> *mut cef_post_data_t,
+    pub cef_post_data_element_create: unsafe extern "C" fn() -> *mut cef_post_data_element_t,
+    pub cef_cookie_manager_get_global_manager: unsafe extern "C" fn(
+        callback: *mut _cef_completion_callback_t,
+    )
+        -> *mut cef_cookie_manager_t,
+    pub cef_media_router_get_global:
+        unsafe extern "C" fn(callback: *mut _cef_completion_callback_t) -> *mut cef_media_router_t,
+    pub cef_preference_manager_get_chrome_variations_as_switches:
+        unsafe extern "C" fn(switches: cef_string_list_t),
+    pub cef_preference_manager_get_chrome_variations_as_strings:
+        unsafe extern "C" fn(strings: cef_string_list_t),
+    pub cef_preference_manager_get_global: unsafe extern "C" fn() -> *mut cef_preference_manager_t,
+    pub cef_request_context_get_global_context:
+        unsafe extern "C" fn() -> *mut cef_request_context_t,
+    pub cef_request_context_create_context: unsafe extern "C" fn(
+        settings: *const _cef_request_context_settings_t,
+        handler: *mut _cef_request_context_handler_t,
+    ) -> *mut cef_request_context_t,
+    pub cef_request_context_cef_create_context_shared:
+        unsafe extern "C" fn(
+            other: *mut cef_request_context_t,
+            handler: *mut _cef_request_context_handler_t,
+        ) -> *mut cef_request_context_t,
+    pub cef_browser_host_create_browser: unsafe extern "C" fn(
+        windowInfo: *const cef_window_info_t,
+        client: *mut _cef_client_t,
+        url: *const cef_string_t,
+        settings: *const _cef_browser_settings_t,
+        extra_info: *mut _cef_dictionary_value_t,
+        request_context: *mut _cef_request_context_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_browser_host_create_browser_sync: unsafe extern "C" fn(
+        windowInfo: *const cef_window_info_t,
+        client: *mut _cef_client_t,
+        url: *const cef_string_t,
+        settings: *const _cef_browser_settings_t,
+        extra_info: *mut _cef_dictionary_value_t,
+        request_context: *mut _cef_request_context_t,
+    ) -> *mut cef_browser_t,
+    pub cef_browser_host_get_browser_by_identifier:
+        unsafe extern "C" fn(browser_id: ::std::os::raw::c_int) -> *mut cef_browser_t,
+    pub cef_menu_model_create:
+        unsafe extern "C" fn(delegate: *mut _cef_menu_model_delegate_t) -> *mut cef_menu_model_t,
+    pub cef_print_settings_create: unsafe extern "C" fn() -> *mut cef_print_settings_t,
+    pub cef_response_create: unsafe extern "C" fn() -> *mut cef_response_t,
+    pub cef_is_cert_status_error:
+        unsafe extern "C" fn(status: cef_cert_status_t) -> ::std::os::raw::c_int,
+    pub cef_command_line_create: unsafe extern "C" fn() -> *mut cef_command_line_t,
+    pub cef_command_line_get_global: unsafe extern "C" fn() -> *mut cef_command_line_t,
+    pub cef_task_runner_get_for_current_thread: unsafe extern "C" fn() -> *mut cef_task_runner_t,
+    pub cef_task_runner_get_for_thread:
+        unsafe extern "C" fn(threadId: cef_thread_id_t) -> *mut cef_task_runner_t,
+    pub cef_currently_on: unsafe extern "C" fn(threadId: cef_thread_id_t) -> ::std::os::raw::c_int,
+    pub cef_post_task: unsafe extern "C" fn(
+        threadId: cef_thread_id_t,
+        task: *mut cef_task_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_post_delayed_task: unsafe extern "C" fn(
+        threadId: cef_thread_id_t,
+        task: *mut cef_task_t,
+        delay_ms: i64,
+    ) -> ::std::os::raw::c_int,
+    pub cef_v8_context_get_current_context: unsafe extern "C" fn() -> *mut cef_v8_context_t,
+    pub cef_v8_context_get_entered_context: unsafe extern "C" fn() -> *mut cef_v8_context_t,
+    pub cef_v8_context_in_context: unsafe extern "C" fn() -> ::std::os::raw::c_int,
+    pub cef_v8_backing_store_create:
+        unsafe extern "C" fn(byte_length: usize) -> *mut cef_v8_backing_store_t,
+    pub cef_v8_value_create_undefined: unsafe extern "C" fn() -> *mut cef_v8_value_t,
+    pub cef_v8_value_create_null: unsafe extern "C" fn() -> *mut cef_v8_value_t,
+    pub cef_v8_value_create_bool:
+        unsafe extern "C" fn(value: ::std::os::raw::c_int) -> *mut cef_v8_value_t,
+    pub cef_v8_value_create_int: unsafe extern "C" fn(value: i32) -> *mut cef_v8_value_t,
+    pub cef_v8_value_create_uint: unsafe extern "C" fn(value: u32) -> *mut cef_v8_value_t,
+    pub cef_v8_value_create_double: unsafe extern "C" fn(value: f64) -> *mut cef_v8_value_t,
+    pub cef_v8_value_create_date: unsafe extern "C" fn(date: cef_basetime_t) -> *mut cef_v8_value_t,
+    pub cef_v8_value_create_string:
+        unsafe extern "C" fn(value: *const cef_string_t) -> *mut cef_v8_value_t,
+    pub cef_v8_value_create_object: unsafe extern "C" fn(
+        accessor: *mut cef_v8_accessor_t,
+        interceptor: *mut cef_v8_interceptor_t,
+    ) -> *mut cef_v8_value_t,
+    pub cef_v8_value_create_array:
+        unsafe extern "C" fn(length: ::std::os::raw::c_int) -> *mut cef_v8_value_t,
+    pub cef_v8_value_create_array_buffer: unsafe extern "C" fn(
+        buffer: *mut ::std::os::raw::c_void,
+        length: usize,
+        release_callback: *mut cef_v8_array_buffer_release_callback_t,
+    ) -> *mut cef_v8_value_t,
+    pub cef_v8_value_create_array_buffer_with_copy: unsafe extern "C" fn(
+        buffer: *mut ::std::os::raw::c_void,
+        length: usize,
+    )
+        -> *mut cef_v8_value_t,
+    pub cef_v8_value_create_array_buffer_from_backing_store:
+        unsafe extern "C" fn(backing_store: *mut cef_v8_backing_store_t) -> *mut cef_v8_value_t,
+    pub cef_v8_value_create_function: unsafe extern "C" fn(
+        name: *const cef_string_t,
+        handler: *mut cef_v8_handler_t,
+    ) -> *mut cef_v8_value_t,
+    pub cef_v8_value_create_promise: unsafe extern "C" fn() -> *mut cef_v8_value_t,
+    pub cef_v8_stack_trace_get_current:
+        unsafe extern "C" fn(frame_limit: ::std::os::raw::c_int) -> *mut cef_v8_stack_trace_t,
+    pub cef_register_scheme_handler_factory: unsafe extern "C" fn(
+        scheme_name: *const cef_string_t,
+        domain_name: *const cef_string_t,
+        factory: *mut cef_scheme_handler_factory_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_clear_scheme_handler_factories: unsafe extern "C" fn() -> ::std::os::raw::c_int,
+    pub cef_execute_process: unsafe extern "C" fn(
+        args: *const cef_main_args_t,
+        application: *mut cef_app_t,
+        windows_sandbox_info: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int,
+    pub cef_initialize: unsafe extern "C" fn(
+        args: *const cef_main_args_t,
+        settings: *const _cef_settings_t,
+        application: *mut cef_app_t,
+        windows_sandbox_info: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int,
+    pub cef_get_exit_code: unsafe extern "C" fn() -> ::std::os::raw::c_int,
+    pub cef_shutdown: unsafe extern "C" fn(),
+    pub cef_do_message_loop_work: unsafe extern "C" fn(),
+    pub cef_run_message_loop: unsafe extern "C" fn(),
+    pub cef_quit_message_loop: unsafe extern "C" fn(),
+    pub cef_set_nestable_tasks_allowed: unsafe extern "C" fn(allowed: ::std::os::raw::c_int),
+    pub cef_component_updater_get: unsafe extern "C" fn() -> *mut cef_component_updater_t,
+    pub cef_crash_reporting_enabled: unsafe extern "C" fn() -> ::std::os::raw::c_int,
+    pub cef_set_crash_key_value:
+        unsafe extern "C" fn(key: *const cef_string_t, value: *const cef_string_t),
+    pub cef_create_directory:
+        unsafe extern "C" fn(full_path: *const cef_string_t) -> ::std::os::raw::c_int,
+    pub cef_get_temp_directory:
+        unsafe extern "C" fn(temp_dir: *mut cef_string_t) -> ::std::os::raw::c_int,
+    pub cef_create_new_temp_directory: unsafe extern "C" fn(
+        prefix: *const cef_string_t,
+        new_temp_path: *mut cef_string_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_create_temp_directory_in_directory: unsafe extern "C" fn(
+        base_dir: *const cef_string_t,
+        prefix: *const cef_string_t,
+        new_dir: *mut cef_string_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_directory_exists:
+        unsafe extern "C" fn(path: *const cef_string_t) -> ::std::os::raw::c_int,
+    pub cef_delete_file: unsafe extern "C" fn(
+        path: *const cef_string_t,
+        recursive: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int,
+    pub cef_zip_directory: unsafe extern "C" fn(
+        src_dir: *const cef_string_t,
+        dest_file: *const cef_string_t,
+        include_hidden_files: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int,
+    pub cef_load_crlsets_file: unsafe extern "C" fn(path: *const cef_string_t),
+    pub cef_is_rtl: unsafe extern "C" fn() -> ::std::os::raw::c_int,
+    pub cef_add_cross_origin_whitelist_entry: unsafe extern "C" fn(
+        source_origin: *const cef_string_t,
+        target_protocol: *const cef_string_t,
+        target_domain: *const cef_string_t,
+        allow_target_subdomains: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int,
+    pub cef_remove_cross_origin_whitelist_entry: unsafe extern "C" fn(
+        source_origin: *const cef_string_t,
+        target_protocol: *const cef_string_t,
+        target_domain: *const cef_string_t,
+        allow_target_subdomains: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int,
+    pub cef_clear_cross_origin_whitelist: unsafe extern "C" fn() -> ::std::os::raw::c_int,
+    pub cef_resolve_url: unsafe extern "C" fn(
+        base_url: *const cef_string_t,
+        relative_url: *const cef_string_t,
+        resolved_url: *mut cef_string_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_parse_url: unsafe extern "C" fn(
+        url: *const cef_string_t,
+        parts: *mut _cef_urlparts_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_create_url: unsafe extern "C" fn(
+        parts: *const _cef_urlparts_t,
+        url: *mut cef_string_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_format_url_for_security_display:
+        unsafe extern "C" fn(origin_url: *const cef_string_t) -> cef_string_userfree_t,
+    pub cef_get_mime_type:
+        unsafe extern "C" fn(extension: *const cef_string_t) -> cef_string_userfree_t,
+    pub cef_get_extensions_for_mime_type:
+        unsafe extern "C" fn(mime_type: *const cef_string_t, extensions: cef_string_list_t),
+    pub cef_base64_encode: unsafe extern "C" fn(
+        data: *const ::std::os::raw::c_void,
+        data_size: usize,
+    ) -> cef_string_userfree_t,
+    pub cef_base64_decode:
+        unsafe extern "C" fn(data: *const cef_string_t) -> *mut _cef_binary_value_t,
+    pub cef_uriencode: unsafe extern "C" fn(
+        text: *const cef_string_t,
+        use_plus: ::std::os::raw::c_int,
+    ) -> cef_string_userfree_t,
+    pub cef_uridecode: unsafe extern "C" fn(
+        text: *const cef_string_t,
+        convert_to_utf8: ::std::os::raw::c_int,
+        unescape_rule: cef_uri_unescape_rule_t,
+    ) -> cef_string_userfree_t,
+    pub cef_parse_json: unsafe extern "C" fn(
+        json_string: *const cef_string_t,
+        options: cef_json_parser_options_t,
+    ) -> *mut _cef_value_t,
+    pub cef_parse_json_buffer: unsafe extern "C" fn(
+        json: *const ::std::os::raw::c_void,
+        json_size: usize,
+        options: cef_json_parser_options_t,
+    ) -> *mut _cef_value_t,
+    pub cef_parse_jsonand_return_error: unsafe extern "C" fn(
+        json_string: *const cef_string_t,
+        options: cef_json_parser_options_t,
+        error_msg_out: *mut cef_string_t,
+    ) -> *mut _cef_value_t,
+    pub cef_write_json: unsafe extern "C" fn(
+        node: *mut _cef_value_t,
+        options: cef_json_writer_options_t,
+    ) -> cef_string_userfree_t,
+    pub cef_get_path:
+        unsafe extern "C" fn(key: cef_path_key_t, path: *mut cef_string_t) -> ::std::os::raw::c_int,
+    pub cef_launch_process:
+        unsafe extern "C" fn(command_line: *mut _cef_command_line_t) -> ::std::os::raw::c_int,
+    pub cef_resource_bundle_get_global: unsafe extern "C" fn() -> *mut cef_resource_bundle_t,
+    pub cef_server_create: unsafe extern "C" fn(
+        address: *const cef_string_t,
+        port: u16,
+        backlog: ::std::os::raw::c_int,
+        handler: *mut _cef_server_handler_t,
+    ),
+    pub cef_shared_process_message_builder_create:
+        unsafe extern "C" fn(
+            name: *const cef_string_t,
+            byte_size: usize,
+        ) -> *mut cef_shared_process_message_builder_t,
+    pub cef_task_manager_get: unsafe extern "C" fn() -> *mut cef_task_manager_t,
+    pub cef_get_current_platform_thread_id: unsafe extern "C" fn() -> cef_platform_thread_id_t,
+    pub cef_get_current_platform_thread_handle:
+        unsafe extern "C" fn() -> cef_platform_thread_handle_t,
+    pub cef_thread_create: unsafe extern "C" fn(
+        display_name: *const cef_string_t,
+        priority: cef_thread_priority_t,
+        message_loop_type: cef_message_loop_type_t,
+        stoppable: ::std::os::raw::c_int,
+        com_init_mode: cef_com_init_mode_t,
+    ) -> *mut cef_thread_t,
+    pub cef_begin_tracing: unsafe extern "C" fn(
+        categories: *const cef_string_t,
+        callback: *mut _cef_completion_callback_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_end_tracing: unsafe extern "C" fn(
+        tracing_file: *const cef_string_t,
+        callback: *mut cef_end_tracing_callback_t,
+    ) -> ::std::os::raw::c_int,
+    pub cef_now_from_system_trace_time: unsafe extern "C" fn() -> i64,
+    pub cef_urlrequest_create: unsafe extern "C" fn(
+        request: *mut _cef_request_t,
+        client: *mut _cef_urlrequest_client_t,
+        request_context: *mut _cef_request_context_t,
+    ) -> *mut cef_urlrequest_t,
+    pub cef_waitable_event_create: unsafe extern "C" fn(
+        automatic_reset: ::std::os::raw::c_int,
+        initially_signaled: ::std::os::raw::c_int,
+    ) -> *mut cef_waitable_event_t,
+    pub cef_xml_reader_create: unsafe extern "C" fn(
+        stream: *mut _cef_stream_reader_t,
+        encodingType: cef_xml_encoding_type_t,
+        URI: *const cef_string_t,
+    ) -> *mut cef_xml_reader_t,
+    pub cef_zip_reader_create:
+        unsafe extern "C" fn(stream: *mut _cef_stream_reader_t) -> *mut cef_zip_reader_t,
+    pub cef_browser_view_create: unsafe extern "C" fn(
+        client: *mut _cef_client_t,
+        url: *const cef_string_t,
+        settings: *const _cef_browser_settings_t,
+        extra_info: *mut _cef_dictionary_value_t,
+        request_context: *mut _cef_request_context_t,
+        delegate: *mut _cef_browser_view_delegate_t,
+    ) -> *mut cef_browser_view_t,
+    pub cef_browser_view_get_for_browser:
+        unsafe extern "C" fn(browser: *mut _cef_browser_t) -> *mut cef_browser_view_t,
+    pub cef_display_get_primary: unsafe extern "C" fn() -> *mut cef_display_t,
+    pub cef_display_get_nearest_point: unsafe extern "C" fn(
+        point: *const cef_point_t,
+        input_pixel_coords: ::std::os::raw::c_int,
+    ) -> *mut cef_display_t,
+    pub cef_display_get_matching_bounds: unsafe extern "C" fn(
+        bounds: *const cef_rect_t,
+        input_pixel_coords: ::std::os::raw::c_int,
+    ) -> *mut cef_display_t,
+    pub cef_display_get_count: unsafe extern "C" fn() -> usize,
+    pub cef_display_get_alls:
+        unsafe extern "C" fn(displaysCount: *mut usize, displays: *mut *mut cef_display_t),
+    pub cef_display_convert_screen_point_to_pixels:
+        unsafe extern "C" fn(point: *const cef_point_t) -> cef_point_t,
+    pub cef_display_convert_screen_point_from_pixels:
+        unsafe extern "C" fn(point: *const cef_point_t) -> cef_point_t,
+    pub cef_display_convert_screen_rect_to_pixels:
+        unsafe extern "C" fn(rect: *const cef_rect_t) -> cef_rect_t,
+    pub cef_display_convert_screen_rect_from_pixels:
+        unsafe extern "C" fn(rect: *const cef_rect_t) -> cef_rect_t,
+    pub cef_label_button_create: unsafe extern "C" fn(
+        delegate: *mut _cef_button_delegate_t,
+        text: *const cef_string_t,
+    ) -> *mut cef_label_button_t,
+    pub cef_menu_button_create: unsafe extern "C" fn(
+        delegate: *mut _cef_menu_button_delegate_t,
+        text: *const cef_string_t,
+    ) -> *mut cef_menu_button_t,
+    pub cef_panel_create:
+        unsafe extern "C" fn(delegate: *mut _cef_panel_delegate_t) -> *mut cef_panel_t,
+    pub cef_scroll_view_create:
+        unsafe extern "C" fn(delegate: *mut _cef_view_delegate_t) -> *mut cef_scroll_view_t,
+    pub cef_textfield_create:
+        unsafe extern "C" fn(delegate: *mut _cef_textfield_delegate_t) -> *mut cef_textfield_t,
+    pub cef_window_create_top_level:
+        unsafe extern "C" fn(delegate: *mut _cef_window_delegate_t) -> *mut cef_window_t,
+    pub cef_id_for_pack_resource_name:
+        unsafe extern "C" fn(name: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int,
+    pub cef_id_for_pack_string_name:
+        unsafe extern "C" fn(name: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int,
+    pub cef_id_for_command_id_name:
+        unsafe extern "C" fn(name: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int,
+}
+impl LibcefFunctions {
+    pub(crate) fn resolve(
+        library: &crate::libcef::Library,
+    ) -> Result<Self, crate::libcef::LoadError> {
+        Ok(Self {
+            cef_api_hash: unsafe { library.symbol(c"cef_api_hash")? },
+            cef_api_version: unsafe { library.symbol(c"cef_api_version")? },
+            cef_string_wide_set: unsafe { library.symbol(c"cef_string_wide_set")? },
+            cef_string_utf8_set: unsafe { library.symbol(c"cef_string_utf8_set")? },
+            cef_string_utf16_set: unsafe { library.symbol(c"cef_string_utf16_set")? },
+            cef_string_wide_clear: unsafe { library.symbol(c"cef_string_wide_clear")? },
+            cef_string_utf8_clear: unsafe { library.symbol(c"cef_string_utf8_clear")? },
+            cef_string_utf16_clear: unsafe { library.symbol(c"cef_string_utf16_clear")? },
+            cef_string_wide_cmp: unsafe { library.symbol(c"cef_string_wide_cmp")? },
+            cef_string_utf8_cmp: unsafe { library.symbol(c"cef_string_utf8_cmp")? },
+            cef_string_utf16_cmp: unsafe { library.symbol(c"cef_string_utf16_cmp")? },
+            cef_string_wide_to_utf8: unsafe { library.symbol(c"cef_string_wide_to_utf8")? },
+            cef_string_utf8_to_wide: unsafe { library.symbol(c"cef_string_utf8_to_wide")? },
+            cef_string_wide_to_utf16: unsafe { library.symbol(c"cef_string_wide_to_utf16")? },
+            cef_string_utf16_to_wide: unsafe { library.symbol(c"cef_string_utf16_to_wide")? },
+            cef_string_utf8_to_utf16: unsafe { library.symbol(c"cef_string_utf8_to_utf16")? },
+            cef_string_utf16_to_utf8: unsafe { library.symbol(c"cef_string_utf16_to_utf8")? },
+            cef_string_ascii_to_wide: unsafe { library.symbol(c"cef_string_ascii_to_wide")? },
+            cef_string_ascii_to_utf16: unsafe { library.symbol(c"cef_string_ascii_to_utf16")? },
+            cef_string_userfree_wide_alloc: unsafe {
+                library.symbol(c"cef_string_userfree_wide_alloc")?
+            },
+            cef_string_userfree_utf8_alloc: unsafe {
+                library.symbol(c"cef_string_userfree_utf8_alloc")?
+            },
+            cef_string_userfree_utf16_alloc: unsafe {
+                library.symbol(c"cef_string_userfree_utf16_alloc")?
+            },
+            cef_string_userfree_wide_free: unsafe {
+                library.symbol(c"cef_string_userfree_wide_free")?
+            },
+            cef_string_userfree_utf8_free: unsafe {
+                library.symbol(c"cef_string_userfree_utf8_free")?
+            },
+            cef_string_userfree_utf16_free: unsafe {
+                library.symbol(c"cef_string_userfree_utf16_free")?
+            },
+            cef_string_utf16_to_lower: unsafe { library.symbol(c"cef_string_utf16_to_lower")? },
+            cef_string_utf16_to_upper: unsafe { library.symbol(c"cef_string_utf16_to_upper")? },
+            cef_string_list_alloc: unsafe { library.symbol(c"cef_string_list_alloc")? },
+            cef_string_list_size: unsafe { library.symbol(c"cef_string_list_size")? },
+            cef_string_list_value: unsafe { library.symbol(c"cef_string_list_value")? },
+            cef_string_list_append: unsafe { library.symbol(c"cef_string_list_append")? },
+            cef_string_list_clear: unsafe { library.symbol(c"cef_string_list_clear")? },
+            cef_string_list_free: unsafe { library.symbol(c"cef_string_list_free")? },
+            cef_string_list_copy: unsafe { library.symbol(c"cef_string_list_copy")? },
+            cef_string_map_alloc: unsafe { library.symbol(c"cef_string_map_alloc")? },
+            cef_string_map_size: unsafe { library.symbol(c"cef_string_map_size")? },
+            cef_string_map_find: unsafe { library.symbol(c"cef_string_map_find")? },
+            cef_string_map_key: unsafe { library.symbol(c"cef_string_map_key")? },
+            cef_string_map_value: unsafe { library.symbol(c"cef_string_map_value")? },
+            cef_string_map_append: unsafe { library.symbol(c"cef_string_map_append")? },
+            cef_string_map_clear: unsafe { library.symbol(c"cef_string_map_clear")? },
+            cef_string_map_free: unsafe { library.symbol(c"cef_string_map_free")? },
+            cef_string_multimap_alloc: unsafe { library.symbol(c"cef_string_multimap_alloc")? },
+            cef_string_multimap_size: unsafe { library.symbol(c"cef_string_multimap_size")? },
+            cef_string_multimap_find_count: unsafe {
+                library.symbol(c"cef_string_multimap_find_count")?
+            },
+            cef_string_multimap_enumerate: unsafe {
+                library.symbol(c"cef_string_multimap_enumerate")?
+            },
+            cef_string_multimap_key: unsafe { library.symbol(c"cef_string_multimap_key")? },
+            cef_string_multimap_value: unsafe { library.symbol(c"cef_string_multimap_value")? },
+            cef_string_multimap_append: unsafe { library.symbol(c"cef_string_multimap_append")? },
+            cef_string_multimap_clear: unsafe { library.symbol(c"cef_string_multimap_clear")? },
+            cef_string_multimap_free: unsafe { library.symbol(c"cef_string_multimap_free")? },
+            cef_time_to_timet: unsafe { library.symbol(c"cef_time_to_timet")? },
+            cef_time_from_timet: unsafe { library.symbol(c"cef_time_from_timet")? },
+            cef_time_to_doublet: unsafe { library.symbol(c"cef_time_to_doublet")? },
+            cef_time_from_doublet: unsafe { library.symbol(c"cef_time_from_doublet")? },
+            cef_time_now: unsafe { library.symbol(c"cef_time_now")? },
+            cef_basetime_now: unsafe { library.symbol(c"cef_basetime_now")? },
+            cef_time_delta: unsafe { library.symbol(c"cef_time_delta")? },
+            cef_time_to_basetime: unsafe { library.symbol(c"cef_time_to_basetime")? },
+            cef_time_from_basetime: unsafe { library.symbol(c"cef_time_from_basetime")? },
+            cef_get_xdisplay: unsafe { library.symbol(c"cef_get_xdisplay")? },
+            cef_value_create: unsafe { library.symbol(c"cef_value_create")? },
+            cef_binary_value_create: unsafe { library.symbol(c"cef_binary_value_create")? },
+            cef_dictionary_value_create: unsafe { library.symbol(c"cef_dictionary_value_create")? },
+            cef_list_value_create: unsafe { library.symbol(c"cef_list_value_create")? },
+            cef_image_create: unsafe { library.symbol(c"cef_image_create")? },
+            cef_stream_reader_create_for_file: unsafe {
+                library.symbol(c"cef_stream_reader_create_for_file")?
+            },
+            cef_stream_reader_create_for_data: unsafe {
+                library.symbol(c"cef_stream_reader_create_for_data")?
+            },
+            cef_stream_reader_create_for_handler: unsafe {
+                library.symbol(c"cef_stream_reader_create_for_handler")?
+            },
+            cef_stream_writer_create_for_file: unsafe {
+                library.symbol(c"cef_stream_writer_create_for_file")?
+            },
+            cef_stream_writer_create_for_handler: unsafe {
+                library.symbol(c"cef_stream_writer_create_for_handler")?
+            },
+            cef_drag_data_create: unsafe { library.symbol(c"cef_drag_data_create")? },
+            cef_process_message_create: unsafe { library.symbol(c"cef_process_message_create")? },
+            cef_request_create: unsafe { library.symbol(c"cef_request_create")? },
+            cef_post_data_create: unsafe { library.symbol(c"cef_post_data_create")? },
+            cef_post_data_element_create: unsafe {
+                library.symbol(c"cef_post_data_element_create")?
+            },
+            cef_cookie_manager_get_global_manager: unsafe {
+                library.symbol(c"cef_cookie_manager_get_global_manager")?
+            },
+            cef_media_router_get_global: unsafe { library.symbol(c"cef_media_router_get_global")? },
+            cef_preference_manager_get_chrome_variations_as_switches: unsafe {
+                library.symbol(c"cef_preference_manager_get_chrome_variations_as_switches")?
+            },
+            cef_preference_manager_get_chrome_variations_as_strings: unsafe {
+                library.symbol(c"cef_preference_manager_get_chrome_variations_as_strings")?
+            },
+            cef_preference_manager_get_global: unsafe {
+                library.symbol(c"cef_preference_manager_get_global")?
+            },
+            cef_request_context_get_global_context: unsafe {
+                library.symbol(c"cef_request_context_get_global_context")?
+            },
+            cef_request_context_create_context: unsafe {
+                library.symbol(c"cef_request_context_create_context")?
+            },
+            cef_request_context_cef_create_context_shared: unsafe {
+                library.symbol(c"cef_request_context_cef_create_context_shared")?
+            },
+            cef_browser_host_create_browser: unsafe {
+                library.symbol(c"cef_browser_host_create_browser")?
+            },
+            cef_browser_host_create_browser_sync: unsafe {
+                library.symbol(c"cef_browser_host_create_browser_sync")?
+            },
+            cef_browser_host_get_browser_by_identifier: unsafe {
+                library.symbol(c"cef_browser_host_get_browser_by_identifier")?
+            },
+            cef_menu_model_create: unsafe { library.symbol(c"cef_menu_model_create")? },
+            cef_print_settings_create: unsafe { library.symbol(c"cef_print_settings_create")? },
+            cef_response_create: unsafe { library.symbol(c"cef_response_create")? },
+            cef_is_cert_status_error: unsafe { library.symbol(c"cef_is_cert_status_error")? },
+            cef_command_line_create: unsafe { library.symbol(c"cef_command_line_create")? },
+            cef_command_line_get_global: unsafe { library.symbol(c"cef_command_line_get_global")? },
+            cef_task_runner_get_for_current_thread: unsafe {
+                library.symbol(c"cef_task_runner_get_for_current_thread")?
+            },
+            cef_task_runner_get_for_thread: unsafe {
+                library.symbol(c"cef_task_runner_get_for_thread")?
+            },
+            cef_currently_on: unsafe { library.symbol(c"cef_currently_on")? },
+            cef_post_task: unsafe { library.symbol(c"cef_post_task")? },
+            cef_post_delayed_task: unsafe { library.symbol(c"cef_post_delayed_task")? },
+            cef_v8_context_get_current_context: unsafe {
+                library.symbol(c"cef_v8_context_get_current_context")?
+            },
+            cef_v8_context_get_entered_context: unsafe {
+                library.symbol(c"cef_v8_context_get_entered_context")?
+            },
+            cef_v8_context_in_context: unsafe { library.symbol(c"cef_v8_context_in_context")? },
+            cef_v8_backing_store_create: unsafe { library.symbol(c"cef_v8_backing_store_create")? },
+            cef_v8_value_create_undefined: unsafe {
+                library.symbol(c"cef_v8_value_create_undefined")?
+            },
+            cef_v8_value_create_null: unsafe { library.symbol(c"cef_v8_value_create_null")? },
+            cef_v8_value_create_bool: unsafe { library.symbol(c"cef_v8_value_create_bool")? },
+            cef_v8_value_create_int: unsafe { library.symbol(c"cef_v8_value_create_int")? },
+            cef_v8_value_create_uint: unsafe { library.symbol(c"cef_v8_value_create_uint")? },
+            cef_v8_value_create_double: unsafe { library.symbol(c"cef_v8_value_create_double")? },
+            cef_v8_value_create_date: unsafe { library.symbol(c"cef_v8_value_create_date")? },
+            cef_v8_value_create_string: unsafe { library.symbol(c"cef_v8_value_create_string")? },
+            cef_v8_value_create_object: unsafe { library.symbol(c"cef_v8_value_create_object")? },
+            cef_v8_value_create_array: unsafe { library.symbol(c"cef_v8_value_create_array")? },
+            cef_v8_value_create_array_buffer: unsafe {
+                library.symbol(c"cef_v8_value_create_array_buffer")?
+            },
+            cef_v8_value_create_array_buffer_with_copy: unsafe {
+                library.symbol(c"cef_v8_value_create_array_buffer_with_copy")?
+            },
+            cef_v8_value_create_array_buffer_from_backing_store: unsafe {
+                library.symbol(c"cef_v8_value_create_array_buffer_from_backing_store")?
+            },
+            cef_v8_value_create_function: unsafe {
+                library.symbol(c"cef_v8_value_create_function")?
+            },
+            cef_v8_value_create_promise: unsafe { library.symbol(c"cef_v8_value_create_promise")? },
+            cef_v8_stack_trace_get_current: unsafe {
+                library.symbol(c"cef_v8_stack_trace_get_current")?
+            },
+            cef_register_scheme_handler_factory: unsafe {
+                library.symbol(c"cef_register_scheme_handler_factory")?
+            },
+            cef_clear_scheme_handler_factories: unsafe {
+                library.symbol(c"cef_clear_scheme_handler_factories")?
+            },
+            cef_execute_process: unsafe { library.symbol(c"cef_execute_process")? },
+            cef_initialize: unsafe { library.symbol(c"cef_initialize")? },
+            cef_get_exit_code: unsafe { library.symbol(c"cef_get_exit_code")? },
+            cef_shutdown: unsafe { library.symbol(c"cef_shutdown")? },
+            cef_do_message_loop_work: unsafe { library.symbol(c"cef_do_message_loop_work")? },
+            cef_run_message_loop: unsafe { library.symbol(c"cef_run_message_loop")? },
+            cef_quit_message_loop: unsafe { library.symbol(c"cef_quit_message_loop")? },
+            cef_set_nestable_tasks_allowed: unsafe {
+                library.symbol(c"cef_set_nestable_tasks_allowed")?
+            },
+            cef_component_updater_get: unsafe { library.symbol(c"cef_component_updater_get")? },
+            cef_crash_reporting_enabled: unsafe { library.symbol(c"cef_crash_reporting_enabled")? },
+            cef_set_crash_key_value: unsafe { library.symbol(c"cef_set_crash_key_value")? },
+            cef_create_directory: unsafe { library.symbol(c"cef_create_directory")? },
+            cef_get_temp_directory: unsafe { library.symbol(c"cef_get_temp_directory")? },
+            cef_create_new_temp_directory: unsafe {
+                library.symbol(c"cef_create_new_temp_directory")?
+            },
+            cef_create_temp_directory_in_directory: unsafe {
+                library.symbol(c"cef_create_temp_directory_in_directory")?
+            },
+            cef_directory_exists: unsafe { library.symbol(c"cef_directory_exists")? },
+            cef_delete_file: unsafe { library.symbol(c"cef_delete_file")? },
+            cef_zip_directory: unsafe { library.symbol(c"cef_zip_directory")? },
+            cef_load_crlsets_file: unsafe { library.symbol(c"cef_load_crlsets_file")? },
+            cef_is_rtl: unsafe { library.symbol(c"cef_is_rtl")? },
+            cef_add_cross_origin_whitelist_entry: unsafe {
+                library.symbol(c"cef_add_cross_origin_whitelist_entry")?
+            },
+            cef_remove_cross_origin_whitelist_entry: unsafe {
+                library.symbol(c"cef_remove_cross_origin_whitelist_entry")?
+            },
+            cef_clear_cross_origin_whitelist: unsafe {
+                library.symbol(c"cef_clear_cross_origin_whitelist")?
+            },
+            cef_resolve_url: unsafe { library.symbol(c"cef_resolve_url")? },
+            cef_parse_url: unsafe { library.symbol(c"cef_parse_url")? },
+            cef_create_url: unsafe { library.symbol(c"cef_create_url")? },
+            cef_format_url_for_security_display: unsafe {
+                library.symbol(c"cef_format_url_for_security_display")?
+            },
+            cef_get_mime_type: unsafe { library.symbol(c"cef_get_mime_type")? },
+            cef_get_extensions_for_mime_type: unsafe {
+                library.symbol(c"cef_get_extensions_for_mime_type")?
+            },
+            cef_base64_encode: unsafe { library.symbol(c"cef_base64_encode")? },
+            cef_base64_decode: unsafe { library.symbol(c"cef_base64_decode")? },
+            cef_uriencode: unsafe { library.symbol(c"cef_uriencode")? },
+            cef_uridecode: unsafe { library.symbol(c"cef_uridecode")? },
+            cef_parse_json: unsafe { library.symbol(c"cef_parse_json")? },
+            cef_parse_json_buffer: unsafe { library.symbol(c"cef_parse_json_buffer")? },
+            cef_parse_jsonand_return_error: unsafe {
+                library.symbol(c"cef_parse_jsonand_return_error")?
+            },
+            cef_write_json: unsafe { library.symbol(c"cef_write_json")? },
+            cef_get_path: unsafe { library.symbol(c"cef_get_path")? },
+            cef_launch_process: unsafe { library.symbol(c"cef_launch_process")? },
+            cef_resource_bundle_get_global: unsafe {
+                library.symbol(c"cef_resource_bundle_get_global")?
+            },
+            cef_server_create: unsafe { library.symbol(c"cef_server_create")? },
+            cef_shared_process_message_builder_create: unsafe {
+                library.symbol(c"cef_shared_process_message_builder_create")?
+            },
+            cef_task_manager_get: unsafe { library.symbol(c"cef_task_manager_get")? },
+            cef_get_current_platform_thread_id: unsafe {
+                library.symbol(c"cef_get_current_platform_thread_id")?
+            },
+            cef_get_current_platform_thread_handle: unsafe {
+                library.symbol(c"cef_get_current_platform_thread_handle")?
+            },
+            cef_thread_create: unsafe { library.symbol(c"cef_thread_create")? },
+            cef_begin_tracing: unsafe { library.symbol(c"cef_begin_tracing")? },
+            cef_end_tracing: unsafe { library.symbol(c"cef_end_tracing")? },
+            cef_now_from_system_trace_time: unsafe {
+                library.symbol(c"cef_now_from_system_trace_time")?
+            },
+            cef_urlrequest_create: unsafe { library.symbol(c"cef_urlrequest_create")? },
+            cef_waitable_event_create: unsafe { library.symbol(c"cef_waitable_event_create")? },
+            cef_xml_reader_create: unsafe { library.symbol(c"cef_xml_reader_create")? },
+            cef_zip_reader_create: unsafe { library.symbol(c"cef_zip_reader_create")? },
+            cef_browser_view_create: unsafe { library.symbol(c"cef_browser_view_create")? },
+            cef_browser_view_get_for_browser: unsafe {
+                library.symbol(c"cef_browser_view_get_for_browser")?
+            },
+            cef_display_get_primary: unsafe { library.symbol(c"cef_display_get_primary")? },
+            cef_display_get_nearest_point: unsafe {
+                library.symbol(c"cef_display_get_nearest_point")?
+            },
+            cef_display_get_matching_bounds: unsafe {
+                library.symbol(c"cef_display_get_matching_bounds")?
+            },
+            cef_display_get_count: unsafe { library.symbol(c"cef_display_get_count")? },
+            cef_display_get_alls: unsafe { library.symbol(c"cef_display_get_alls")? },
+            cef_display_convert_screen_point_to_pixels: unsafe {
+                library.symbol(c"cef_display_convert_screen_point_to_pixels")?
+            },
+            cef_display_convert_screen_point_from_pixels: unsafe {
+                library.symbol(c"cef_display_convert_screen_point_from_pixels")?
+            },
+            cef_display_convert_screen_rect_to_pixels: unsafe {
+                library.symbol(c"cef_display_convert_screen_rect_to_pixels")?
+            },
+            cef_display_convert_screen_rect_from_pixels: unsafe {
+                library.symbol(c"cef_display_convert_screen_rect_from_pixels")?
+            },
+            cef_label_button_create: unsafe { library.symbol(c"cef_label_button_create")? },
+            cef_menu_button_create: unsafe { library.symbol(c"cef_menu_button_create")? },
+            cef_panel_create: unsafe { library.symbol(c"cef_panel_create")? },
+            cef_scroll_view_create: unsafe { library.symbol(c"cef_scroll_view_create")? },
+            cef_textfield_create: unsafe { library.symbol(c"cef_textfield_create")? },
+            cef_window_create_top_level: unsafe { library.symbol(c"cef_window_create_top_level")? },
+            cef_id_for_pack_resource_name: unsafe {
+                library.symbol(c"cef_id_for_pack_resource_name")?
+            },
+            cef_id_for_pack_string_name: unsafe { library.symbol(c"cef_id_for_pack_string_name")? },
+            cef_id_for_command_id_name: unsafe { library.symbol(c"cef_id_for_command_id_name")? },
+        })
+    }
 }

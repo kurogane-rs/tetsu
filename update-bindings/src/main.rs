@@ -23,11 +23,14 @@ pub enum Error {
     Parse(#[from] parse_tree::Unrecognized),
     #[error("Missing Path")]
     MissingPath(std::path::PathBuf),
+    #[error("cannot rewrite {0} to call through the loaded libcef")]
+    Unsupported(String),
 }
 
 pub type Result<T> = std::result::Result<T, Error>;
 
 mod dirs;
+mod loader;
 mod parse_tree;
 mod resources;
 mod upgrade;
@@ -78,6 +81,13 @@ fn main() -> Result<()> {
     sys_bindings.push("src");
     sys_bindings.push("bindings");
     sys_bindings.push(&bindings_file);
+
+    // Upstream's and bindgen's bindings declare the functions libcef exports;
+    // these targets call them through the libcef the application loads
+    if loader::loads_libcef(target) && loader::rewrite(&sys_bindings)? {
+        println!("Rewritten to load libcef: {}", sys_bindings.display());
+    }
+
     let mut cef_bindings = dirs::get_cef_dir()?;
     cef_bindings.push("src");
     let mut cef_resources = cef_bindings.clone();

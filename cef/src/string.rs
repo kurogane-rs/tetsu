@@ -1341,9 +1341,14 @@ mod test {
         })
     }
 
+    #[cfg(any(target_os = "linux", target_os = "windows"))]
+    fn ensure_dll_loaded() {
+        let cef_dir = sys::get_cef_dir().expect("CEF not found");
+        unsafe { sys::load_libcef(&cef_dir.join(sys::LIBCEF_FILE)) }.expect("cannot load libcef");
+    }
+
     #[test]
     fn test_string_list() {
-        #[cfg(target_os = "macos")]
         ensure_dll_loaded();
 
         let mut list = CefStringList::new();
@@ -1357,7 +1362,6 @@ mod test {
 
     #[test]
     fn test_string_map() {
-        #[cfg(target_os = "macos")]
         ensure_dll_loaded();
 
         let mut map = CefStringMap::new();
@@ -1378,7 +1382,6 @@ mod test {
 
     #[test]
     fn test_string_multimap() {
-        #[cfg(target_os = "macos")]
         ensure_dll_loaded();
 
         let mut map = CefStringMultimap::new();

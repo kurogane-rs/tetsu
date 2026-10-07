@@ -10,6 +10,11 @@
 mod bindings;
 pub use bindings::*;
 
+#[cfg(any(target_os = "linux", target_os = "windows"))]
+pub mod libcef;
+#[cfg(any(target_os = "linux", target_os = "windows"))]
+pub use libcef::{libcef_path, load_libcef, LoadError, LIBCEF_FILE};
+
 #[cfg(target_os = "windows")]
 impl Default for HWND {
     fn default() -> Self {
@@ -98,6 +103,10 @@ mod test {
 
                 assert_eq!(cef_load_library(framework_dir.as_ptr().cast()), 1);
             }
+
+            #[cfg(any(target_os = "linux", target_os = "windows"))]
+            load_libcef(&get_cef_dir().expect("CEF not found").join(LIBCEF_FILE))
+                .expect("cannot load libcef");
 
             assert_eq!(cef_initialize(null(), null(), null_mut(), null_mut()), 0);
         };

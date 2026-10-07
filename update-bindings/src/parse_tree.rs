@@ -3798,60 +3798,69 @@ impl<'a> From<&'a syn::File> for ParseTree<'a> {
             })
             .collect();
 
+        // bindgen's extern "C" functions, or the functions calling through the
+        // loaded libcef that replace them (loader.rs)
         tree.global_function_declarations = value
             .items
             .iter()
-            .filter_map(|item| match item {
-                syn::Item::ForeignMod(syn::ItemForeignMod {
-                    unsafety: Some(_),
-                    abi:
-                        syn::Abi {
-                            name: Some(abi), ..
-                        },
-                    items,
-                    ..
-                }) if abi.value() == "C" => Some(items),
-                _ => None,
-            })
-            .flat_map(|items| {
-                items.iter().filter_map(|item| match item {
-                    syn::ForeignItem::Fn(syn::ForeignItemFn {
-                        sig:
-                            syn::Signature {
-                                ident,
-                                inputs,
-                                output,
-                                ..
+            .flat_map(|item| -> Box<dyn Iterator<Item = &syn::Signature> + '_> {
+                match item {
+                    syn::Item::ForeignMod(syn::ItemForeignMod {
+                        unsafety: Some(_),
+                        abi:
+                            syn::Abi {
+                                name: Some(abi), ..
                             },
+                        items,
                         ..
-                    }) => Some(SignatureRef {
-                        name: ident.to_string(),
-                        inputs: inputs
-                            .iter()
-                            .map(|arg| match arg {
-                                syn::FnArg::Receiver(_) => {
-                                    unreachable!("unexpected function receiver")
-                                }
-                                syn::FnArg::Typed(syn::PatType { pat, ty, .. }) => {
-                                    match pat.as_ref() {
-                                        syn::Pat::Ident(syn::PatIdent { ident, .. }) => FnArgRef {
-                                            name: ident.to_string(),
-                                            ty: ty.as_ref(),
-                                        },
-                                        _ => unreachable!("unexpected argument name type"),
-                                    }
-                                }
-                            })
-                            .collect(),
-                        output: match output {
-                            syn::ReturnType::Default => None,
-                            syn::ReturnType::Type(_, ty) => Some(ty.as_ref()),
-                        },
-                        merged_params: Default::default(),
-                    }),
-                    _ => None,
-                })
+                    }) if abi.value() == "C" => {
+                        Box::new(items.iter().filter_map(|item| match item {
+                            syn::ForeignItem::Fn(syn::ForeignItemFn { sig, .. }) => Some(sig),
+                            _ => None,
+                        }))
+                    }
+                    syn::Item::Fn(syn::ItemFn {
+                        vis: syn::Visibility::Public(_),
+                        sig,
+                        ..
+                    }) if matches!(sig.safety, syn::Safety::Unsafe(_))
+                        && sig.ident.to_string().starts_with("cef_") =>
+                    {
+                        Box::new(std::iter::once(sig))
+                    }
+                    _ => Box::new(std::iter::empty()),
+                }
             })
+            .map(
+                |syn::Signature {
+                     ident,
+                     inputs,
+                     output,
+                     ..
+                 }| SignatureRef {
+                    name: ident.to_string(),
+                    inputs: inputs
+                        .iter()
+                        .map(|arg| match arg {
+                            syn::FnArg::Receiver(_) => {
+                                unreachable!("unexpected function receiver")
+                            }
+                            syn::FnArg::Typed(syn::PatType { pat, ty, .. }) => match pat.as_ref() {
+                                syn::Pat::Ident(syn::PatIdent { ident, .. }) => FnArgRef {
+                                    name: ident.to_string(),
+                                    ty: ty.as_ref(),
+                                },
+                                _ => unreachable!("unexpected argument name type"),
+                            },
+                        })
+                        .collect(),
+                    output: match output {
+                        syn::ReturnType::Default => None,
+                        syn::ReturnType::Type(_, ty) => Some(ty.as_ref()),
+                    },
+                    merged_params: Default::default(),
+                },
+            )
             .collect();
 
         tree.cef_name_map = tree
@@ -3944,7 +3953,7 @@ impl<'a> From<&'a syn::File> for ParseTree<'a> {
     }
 }
 
-fn format_bindings(source_path: &Path) -> crate::Result<()> {
+pub(crate) fn format_bindings(source_path: &Path) -> crate::Result<()> {
     let mut cmd = Command::new(env!("CARGO"));
     cmd.args(["fmt", "--", &source_path.display().to_string()]);
     cmd.output()?;

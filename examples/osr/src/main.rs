@@ -352,6 +352,14 @@ fn main() -> std::process::ExitCode {
         loader
     };
 
+    // tetsu's own builds copy the runtime next to the binaries (TETSU_STAGE_RUNTIME)
+    #[cfg(not(target_os = "macos"))]
+    {
+        let exe = std::env::current_exe().unwrap();
+        unsafe { sys::load_libcef(&exe.parent().unwrap().join(sys::LIBCEF_FILE)) }
+            .expect("cannot load libcef");
+    }
+
     env_logger::init();
 
     let _ = api_hash(sys::CEF_API_VERSION_LAST, 0);

@@ -20,8 +20,14 @@ pub fn load_cef() -> Library {
         assert!(loader.load());
         loader
     };
+    // tetsu's own builds copy the runtime next to the binaries (TETSU_STAGE_RUNTIME)
     #[cfg(not(target_os = "macos"))]
-    let library = Library;
+    let library = {
+        let exe = std::env::current_exe().unwrap();
+        let libcef = exe.parent().unwrap().join(sys::LIBCEF_FILE);
+        unsafe { sys::load_libcef(&libcef) }.expect("cannot load libcef");
+        Library
+    };
 
     // Initialize the CEF API version.
     let _ = api_hash(sys::CEF_API_VERSION_LAST, 0);
