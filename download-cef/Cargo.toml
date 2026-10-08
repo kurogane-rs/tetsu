@@ -9,9 +9,6 @@ authors.workspace = true
 repository.workspace = true
 
 [dependencies]
-clap.workspace = true
-regex.workspace = true
-semver.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 thiserror.workspace = true
@@ -23,3 +20,6 @@ sha1_smol = "1"
 tar = "0.4"
 ureq = { version = "3", features = ["json", "socks-proxy"] }
 fs-err = "3.2.2"
+
+[dev-dependencies]
+tetsu-sys.workspace = true

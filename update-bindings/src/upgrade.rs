@@ -35,14 +35,9 @@ const OPAQUE_X11_COPY_HANDLES: &[&str] = &["_XEvent", "_XDisplay"];
 pub fn download(url: &str, target: &str, version: &str) -> PathBuf {
     assert!(TARGETS.contains(&target), "unsupported target {target}");
 
-    let archive = tetsu_download::download_target_archive_from(
-        url,
-        target,
-        version,
-        dirs::get_out_dir(),
-        true,
-    )
-    .expect("download failed");
+    let archive =
+        tetsu_download::download_target_archive(url, target, version, dirs::get_out_dir(), true)
+            .expect("download failed");
 
     tetsu_download::extract_target_archive(target, &archive, dirs::get_out_dir(), true)
         .expect("extraction failed")

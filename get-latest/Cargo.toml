@@ -12,10 +12,6 @@ repository.workspace = true
 tetsu-download.workspace = true
 
 clap.workspace = true
-git-cliff.workspace = true
-git-cliff-core.workspace = true
-regex.workspace = true
 semver.workspace = true
-serde.workspace = true
 thiserror.workspace = true
 toml_edit.workspace = true

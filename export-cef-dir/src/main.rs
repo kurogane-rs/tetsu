@@ -2,8 +2,9 @@
 
 use clap::Parser;
 use std::{
-    env, fs,
+    fs,
     path::{Path, PathBuf},
+    process::{Command, Stdio},
     sync::OnceLock,
     time::Duration,
 };
@@ -30,7 +31,8 @@ struct Args {
     force: bool,
     #[arg(short, long)]
     save_archive: bool,
-    #[arg(short, long, default_value_t = env::var("NIX_CEF_BINARY").is_ok())]
+    /// Take the distribution from the `cef-binary` package of `nixpkgs`
+    #[arg(short, long)]
     nix: bool,
     #[arg(short, long, default_value = DEFAULT_TARGET)]
     target: String,
@@ -103,17 +105,13 @@ fn main() -> anyhow::Result<()> {
             let cef_version = args.version.as_str();
 
             if args.nix {
-                return Ok(tetsu_download::install_nix_cef(
-                    cef_version,
-                    &output,
-                    false,
-                )?);
+                return install_nix_cef(cef_version, &output);
             } else {
-                let index = CefIndex::download_from(url)?;
+                let index = CefIndex::download(url)?;
                 let platform = index.platform(target)?;
                 let version = platform.version(cef_version)?;
 
-                let archive = version.download_archive_with_retry_from(
+                let archive = version.download_archive_with_retry(
                     url,
                     &parent,
                     true,
@@ -169,5 +167,21 @@ fn install(args: &Args) -> anyhow::Result<()> {
     let dir = tetsu_download::install(&args.target, &args.version, &args.mirror_url, true)?;
     println!("Installed: {}", dir.display());
 
+    Ok(())
+}
+
+/// Installs CEF from `nixpkgs` into `location`.
+fn install_nix_cef(cef_version: &str, location: &Path) -> anyhow::Result<()> {
+    let nix_dir = Path::new(env!("CARGO_MANIFEST_DIR")).join("nix");
+    let status = Command::new("nix-build")
+        .arg(&nix_dir)
+        .args(["--arg", "version", &format!(r#""{cef_version}""#)])
+        .arg("--out-link")
+        .arg(location)
+        .stdin(Stdio::null())
+        .stdout(Stdio::null())
+        .status()?;
+
+    anyhow::ensure!(status.success(), "nix-build failed: {status}");
     Ok(())
 }
