@@ -2,18 +2,15 @@
 
 ## Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| > 1.0   | :white_check_mark: |
-| < 1.0   | :x:                |
+The newest release of tetsu is supported. tetsu follows CEF's stable channel,
+so a fix lands on the CEF version tetsu is on.
 
 ## Reporting a Vulnerability
 
-If you have found a potential security threat, vulnerability or exploit in Tauri
-or one of its upstream dependencies, please DON’T create a pull-request, DON’T
-file an issue on GitHub, DON’T mention it on Discord and DON’T create a forum thread.
+Report a vulnerability in tetsu privately through GitHub's
+[private vulnerability reporting](https://github.com/kurogane-rs/tetsu/security/advisories/new).
+Please do not open a public issue or pull request for it.
 
-We will be adding contact information to this page very soon.
-
-At the current time we do not have the financial ability to reward bounties, 
-but in extreme cases will at our discretion consider a reward.
+A vulnerability in CEF or Chromium itself belongs to their projects:
+[CEF](https://github.com/chromiumembedded/cef/security) and
+[Chromium](https://www.chromium.org/Home/chromium-security/reporting-security-bugs/).
