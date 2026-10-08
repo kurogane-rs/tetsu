@@ -497,6 +497,22 @@ impl From<&str> for CefStringUtf16 {
     }
 }
 
+impl From<&[u16]> for CefStringUtf16 {
+    /// Copies UTF-16 code units as they are, an unpaired surrogate included.
+    fn from(value: &[u16]) -> Self {
+        Self(CefStringData::Clear(unsafe {
+            let mut data = mem::zeroed();
+            if tetsu_sys::cef_string_utf16_set(value.as_ptr().cast(), value.len(), &mut data, 1)
+                == 0
+            {
+                None
+            } else {
+                Some(data)
+            }
+        }))
+    }
+}
+
 impl From<&CefStringUserfreeUtf16> for CefStringUtf16 {
     fn from(value: &CefStringUserfreeUtf16) -> Self {
         let value: Option<&_cef_string_utf16_t> = value.into();

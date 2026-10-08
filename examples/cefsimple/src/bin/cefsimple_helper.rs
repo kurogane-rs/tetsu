@@ -3,10 +3,12 @@ use tetsu::{args::Args, *};
 fn main() {
     let args = Args::new();
 
-    #[cfg(all(target_os = "macos", feature = "sandbox"))]
+    #[cfg(target_os = "macos")]
     let _sandbox = {
-        let mut sandbox = tetsu::sandbox::Sandbox::new();
-        sandbox.initialize(args.as_main_args());
+        let mut sandbox = tetsu::sandbox::Sandbox::new().expect("cannot load the sandbox");
+        sandbox
+            .initialize(args.as_main_args())
+            .expect("cannot enter the sandbox");
         sandbox
     };
 

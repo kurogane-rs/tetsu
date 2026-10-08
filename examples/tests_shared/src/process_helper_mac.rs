@@ -9,10 +9,11 @@ pub fn run_main(
     custom_schemes: Vec<ClientAppCustomScheme>,
     app_renderer_delegates: Vec<Box<dyn Delegate>>,
 ) -> Result<(), i32> {
-    #[cfg(feature = "sandbox")]
     let _sandbox = {
-        let mut sandbox = tetsu::sandbox::Sandbox::new();
-        sandbox.initialize(args.as_main_args());
+        let mut sandbox = tetsu::sandbox::Sandbox::new().expect("cannot load the sandbox");
+        sandbox
+            .initialize(args.as_main_args())
+            .expect("cannot enter the sandbox");
         sandbox
     };
 
