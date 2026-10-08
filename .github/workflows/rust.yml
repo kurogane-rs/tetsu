@@ -54,14 +54,6 @@ jobs:
             && 'env:'
             || ''
           }}GITHUB_ENV"
-          echo "${{ matrix.os == 'macos-latest'
-            && 'DYLD_FALLBACK_LIBRARY_PATH=$DYLD_FALLBACK_LIBRARY_PATH:$HOME/.local/share/cef:$HOME/.local/share/cef/Chromium Embedded Framework.framework/Libraries'
-            || (matrix.os == 'windows-latest'
-              && 'PATH=$env:PATH;$env:USERPROFILE/.local/share/cef'
-              || 'LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.local/share/cef') }}" >> "$${{ matrix.os == 'windows-latest'
-                    && 'env:'
-                    || ''
-                  }}GITHUB_ENV"
 
       - name: Build
         run: cargo build --verbose
@@ -77,27 +69,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          # The MSVC STL headers require Clang 19 or newer, ubuntu-latest ships 18.
-          wget -qO llvm.sh https://apt.llvm.org/llvm.sh
-          sudo bash llvm.sh 20
-          sudo apt-get install -yq llvm-20 ninja-build
-          echo "/usr/lib/llvm-20/bin" >> "$GITHUB_PATH"
+          # cargo-xwin links with LLVM's lld-link; nothing is compiled from C++
+          sudo apt-get update -q
+          sudo apt-get install -yq clang lld llvm
           rustup target add x86_64-pc-windows-msvc
           pipx install cargo-xwin
           echo "CARGO_XWIN_VERSION=$(cargo xwin --version | awk '{print $NF}')" >> "$GITHUB_ENV"
-
-      - name: Cache CEF
-        id: cache-cef
-        uses: actions/cache@v6.1.0
-        with:
-          path: ~/.local/share/cef
-          key: cef-cross-windows-${{ hashFiles('Cargo.toml') }}
-
-      # Like the native jobs, export the distribution ahead of the build so the cache
-      # holds only the extracted files and not the downloaded archive as well.
-      - name: Export CEF
-        if: steps.cache-cef.outputs.cache-hit != 'true'
-        run: cargo run -p export-cef-dir -- --target x86_64-pc-windows-msvc "$HOME/.local/share/cef"
 
       # Only the SDK itself: cargo-xwin symlinks `clang-cl` to the `clang` found on PATH
       # next to it, and that must be recreated for the toolchain installed above. The
@@ -109,4 +86,75 @@ jobs:
           key: cargo-xwin-sdk-${{ runner.os }}-${{ env.CARGO_XWIN_VERSION }}
 
       - name: Build
-        run: CEF_PATH="$HOME/.local/share/cef" cargo xwin build -p cefsimple --target x86_64-pc-windows-msvc --verbose
+        run: cargo xwin build -p cefsimple --target x86_64-pc-windows-msvc --verbose
+
+  # Kurogane is tetsu's acceptance suite: its CI's clippy and tests run on
+  # this tetsu, through a path patch that lives only in this job
+  kurogane:
+    name: Kurogane on this tetsu (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+
+    runs-on: ${{ matrix.os }}
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: tetsu
+
+      - uses: actions/checkout@v7
+        with:
+          repository: 0x48piraj/kurogane
+          path: kurogane
+
+      - name: Install dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -yq pkg-config libssl-dev
+
+      - name: Patch Kurogane onto this tetsu
+        run: |
+          TETSU="$GITHUB_WORKSPACE/tetsu"
+          PATCH='patch."https://github.com/kurogane-rs/tetsu"'
+          # TOML literal strings, so a Windows path's backslashes stay as they are
+          {
+            printf "PATCH_ARGS=--config %s.tetsu.path='%s'" "$PATCH" "$TETSU/cef"
+            printf " --config %s.tetsu-sys.path='%s'" "$PATCH" "$TETSU/sys"
+            printf " --config %s.tetsu-download.path='%s'" "$PATCH" "$TETSU/download-cef"
+            printf " --config %s.tetsu-build.path='%s'\n" "$PATCH" "$TETSU/tetsu-build"
+          } >> "$GITHUB_ENV"
+
+      # A patch Kurogane leaves unused, or a tetsu crate it still takes from
+      # git, means the job tests another tetsu
+      - name: Check that Kurogane takes every tetsu crate from this tetsu
+        working-directory: kurogane
+        run: |
+          cargo metadata --format-version 1 $PATCH_ARGS 2>&1 > "$RUNNER_TEMP/metadata.json" \
+            | tee "$RUNNER_TEMP/metadata.log"
+          if grep -q "was not used in the crate graph" "$RUNNER_TEMP/metadata.log" \
+            || grep -q '"id":"git+https://github.com/kurogane-rs/tetsu' "$RUNNER_TEMP/metadata.json"; then
+            echo "Kurogane takes a tetsu crate from elsewhere, or leaves a patch unused"
+            exit 1
+          fi
+
+      - name: Clippy
+        working-directory: kurogane
+        run: |
+          cargo clippy -p kurogane -p kurogane-build -p kurogane-layout -p kurogane-cli --all-targets \
+            $PATCH_ARGS -- -D warnings
+
+      - name: Test
+        working-directory: kurogane
+        run: |
+          cargo test -p kurogane --lib $PATCH_ARGS
+          cargo test -p kurogane-layout -p kurogane-cli $PATCH_ARGS
