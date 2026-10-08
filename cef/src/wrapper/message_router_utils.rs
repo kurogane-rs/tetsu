@@ -305,17 +305,6 @@ impl From<Option<ProcessMessage>> for RenderMessage {
     }
 }
 
-#[cfg(not(feature = "sandbox"))]
-wrap_v8_array_buffer_release_callback! {
-    pub struct BinaryValueArrayBufferReleaseCallback {
-        value: MessagePayload,
-    }
-
-    impl V8ArrayBufferReleaseCallback {
-        fn release_buffer(&self, _buffer: *mut u8) {}
-    }
-}
-
 trait MessageHeader: Sized {
     const SIZE: usize;
 
