@@ -60,8 +60,12 @@ pub enum LoadError {
         source: libloading::Error,
     },
     /// The library at `path` is another CEF build, commit `found` rather
-    /// than the one the bindings were generated from.
-    VersionMismatch { path: PathBuf, found: String },
+    /// than `expected`, the `CEF_VERSION` the bindings were generated from.
+    VersionMismatch {
+        path: PathBuf,
+        found: String,
+        expected: String,
+    },
     /// The process already runs another libcef.
     AlreadyLoaded { loaded: PathBuf, requested: PathBuf },
 }
@@ -77,11 +81,14 @@ impl fmt::Display for LoadError {
                 crate::CEF_VERSION_MINOR,
                 crate::CEF_VERSION_PATCH
             ),
-            Self::VersionMismatch { path, found } => write!(
+            Self::VersionMismatch {
+                path,
+                found,
+                expected,
+            } => write!(
                 f,
-                "{} is CEF commit {found}, not CEF {} which these bindings were generated for",
-                path.display(),
-                bindings_version()
+                "{} is CEF commit {found}, not CEF {expected} which these bindings were generated for",
+                path.display()
             ),
             Self::AlreadyLoaded { loaded, requested } => write!(
                 f,
@@ -149,6 +156,7 @@ pub unsafe fn load_libcef(path: &Path) -> Result<(), LoadError> {
         return Err(LoadError::VersionMismatch {
             path: path.to_owned(),
             found,
+            expected: bindings_version().to_owned(),
         });
     }
     let _ = LOADED.set(Loaded {
@@ -254,6 +262,22 @@ unsafe fn open(path: &Path) -> Result<Library, libloading::Error> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn the_crate_version_names_the_bindings_cef_version() {
+        let build = env!("CARGO_PKG_VERSION")
+            .split_once('+')
+            .map(|(_, build)| build);
+        let version = format!(
+            "{}.{}.{}",
+            crate::CEF_VERSION_MAJOR,
+            crate::CEF_VERSION_MINOR,
+            crate::CEF_VERSION_PATCH
+        );
+
+        assert_eq!(build, Some(version.as_str()));
+        assert!(bindings_version().starts_with(&format!("{version}+")));
+    }
 
     #[test]
     fn the_bindings_name_their_commit() {
