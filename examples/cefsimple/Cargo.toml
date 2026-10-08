@@ -42,6 +42,9 @@ windows-sys = { workspace = true, features = [
     "Win32_UI_WindowsAndMessaging",
 ] }
 
+[build-dependencies]
+tetsu-build.workspace = true
+
 [target.'cfg(target_os = "windows")'.build-dependencies]
 winres.workspace = true
 

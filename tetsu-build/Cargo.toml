@@ -1,0 +1,9 @@
+[package]
+name = "tetsu-build"
+description = "Build-script helpers for applications on tetsu"
+
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true

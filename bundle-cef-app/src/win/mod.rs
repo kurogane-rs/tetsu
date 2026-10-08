@@ -67,8 +67,6 @@ pub fn build_bundle(
     bundle(app_path, &target_path, executable_name, bootstrap)
 }
 
-const MANIFEST_CONTENT: &[u8] = include_bytes!("cef-app.exe.manifest");
-
 fn copy_app(
     app_path: &Path,
     target_path: &Path,
@@ -77,7 +75,7 @@ fn copy_app(
 ) -> Result<PathBuf> {
     let mut manifest_file =
         fs::File::create(app_path.join(format!("{executable_name}.exe.manifest")))?;
-    manifest_file.write_all(MANIFEST_CONTENT)?;
+    manifest_file.write_all(tetsu_build::WINDOWS_MANIFEST.as_bytes())?;
 
     let executable_path = app_path.join(format!("{executable_name}.exe"));
     if bootstrap {

@@ -17,6 +17,9 @@ cargo_metadata.workspace = true
 clap.workspace = true
 thiserror.workspace = true
 
+[target.'cfg(target_os = "windows")'.dependencies]
+tetsu-build.workspace = true
+
 [target.'cfg(target_os = "macos")'.dependencies]
 plist.workspace = true
 semver.workspace = true
