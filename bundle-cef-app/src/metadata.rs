@@ -1,3 +1,4 @@
+#[cfg(target_os = "macos")]
 use serde::Deserialize;
 use std::path::PathBuf;
 
@@ -5,35 +6,39 @@ use std::path::PathBuf;
 pub enum Error {
     #[error("Cargo metadata error: {0:?}")]
     Metadata(#[from] cargo_metadata::Error),
+    #[cfg(target_os = "macos")]
     #[error("Missing package metadata for {0}")]
     MissingPackageMetadata(String),
 }
 
 pub type Result<T> = std::result::Result<T, Error>;
 
+#[cfg(target_os = "macos")]
 #[derive(Deserialize)]
 struct PackageMetadata {
     cef: Cef,
 }
 
+#[cfg(target_os = "macos")]
 #[derive(Deserialize)]
 struct Cef {
     bundle: CargoBundleMetadata,
 }
 
+#[cfg(target_os = "macos")]
 #[derive(Deserialize)]
 struct CargoBundleMetadata {
-    #[cfg(target_os = "macos")]
     helper_name: String,
     resources_path: Option<String>,
 }
 
+#[cfg(target_os = "macos")]
 pub struct BundleMetadata {
-    #[cfg(target_os = "macos")]
     pub helper_name: String,
     pub resources_path: Option<PathBuf>,
 }
 
+#[cfg(target_os = "macos")]
 impl BundleMetadata {
     pub fn parse(executable: &str, metadata: &cargo_metadata::Metadata) -> Option<Self> {
         let package = metadata
@@ -56,7 +61,6 @@ impl BundleMetadata {
                     .map(|manifest_dir| manifest_dir.join(resources_path))
             });
         Some(Self {
-            #[cfg(target_os = "macos")]
             helper_name: package_metadata.cef.bundle.helper_name,
             resources_path,
         })
@@ -70,6 +74,24 @@ impl CargoMetadata {
         PathBuf::from(&self.0.target_directory)
     }
 
+    /// Returns whether the package of `executable` builds a cdylib, the library
+    /// CEF's sandbox bootstrap loads.
+    #[cfg(target_os = "windows")]
+    pub fn builds_cdylib(&self, executable: &str) -> bool {
+        self.0
+            .packages
+            .iter()
+            .find(|package| package.targets.iter().any(|t| t.name == executable))
+            .is_some_and(|package| {
+                package.targets.iter().any(|target| {
+                    target
+                        .crate_types
+                        .contains(&cargo_metadata::CrateType::CDyLib)
+                })
+            })
+    }
+
+    #[cfg(target_os = "macos")]
     pub fn parse_bundle_metadata(&self, executable: &str) -> Result<BundleMetadata> {
         BundleMetadata::parse(executable, &self.0)
             .ok_or_else(|| Error::MissingPackageMetadata(executable.to_owned()))

@@ -1,8 +1,9 @@
+use clap::Parser;
 use semver::Version;
 use serde::Serialize;
 use std::{
     collections::HashMap,
-    fs, io,
+    env, fs, io,
     path::{Path, PathBuf},
     process::Command,
 };
@@ -39,24 +40,6 @@ pub struct BundleInfo {
     /// [CFBundleVersion](https://developer.apple.com/documentation/bundleresources/information-property-list/cfbundleversion)
     #[serde(rename = "CFBundleVersion", serialize_with = "serialize_version")]
     pub version: Version,
-}
-
-impl BundleInfo {
-    pub fn new(
-        name: &str,
-        identifier: &str,
-        display_name: &str,
-        development_region: &str,
-        version: Version,
-    ) -> Self {
-        Self {
-            name: name.to_owned(),
-            identifier: identifier.to_owned(),
-            display_name: display_name.to_owned(),
-            development_region: development_region.to_owned(),
-            version,
-        }
-    }
 }
 
 /// See https://bitbucket.org/chromiumembedded/cef/wiki/GeneralUsage.md#markdown-header-macos
@@ -107,13 +90,16 @@ pub fn build_bundle(
     app_path: &Path,
     executable_name: &str,
     bundle_info: BundleInfo,
+    features: Option<&str>,
 ) -> Result<PathBuf> {
     let cargo_metadata = super::metadata::get_cargo_metadata()?;
     let target_path = cargo_metadata.target_directory().join("debug");
     let bundle_metadata = cargo_metadata.parse_bundle_metadata(executable_name)?;
 
-    cargo_build(executable_name)?;
-    cargo_build(&bundle_metadata.helper_name)?;
+    for name in [executable_name, bundle_metadata.helper_name.as_str()] {
+        println!("Building {name}...");
+        super::cargo_build(&["--bin", name], features)?;
+    }
 
     bundle(
         app_path,
@@ -330,15 +316,52 @@ fn copy_app_resources(src: &Path, dst: &Path) -> io::Result<()> {
     Ok(())
 }
 
-fn cargo_build(name: &str) -> Result<()> {
-    println!("Building {name}...");
+#[derive(Parser, Debug)]
+#[command(about, long_about = None)]
+struct Args {
+    name: String,
+    #[arg(short, long)]
+    output: Option<String>,
+    #[arg(short, long)]
+    identifier: Option<String>,
+    #[arg(short, long)]
+    display_name: Option<String>,
+    #[arg(short, long, default_value = "English")]
+    region: String,
+    #[arg(short, long, default_value = "1.0.0")]
+    version: String,
+    /// Features of the example's package to enable, comma separated.
+    #[arg(short = 'F', long)]
+    features: Option<String>,
+}
 
-    let status = Command::new(super::cargo_path())
-        .args(["build", "--bin", name])
-        .status()?;
-    if status.success() {
-        Ok(())
-    } else {
-        Err(io::Error::from(io::ErrorKind::Interrupted).into())
-    }
+pub fn main() -> anyhow::Result<()> {
+    let args = Args::parse();
+    let output = match args.output {
+        Some(output) => PathBuf::from(output),
+        None => env::current_dir()?,
+    };
+    let identifier = args
+        .identifier
+        .unwrap_or_else(|| format!("rs.kurogane.tetsu.{}", args.name));
+    let display_name = args.display_name.unwrap_or_else(|| args.name.clone());
+    let version = Version::parse(&args.version)?;
+
+    let bundle_info = BundleInfo {
+        name: args.name.clone(),
+        identifier,
+        display_name,
+        development_region: args.region,
+        version,
+    };
+
+    let bundle_path = build_bundle(
+        output.as_path(),
+        &args.name,
+        bundle_info,
+        args.features.as_deref(),
+    )?;
+    let bundle_path = bundle_path.display();
+    println!("Run the app from {bundle_path}");
+    Ok(())
 }

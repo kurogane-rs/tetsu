@@ -35,8 +35,10 @@ pub fn run_main(main_args: &MainArgs, cmd_line: &CommandLine, sandbox_info: *mut
 
     let mut app = simple_app::SimpleApp::new();
 
+    // Windows runs sandboxed only through CEF's bootstrap, which passes its
+    // sandbox information
     let settings = Settings {
-        no_sandbox: !cfg!(feature = "sandbox") as _,
+        no_sandbox: (cfg!(target_os = "windows") && sandbox_info.is_null()) as _,
         ..Default::default()
     };
     assert_eq!(

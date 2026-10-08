@@ -1,7 +1,7 @@
+use clap::Parser;
 use std::{
-    fs, io,
+    env, fs, io,
     path::{Path, PathBuf},
-    process::Command,
 };
 
 #[derive(Debug, thiserror::Error)]
@@ -28,14 +28,24 @@ pub fn bundle(app_path: &Path, target_path: &Path, executable_name: &str) -> Res
 }
 
 /// Similar to [`bundle`], but this will invoke `cargo build` to build the executable target.
-pub fn build_bundle(app_path: &Path, executable_name: &str, release: bool) -> Result<PathBuf> {
+pub fn build_bundle(
+    app_path: &Path,
+    executable_name: &str,
+    release: bool,
+    features: Option<&str>,
+) -> Result<PathBuf> {
     let cargo_metadata = super::metadata::get_cargo_metadata()?;
     let target_path =
         cargo_metadata
             .target_directory()
             .join(if release { "release" } else { "debug" });
 
-    cargo_build(executable_name, release)?;
+    println!("Building {executable_name}...");
+    let mut args = vec!["--bin", executable_name];
+    if release {
+        args.push("--release");
+    }
+    super::cargo_build(&args, features)?;
 
     bundle(app_path, &target_path, executable_name)
 }
@@ -59,21 +69,33 @@ fn copy_directory(src: &Path, dst: &Path) -> io::Result<()> {
     Ok(())
 }
 
-fn cargo_build(name: &str, release: bool) -> Result<()> {
-    println!("Building {name}...");
+#[derive(Parser, Debug)]
+#[command(about, long_about = None)]
+struct Args {
+    name: String,
+    #[arg(long, default_value_t = false)]
+    release: bool,
+    #[arg(short, long)]
+    output: Option<String>,
+    /// Features of the example's package to enable, comma separated.
+    #[arg(short = 'F', long)]
+    features: Option<String>,
+}
 
-    let mut args = vec!["build"];
-    if release {
-        args.push("--release");
-    }
-    #[cfg(feature = "linux-x11")]
-    args.extend(["-F", "linux-x11"]);
-    args.extend(["--bin", name]);
+pub fn main() -> anyhow::Result<()> {
+    let args = Args::parse();
+    let output = match args.output {
+        Some(output) => PathBuf::from(output),
+        None => env::current_dir()?,
+    };
 
-    let status = Command::new(super::cargo_path()).args(args).status()?;
-    if status.success() {
-        Ok(())
-    } else {
-        Err(io::Error::from(io::ErrorKind::Interrupted).into())
-    }
+    let bundle_path = build_bundle(
+        output.as_path(),
+        &args.name,
+        args.release,
+        args.features.as_deref(),
+    )?;
+    let bundle_path = bundle_path.display();
+    println!("Run the app from {bundle_path}");
+    Ok(())
 }

@@ -1,5 +1,5 @@
 #![cfg_attr(
-    all(not(debug_assertions), not(feature = "sandbox"), target_os = "windows"),
+    all(not(debug_assertions), target_os = "windows"),
     windows_subsystem = "windows"
 )]
 
@@ -8,7 +8,8 @@ pub mod shared;
 #[cfg(target_os = "macos")]
 mod mac;
 
-#[cfg(not(all(feature = "sandbox", target_os = "windows")))]
+// Windows runs sandboxed only through CEF's bootstrap, which loads the
+// library instead
 fn main() -> Result<(), &'static str> {
     shared::load_cef();
 
@@ -19,9 +20,4 @@ fn main() -> Result<(), &'static str> {
 
     shared::run_main(args.as_main_args(), &cmd_line, std::ptr::null_mut());
     Ok(())
-}
-
-#[cfg(all(feature = "sandbox", target_os = "windows"))]
-fn main() -> Result<(), &'static str> {
-    Err("Running in sandbox mode on Windows requires bootstrap.exe or bootstrapc.exe.")
 }

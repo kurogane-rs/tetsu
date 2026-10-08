@@ -13,12 +13,6 @@ name = "cefsimple"
 name = "cefsimple_helper"
 
 [features]
-default = [
-    "sandbox",
-]
-sandbox = [
-    "tetsu/sandbox",
-]
 linux-x11 = [
     "x11-dl",
 ]
@@ -28,9 +22,7 @@ helper_name = "cefsimple_helper"
 resources_path = "resources"
 
 [dependencies]
-tetsu = { workspace = true, features = [
-    "build-util",
-] }
+tetsu.workspace = true
 
 [target.'cfg(target_os = "macos")'.dependencies]
 objc2.workspace = true

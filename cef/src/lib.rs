@@ -4,6 +4,8 @@ pub mod args;
 pub mod rc;
 pub mod string;
 pub mod window_info;
+
+#[cfg(feature = "wrapper")]
 pub mod wrapper;
 
 #[cfg(target_os = "macos")]
@@ -14,9 +16,6 @@ pub mod sandbox;
 
 #[cfg(feature = "accelerated_osr")]
 pub mod osr_texture_import;
-
-#[cfg(feature = "build-util")]
-pub mod build_util;
 
 #[cfg(feature = "resources")]
 pub mod resources;

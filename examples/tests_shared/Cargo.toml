@@ -8,11 +8,8 @@ license.workspace = true
 authors.workspace = true
 repository.workspace = true
 
-[features]
-sandbox = ["tetsu/sandbox"]
-
 [dependencies]
-tetsu.workspace = true
+tetsu = { workspace = true, features = ["wrapper"] }
 
 [target.'cfg(target_os = "windows")'.dependencies.windows-sys]
 workspace = true

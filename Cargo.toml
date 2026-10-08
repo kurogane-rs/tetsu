@@ -2,6 +2,7 @@
 resolver = "2"
 
 members = [
+    "bundle-cef-app",
     "download-cef",
     "get-latest",
     "update-bindings",
@@ -33,8 +34,6 @@ bindgen = "0.73"
 cargo_metadata = "0.23.1"
 clap = { version = "4", features = ["derive"] }
 convert_case = "0.12"
-git-cliff = "2.14"
-git-cliff-core = "2"
 glib = "0.22"
 glib-unix = "0.22"
 io-surface = "0.16"

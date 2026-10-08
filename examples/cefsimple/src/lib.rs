@@ -1,4 +1,4 @@
-#[cfg(all(target_os = "windows", feature = "sandbox"))]
+#[cfg(target_os = "windows")]
 pub mod shared;
-#[cfg(all(target_os = "windows", feature = "sandbox"))]
+#[cfg(target_os = "windows")]
 mod win;
