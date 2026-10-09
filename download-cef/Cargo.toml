@@ -14,7 +14,7 @@ serde_json.workspace = true
 thiserror.workspace = true
 
 bzip2 = "0.6"
-dirs = "6"
+dirs = "7"
 indicatif = "0.18"
 sha1_smol = "1"
 tar = "0.4"

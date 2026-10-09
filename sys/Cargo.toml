@@ -13,6 +13,6 @@ repository.workspace = true
 doctest = false
 
 [dependencies]
-dirs = "6"
+dirs = "7"
 libloading.workspace = true
 
