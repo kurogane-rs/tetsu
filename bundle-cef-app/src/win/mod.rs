@@ -17,15 +17,16 @@ pub enum Error {
 
 pub type Result<T> = std::result::Result<T, Error>;
 
-/// Bundles `executable_name` with CEF. With `bootstrap`, the package's library
-/// goes beside CEF's sandbox bootstrap, under the executable's name.
+/// Bundles `executable_name` with CEF. With `bootstrap`, the name of the
+/// package's cdylib, that library goes beside CEF's sandbox bootstrap under the
+/// executable's name.
 ///
 /// See https://bitbucket.org/chromiumembedded/cef/wiki/GeneralUsage.md#markdown-header-windows
 pub fn bundle(
     app_path: &Path,
     target_path: &Path,
     executable_name: &str,
-    bootstrap: bool,
+    bootstrap: Option<&str>,
 ) -> Result<PathBuf> {
     let cef_path = tetsu_sys::find_cef_dir()?.path;
     copy_directory(&cef_path, app_path)?;
@@ -51,10 +52,10 @@ pub fn build_bundle(
             .target_directory()
             .join(if release { "release" } else { "debug" });
 
-    let bootstrap = cargo_metadata.builds_cdylib(executable_name);
+    let bootstrap = cargo_metadata.cdylib(executable_name);
 
     println!("Building {executable_name}...");
-    let mut args = if bootstrap {
+    let mut args = if bootstrap.is_some() {
         vec!["-p", executable_name, "--lib"]
     } else {
         vec!["--bin", executable_name]
@@ -64,26 +65,35 @@ pub fn build_bundle(
     }
     super::cargo_build(&args, features)?;
 
-    bundle(app_path, &target_path, executable_name, bootstrap)
+    bundle(
+        app_path,
+        &target_path,
+        executable_name,
+        bootstrap.as_deref(),
+    )
 }
 
 fn copy_app(
     app_path: &Path,
     target_path: &Path,
     executable_name: &str,
-    bootstrap: bool,
+    bootstrap: Option<&str>,
 ) -> Result<PathBuf> {
     let mut manifest_file =
         fs::File::create(app_path.join(format!("{executable_name}.exe.manifest")))?;
     manifest_file.write_all(tetsu_build::WINDOWS_MANIFEST.as_bytes())?;
 
     let executable_path = app_path.join(format!("{executable_name}.exe"));
-    if bootstrap {
-        let dll_name = format!("{executable_name}.dll");
-        fs::copy(target_path.join(&dll_name), app_path.join(&dll_name))?;
+    if let Some(library) = bootstrap {
+        // The bootstrap loads the library named after the executable
+        fs::copy(
+            target_path.join(format!("{library}.dll")),
+            app_path.join(format!("{executable_name}.dll")),
+        )?;
 
-        // A release build without debug information has no PDB
-        let pdb_name = format!("{executable_name}.pdb");
+        // The PDB keeps the name the library records. A release build without
+        // debug information has none
+        let pdb_name = format!("{library}.pdb");
         let target_pdb = target_path.join(&pdb_name);
         if target_pdb.exists() {
             fs::copy(&target_pdb, app_path.join(&pdb_name))?;

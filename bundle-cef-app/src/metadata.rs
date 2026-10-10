@@ -74,21 +74,22 @@ impl CargoMetadata {
         PathBuf::from(&self.0.target_directory)
     }
 
-    /// Returns whether the package of `executable` builds a cdylib, the library
-    /// CEF's sandbox bootstrap loads.
+    /// Returns the name of the cdylib the package of `executable` builds, the
+    /// library CEF's sandbox bootstrap loads.
     #[cfg(target_os = "windows")]
-    pub fn builds_cdylib(&self, executable: &str) -> bool {
+    pub fn cdylib(&self, executable: &str) -> Option<String> {
         self.0
             .packages
             .iter()
-            .find(|package| package.targets.iter().any(|t| t.name == executable))
-            .is_some_and(|package| {
-                package.targets.iter().any(|target| {
-                    target
-                        .crate_types
-                        .contains(&cargo_metadata::CrateType::CDyLib)
-                })
+            .find(|package| package.targets.iter().any(|t| t.name == executable))?
+            .targets
+            .iter()
+            .find(|target| {
+                target
+                    .crate_types
+                    .contains(&cargo_metadata::CrateType::CDyLib)
             })
+            .map(|target| target.name.replace('-', "_"))
     }
 
     #[cfg(target_os = "macos")]

@@ -3,7 +3,10 @@ name = "cefsimple"
 edition = "2024"
 publish = false
 
+# The library CEF's sandbox bootstrap loads on Windows, bundled as
+# cefsimple.dll. Named apart from the binary so their PDBs do not collide.
 [lib]
+name = "cefsimple_app"
 crate-type = ["cdylib"]
 
 [[bin]]
