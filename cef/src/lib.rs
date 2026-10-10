@@ -1,6 +1,7 @@
 #![doc = include_str!("../README.md")]
 
 pub mod args;
+mod array_buffer;
 pub mod rc;
 pub mod string;
 pub mod window_info;
@@ -22,6 +23,7 @@ pub mod resources;
 
 #[rustfmt::skip]
 mod bindings;
+pub use array_buffer::v8_value_create_array_buffer_from_bytes;
 pub use bindings::*;
 
 pub use rc::Rc as _;

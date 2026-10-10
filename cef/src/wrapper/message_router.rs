@@ -1341,8 +1341,7 @@ impl RendererSideRouter {
 
                 // CEF's official builds enable the V8 sandbox, under which an
                 // ArrayBuffer over external memory is never created
-                let value =
-                    v8_value_create_array_buffer_with_copy(data.as_ptr() as *mut u8, data.len());
+                let value = v8_value_create_array_buffer_from_bytes(data);
 
                 context.exit();
                 value
